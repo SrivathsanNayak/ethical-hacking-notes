@@ -4,7 +4,7 @@
 
 * To change the MAC address:
 
-```console
+```shell
 ifconfig wlan0 down #disables wlan0
 
 ifconfig wlan0 hw ether 00:11:22:33:44:55 #sets hardware address of wlan0
