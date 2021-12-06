@@ -5,4 +5,4 @@ Kali Linux VM was used for this course.
 
 Topics:
 
-* [Network Hacking](LearnEthicalHackingFromScratch_Udemy/Network Hacking/README.md)
+* [Network Hacking](Network Hacking/README.md)
