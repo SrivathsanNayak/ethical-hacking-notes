@@ -1,6 +1,6 @@
 # Network Hacking
 
-* To list all network interfaces available, we can use `ifconfig`. The MAC address can be viewed under _ether_ in _wlan0_.
+* To list all network interfaces available, we can use `ifconfig`. The MAC address can be viewed under _ether_ in _wlan0_ and the IP can be viewed under _inet_ in _eth0_.
 
 * To change the MAC address:
 
@@ -100,5 +100,15 @@ crunch 6 8 ria258 -o trial-wordlist.txt
 
 aircrack-ng wpa-handshake-01.cap -w trial-wordlist.txt
 ```
+
+---
+
+* For devices connected on same network:
+
+```shell
+netdiscover -r 10.0.2.1/24 #search devices on same subnet as Kali
+```
+
+* zenmap (GUI for nmap) can be used to gather more data about devices within subnet range.
 
 ---
