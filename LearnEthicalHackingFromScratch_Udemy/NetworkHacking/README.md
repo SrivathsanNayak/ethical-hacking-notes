@@ -107,6 +107,8 @@ aircrack-ng wpa-handshake-01.cap -w trial-wordlist.txt
 
 ```shell
 netdiscover -r 10.0.2.1/24 #search devices on same subnet as Kali
+
+netdiscover -c 10 -r 10.0.2.1/24 -i eth0 #increases no. of packets
 ```
 
 * zenmap (GUI for nmap) can be used to gather more data about devices within subnet range.
