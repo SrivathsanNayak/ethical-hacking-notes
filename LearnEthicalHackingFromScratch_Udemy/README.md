@@ -7,3 +7,5 @@ Kali Linux VM was used for this course.
 Topics:
 
 * [Network Hacking](NetworkHacking/README.md)
+
+* [Gaining Access](GainingAccess/README.md)

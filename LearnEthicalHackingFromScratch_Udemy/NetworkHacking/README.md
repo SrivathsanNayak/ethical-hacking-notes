@@ -166,3 +166,5 @@ set dns.spoof.domains zsecurity.org, *.zsecurity.org
 dns.spoof on
 #by default, it will redirect to interface address (10.0.2.4)
 ```
+
+* Wireshark can be used to analyze packets sniffed using MITM attacks.
