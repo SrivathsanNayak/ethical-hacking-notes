@@ -175,6 +175,10 @@ msfconsole --resource /opt/BDFProxy/bdfproxy_msf_resource.rc
 
 * Maltego can be used as an information gathering tool. Based on the info gathered, strategies can be built for the target.
 
-* We can combine backdoor with any file by using a [download-and-execute payload](..\autoit-download-and-execute.txt). As this sample script is written in AutoIt, we have to change extension from .txt to .au3. Then, it can be compiled into a .exe file, and we can even change its icon.
+* We can combine backdoor with any file by using a [download-and-execute payload](..\autoit-download-and-execute.txt). As this sample script is written in AutoIt, we have to change extension from .txt to .au3. Then, it can be compiled into a .exe file, and moved to the directory /var/www/html/. At the same time, we have to listen for incoming connections using Metasploit.
+
+* Using a right-to-left override character, we can spoof the file extension (from .exe to .jpg, for example).
+
+* Email spoofing can be done by using a SMTP server, or using PHP mail functions coupled with a web hosting plan.
 
 ---
