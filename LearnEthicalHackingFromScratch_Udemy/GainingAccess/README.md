@@ -205,4 +205,6 @@ hstshijack/hstshijack
 
 * Once hooked, we can use BeEF commands to attack the target.
 
+* Using BeEF, we can also hook a machine that exists outside our network. We have to use our external IP address whenever we're sending it out of our network (in the BeEF injecting script, for example); and we've to configure our router such that it redirects the port that we're listening on to the internal IP address of the Kali machine (port forwarding).
+
 ---
