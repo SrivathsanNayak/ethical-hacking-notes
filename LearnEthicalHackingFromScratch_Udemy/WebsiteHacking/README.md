@@ -120,3 +120,9 @@ sqlmap -u "http://10.0.2.5/mutillidae/index.php?page=user-info.php&username=admi
 ## Discovering Vulnerabilities Automatically
 
 ---
+
+* ZAP (Zed Attack Proxy) tool is used to automatically find vulnerabilities in web apps.
+
+* While pentesting a particular website, we have to try all vulnerabilities with the parameters of each subdomain.
+
+* Pentest reports are documents that include all of our findings for the client to understand.
