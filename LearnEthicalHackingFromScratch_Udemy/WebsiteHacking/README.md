@@ -103,6 +103,20 @@ sqlmap -u "http://10.0.2.5/mutillidae/index.php?page=user-info.php&username=admi
 
 ---
 
+* XSS vulnerabilities allow us to inject JS code into the page, executed when the page loads.
+
+* Reflected XSS are non-persistent and not stored in the website. It works only if target visits a specific URL.
+
+* Similar to SQLi, XSS attacks can be done easily if URL contains specific parameters, or if there are text boxes in the website. For example, entering ```<script>alert("XSS")</script>``` in a text box will result in website prompting "XSS" due to the vulnerability.
+
+* Stored XSS is persistent on the page, executed everytime it's loaded. Similar XSS attacks can be done to achieve the intended effect.
+
+* BeEF can be used too to hook a URL and inject it into the stored XSS page. So, anyone who visits that page will be hooked to BeEF.
+
+* To hook to BeEF, we have to simply insert the hook script with our IP into the textbox in the target website. With stored XSS attacks, anyone who visits that page will be hooked to BeEF.
+
+* To prevent XSS vulnerabilities, minimise usage of user input in HTML and filter the input before inserting into page.
+
 ## Discovering Vulnerabilities Automatically
 
 ---
