@@ -18,7 +18,7 @@
 
 * OLED (Organic Light Emitting Diode) does not require backlight, unlike LCD. They are thinner and lighter. However they are costlier and consume more power.
 
-* Wi-Fi antennas are also used in laptop displays.
+* WiFi antennas are also used in laptop displays.
 
 * Backlighting can be either LED-backlit or fluoroscent.
 
@@ -33,3 +33,25 @@
 * Designed for touch input, these are small-sized single-screened computers.
 
 ## Mobile Device Accessories
+
+* Mobile device connections are supported by accessories such as Micro-USB, Mini-USB and USB-C plugs.
+
+* Tethering is allowed by physically connecting a device to a phone to use Internet connection. WiFi hotspot does the same thing but it is wireless.
+
+* Bluetooth is a type of PAN (Personal Area Network) and it offers high speed communication over short distances.
+
+* Wired headsets are connected to the analog audio jack using TRRS (Tip-Ring-Ring-Sleeve) connector.
+
+* A SD or a microSD card can be used in phones to increase the storage capacity.
+
+## Mobile Device Connectivity
+
+* Wireless networks used commonly on phones include cellular, WiFi and Bluetooth.
+
+* IMEI (International Mobile Station Equipment Identity) and IMSI (International Mobile Subscriber Identity) are used to identify the device and the user, respectively.
+
+* For older devices, retreiving mail used POP3 and IMAP, and sending mail used SMTP. For newer ones, commercial email providers are being used.
+
+## Mobile Device Synchronization
+
+* We can synchronize our data to the cloud, a desktop computer or to other appliances.
