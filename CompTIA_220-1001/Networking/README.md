@@ -45,3 +45,68 @@
 * WAP (Wireless Access Point) - extends wired network onto wireless network.
 
 * Firewalls - filters traffic by port number; encrypts traffic into/out of the network.
+
+## SOHO Networks
+
+* SOHO Router - all-in-one device; used for routing, switching local devices.
+
+* SOHO routers have the functionality of firewalls as well.
+
+## Wireless Networks
+
+* Wireless standards are usually associated with 802.11 networking.
+
+* Common frequency bands are 2.4 GHz and/or 5 GHz.
+
+## Network Services
+
+* Common network services include:
+
+    1. Web server
+    2. File server
+    3. Print server
+    4. DHCP server
+    5. DNS server
+    6. Mail server
+    7. SIEM
+    8. IDS and IPS
+
+## Network Configurations
+
+* IPv4 - 32-bit address; IPv6 - 128-bit address.
+
+* Subnet mask - used by the local device to determine its subnet.
+
+* Default gateway - the router that allows you to communicate outside the local subnet.
+
+* SSL (Secure Sockets Layer) VPN - Uses common SSL/TLS protocol (tcp/443).
+
+* Client-to-site VPN - remote access VPN; requires software on user device.
+
+* LAN - group of devices in the same broadcast domain.
+
+* NAT (Network address translation) - translates one IP address to another.
+
+## Internet Connections
+
+* Cable modem - broadband; transmission across multiple frequencies.
+
+* DSL modem - ADSL; uses existing telephone lines.
+
+* Fiber optics - high speed networking.
+
+* Line-of-sight services - covers many homes simultaneously.
+
+## Network Tools
+
+* Cable crimpers - connects the modular connector to the Ethernet cable.
+
+* Multimeters - check AC voltage, DC voltage, perform continuity tests.
+
+* Tone generator - track wires by following the tone.
+
+* Cable tester - continuity test; can identify missing pins or crossed wires.
+
+* Loopback plugs - useful for testing physical ports.
+
+* Punch-down tools - punch a wire into a wiring block.
