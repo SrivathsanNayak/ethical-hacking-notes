@@ -73,3 +73,42 @@
 * RAID 5 - striping with parity; efficient; high redundancy.
 
 * RAID 10 (1+0) - stripe of mirrors; speed of striping & redundancy of mirroring; needs at least 4 drives.
+
+## Motherboards, CPUs, and Add-on Cards
+
+* Motherboard form factors:
+
+    1. Physical size
+    2. Basic layout
+    3. Power
+    4. Airflow
+
+* Major motherboard types - ATX, micro-ATX, ITX, mini-ITX.
+
+* Computer bus - communication path; can be used for system expansion.
+
+* Expansion bus - bandwidth used to measure capacity; has its own clock; PCI (parallel) and PCI Express (serial) used.
+
+* CPU sockets - motherboards matched with CPUs due to specific requirements; usually the largest component on the board.
+
+* ZIF sockets - used for PGA (Pin Grid Array), which will plug into ZIF.
+
+* LGA sockets - reverse of PGA.
+
+* Storage drive interfaces - used for SATA and PATA connectors.
+
+* BIOS (Basic Input/Output System) - software used to start computer; initializes CPU and memory.
+
+* UEFI (Unified Extensible Firmware Interface) - standard for BIOS; supports FAT and removable media; includes pre-boot environment.
+
+* Case fans - cool air pulled through PC; layout of components is key.
+
+* On-board fans - designed to cool an entire adapter card.
+
+* Heat sink - dissipate heat through thermal conduction; the grid increases surface area.
+
+* Passive cooling - fanless; controlled functions and low-power components.
+
+* Liquid cooling - coolant circulated through a computer.
+
+* Expansion cards - extend functionality of computer.
