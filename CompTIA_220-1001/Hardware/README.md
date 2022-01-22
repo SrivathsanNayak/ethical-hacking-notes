@@ -112,3 +112,27 @@
 * Liquid cooling - coolant circulated through a computer.
 
 * Expansion cards - extend functionality of computer.
+
+* Computer uses DC voltage; most power sources provide AC voltage.
+
+## Print Technologies
+
+* Laser printer - high quality; fast performance; complex.
+
+* Color laser printers have 4 separate toner cartridges for 4 colors - cyan, yellow, magenta, black.
+
+* Laser printer process:
+
+    1. Processing - build entire page in memory
+    2. Charging - prepare drum with a negative electrostatic charge
+    3. Exposing - write image with laser
+    4. Developing - add negatively charged toner to imaging drum
+    5. Transferring - move toner from drum to paper
+    6. Fusing - heat and pressure
+    7. Cleaning - remove excess toner
+
+* Inkjet printer (ink-dispersion) - cheap, quiet, high-resolution; expensive ink.
+
+* Thermal printers - white paper, no ink used; silent; paper sensitive to light, heat.
+
+* Dot-matrix printer (impact) - print-head with a small matrix of pins; good for copies; noisy, poor graphics.
