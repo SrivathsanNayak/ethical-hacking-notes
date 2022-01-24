@@ -95,3 +95,37 @@ netstat -a #shows all active connections
 
 nslookup #lookup info from DNS servers
 ```
+
+## Windows Features
+
+* Windows Administrative Tools:
+
+    1. Microsoft Management Console
+    2. Device Manager
+    3. Local users and groups
+    4. Local Security Policy
+    5. Performance Monitor
+    6. Services
+    7. Task Scheduler
+    8. Memory Diagnostics
+    9. Event Viewer
+
+* Windows Defender - firewall integrated into OS.
+
+* System Configuration (msconfig) - manage boot processes, startup, services, etc; can be found in Task Manager.
+
+* Task Manager - real-time system stats.
+
+* Disk Management - manage disk operations.
+
+* Storage Spaces - storage for data centers, cloud infra.
+
+* System Utilities:
+
+    1. Run line
+    2. Command line
+    3. Windows Registry (regedit)
+    4. Services
+    5. Microsoft Terminal Services Client
+    6. DirectX Diagnostic Tool
+    7. Disk Defragmentation
