@@ -129,3 +129,82 @@ nslookup #lookup info from DNS servers
     5. Microsoft Terminal Services Client
     6. DirectX Diagnostic Tool
     7. Disk Defragmentation
+
+* Windows HomeGroup - share files between devices; works on single private network.
+
+* Windows Workgroups - Logical groups of network devices.
+
+* Windows Domain - Business network; centralized authentication.
+
+## macOS and Linux
+
+* macOS tools:
+
+    1. Time Machine backups
+    2. Image recovery
+    3. Disk Utility
+    4. Terminal
+    5. Keychain
+    6. iCloud
+
+* Linux commands:
+
+```shell
+man #manual help
+
+ls #list directory contents
+
+cd /var/log #change current directory
+
+grep failed auth.log #find text 'failed' in file 'auth.log'
+
+su #or sudo, for elevated rights; super user
+
+shutdown #system shutdown 2
+
+sudo shutdown 2 #shuts down in 2 minutes
+
+sudo shutdown -r 2 #shuts down and reboots in 2 minutes
+
+sudo shutdown -c #cancel shutdown
+
+pwd #print working directory
+
+passwd #change user account password
+
+mv #move a file, rename
+
+mv first.txt second.txt #renames first.txt to second.txt
+
+cp #copy file
+
+rm #remove file, use -r to remove non-empty directory
+
+mkdir #make directory
+
+chmod #change mode of file system object
+
+chown #change file owner and group
+
+iwconfig #view wireless network config
+
+ifconfig #view wired network interface
+
+apt-get #advanced packaging tool
+
+sudo apt-get install wireshark #install wireshark using apt-get
+
+ps #view current processes
+
+ps -e | more #view all processes
+
+vi #visual mode editor
+
+dd #convert and copy a file; backup and restore partition
+
+sudo killall firefox #close firefox program
+
+xkill #graphical kill
+
+kill <pid> #kill process
+```
