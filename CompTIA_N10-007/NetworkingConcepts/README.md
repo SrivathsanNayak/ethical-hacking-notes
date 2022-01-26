@@ -104,6 +104,8 @@
 
 * IP address - network ID + host ID; subnet mask determines which part is network ID and which part is host ID.
 
+* Default gateway - router that allows you to communicate outside of the local subnet.
+
 * IPv4 addresses are 4 bytes long (4 octets of a byte each).
 
 * IPv6 addresses are 16 bytes long (8 hexadecimal parts of 2 bytes each).
@@ -133,3 +135,134 @@
 * Packet switching - data grouped into packets; shared media; SONET, ATM, DSL, cable modem.
 
 * SDN (Software Defined Networking) - networking devices have 2 functional planes of operation (control plane, data plane); directly programmable and agile; centrally managed.
+
+## Network Addressing
+
+* Loopback address (127.0.0.1) - address to yourself.
+
+* A subnet can be constructed by using the network address, the first usable host address, the network broadcast address, and the last usable host address. Examples
+
+```markdown
+Given IP address = 10.74.222.11
+
+We know that this is a Class A address.
+As this is Class A, only first octet will be network bit.
+
+So, subnet mask = 255.0.0.0
+Therefore, network address = 10.0.0.0
+First host address = 10.0.0.1
+Broadcast address = 10.255.255.255
+Last host address = 10.255.255.254
+```
+
+```markdown
+Given IP address = 172.16.88.200
+
+As this is a Class B address, first two octets will be network bits.
+
+Subnet mask = 255.255.0.0
+Network address = 172.16.0.0
+First host address = 172.16.0.1
+Broadcast address = 172.16.255.255
+Last host address = 172.16.255.254
+```
+
+* VLSM (Variable Length Subnet Masks) - allow network admins to define masks; class-based networks inefficient.
+
+```markdown
+Given IP address = 10.1.1.0/24
+As this is class A address,
+number of network bits = 8
+number of subnet bits = 16
+and number of host bits = 8
+
+So, total subnets = 2^16 = 65536
+Also, hosts per subnet = (2^8) - 2 = 254
+```
+
+## Network Topologies
+
+* Network maps - high level views of network; can be physical or logical.
+
+* Common network topologies:
+
+    1. Star - all devices connected to central device.
+    2. Ring - dual-ring; built-in fault tolerance.
+    3. Mesh - multiple links to same place; redundancy; fault-tolerance; load-balancing.
+    4. Bus - simple but prone to errors.
+
+* Wireless topologies:
+
+    1. Infrastructure - all devices communicate through access point.
+    2. Ad hoc networking - devices communicate amongst themselves; no structure.
+    3. Mesh - ad hoc devices form a mesh structure; self-form and self-heal.
+
+* Common network types:
+
+    1. LAN (Local Area Network) - High-speed connectivity; e.g. - Ethernet, 802.11 wireless.
+    2. WLAN (Wireless LAN) - 802.11 tech; expand coverage with extra access points.
+    3. MAN (Metropolitan Area Network) - commonly owned by government.
+    4. WAN (Wide Area Network) - slower than LAN; point-to-point serial, MPL3, etc.
+    5. CAN (Campus Area Network) - fiber-connected; high speed Ethernet.
+    6. NAS (Network Attached Storage) - connect to shared storage device across network; file-level access.
+    7. SAN (Storage Area Network) - block-level access; efficient.
+    8. PAN (Personal Area Network) - private network; Bluetooth, IR, wireless headset, etc.
+
+* IoT topologies:
+
+    1. Z-Wave - home automation networking; wireless mesh network; 900 MHz ISM band.
+    2. ANT/ANT+ - wireless sensor network protocol; 2.4 GHz ISM band; fitness devices, heart rate monitors; spectrum jamming for denial of service.
+    3. Bluetooth - high speed communication over short distances (PAN); connects mobile devices.
+    4. NFC (Near Field Communication) - two-way wireless; payment systems, access token.
+    5. IR (Infrared) - used in gadgets and devices.
+    6. RFID (Radio-frequency identification) - radar tech; bidirectional; access badges, trackers.
+    7. IEEE 802.11 - wireless networking standard.
+
+## Wireless Technologies
+
+* 802.11 networking standards include 802.11a, 802.11b, 802.11g, 802.11n, and 802.11ac.
+
+* Cellular network standards include GSM (uses TDMA), CDMA and 4G/LTE.
+
+## Cloud Technologies
+
+* Common cloud services include SaaS, IaaS, PaaS.
+
+* Cloud deployment models can be private, public, hybrid or community.
+
+* CASB (Cloud Access Security Broker) - integrated with cloud for security policies; visibility, compliance, threat prevention and data security.
+
+## Network Services
+
+* DNS (Domain Name System) - translates names into IP addresses; hierarchical; distributed database.
+
+* RR (Resource Records) - database records of domain name services.
+
+* DNS record types:
+
+    1. Address records (A) (AAAA) - defines IP address of host; A records for IPv4 and AAAA for IPv6.
+    2. Canonical name records (CNAME) - for aliases.
+    3. Service records (SRV) - for specific services.
+    4. Mail exchanger record (MX) - determines host name for mail server.
+    5. Name server records (NS) - list name servers for a domain.
+    6. Pointer record (PTR) - reverse of A/AAAA record.
+    7. Text records (TXT) - readable text info; contains SPF protocol and DKIM.
+
+* DHCP (Dynamic Host Configuration Protocol) - provides automatic IP configuration.
+
+* DHCP relay used in enterprises to overcome limited communication range, redundancy and scalability issues.
+
+* DHCP address allocation ways:
+
+    1. Dynamic allocation
+    2. Automatic allocation
+    3. Static allocation
+    4. Table of MAC addresses (static DHCP)
+
+* NTP (Network Time Protocol) - for configuring synchronization of clock.
+
+* NTP server - responds to time requests from NTP clients; doesn't modify their own time.
+
+* NTP clients - request time updates from NTP server.
+
+* NTP client/server - requests time updates from an NTP server; responds to time requests from other NTP clients.
