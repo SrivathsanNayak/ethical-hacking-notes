@@ -7,3 +7,5 @@ Topics:
 * [Networking Basics](Networking/README.md)
 
 * [Linux Basics](Linux/README.md)
+
+* [Python Basics](Python/README.md)
