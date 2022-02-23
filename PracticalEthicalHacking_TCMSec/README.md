@@ -5,3 +5,5 @@ Notes for the TCM Security course [Practical Ethical Hacking](https://academy.tc
 Topics:
 
 * [Networking Basics](Networking/README.md)
+
+* [Linux Basics](Linux/README.md)
