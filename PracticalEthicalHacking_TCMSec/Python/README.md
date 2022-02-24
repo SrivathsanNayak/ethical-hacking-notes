@@ -36,3 +36,196 @@ age += 1
 print(age)
 
 ```
+
+* Functions:
+
+```python
+#!/bin/python3
+
+name = "Bruh"
+age = 25
+gpa = 8.2
+
+#example of function
+def whoami():
+    name = "Deez"
+    age = 12
+    print("My name is " + name + " and I am " + str(age) + " years old.")
+
+whoami() #call the function
+
+#parameters in function
+def hundred(n):
+    print(n+100)
+
+hundred(15)
+
+#many parameters
+def add(x,y):
+    print(x+y)
+
+add(400,35)
+
+#return value
+def multiply(x,y):
+    return x*y
+
+print(multiply(3,2))
+
+```
+
+* Boolean expressions:
+
+```python
+#!/bin/python3
+
+bool1 = True
+bool2 = 3+3 == 9
+bool3 = 3*3 == 9
+bool4 = bool1 == bool2
+bool5 = bool1 == bool3
+
+print(bool1, bool2, bool3, bool4, bool5)
+#True False True False True
+```
+
+* Conditional statements:
+
+```python
+#!/bin/python3
+
+def drink(age,money):
+    if (age >= 21) and (money >= 2):
+        return "Purchased drink"
+    elif (age >= 21) and (money < 2):
+        return "Need more money"
+    elif (age < 21) and (money >= 2):
+        return "Too young"
+    else:
+        return "Young and poor"
+
+print(drink(22,4))
+print(drink(22,1))
+print(drink(12,5))
+print(drink(15,1))
+
+```
+
+* Lists:
+
+```python
+#!/bin/python3
+
+players = ['Kohli', 'Dhoni', 'Gayle', 'Dhawan']
+
+print(players[0]) #first item, index 0
+print(players[1:3]) #from index 1, upto before index 3(excluding)
+print(players[1:]) #from index 1 to end of list
+print(players[:2]) #from start of list, upto index 2(excluding)
+print(players[-1]) #last item, index -1
+
+print(len(players)) #number of items in list                                                                                                                                                 
+players.append('Sharma') #add item at end of list                                                                                                                                            
+print(players)                                                                                                                                                                               
+                                                                                                                                                                                             
+players.pop()                                                                                                                                                                                
+print(players) #remove item from end of list
+
+players.pop(2) #remove item at index 2
+print(players)
+```
+
+* Tuples:
+
+```python
+#!/bin/python3
+
+grades = ('S', 'A', 'B', 'C', 'F')
+#tuples are immutable
+print(grades[1])
+
+```
+
+* Looping:
+
+```python
+#!/bin/python3
+
+names = ['Sid', 'Joe', 'Ram', 'Kim']
+for n in names:
+    print(n)
+
+i = 1
+while (i < 5):
+    print(i)
+    i += 1
+```
+
+* Importing modules:
+
+```python
+#!/bin/python3
+
+import sys #system function, parameters
+from datetime import datetime as dt #import module as alias
+
+print(sys.version)
+print(dt.now())
+
+```
+
+* String functions:
+
+```python
+#!/bin/python3
+
+snt = "This is a sample sentence."
+
+snt_parts = snt.split() #splits string based on delimiter, space by default
+snt_joined = ' '.join(snt_parts) #list of words are joined with delimiter separating words
+
+print(snt_parts)
+print(snt_joined)
+
+quotes = "This contains \"quotes\"" #backslash used as escape character
+print(quotes)
+
+spaces = "  space   bar  "
+print(spaces.strip()) #strips all space characters from string
+
+print('A' in "Apple")
+print("a" in 'Apple')
+print("a".lower() in "Apple".lower())
+
+fav = "Cake"
+print("I like {}".format(fav)) #String format
+
+```
+
+* Dictionaries:
+
+```python
+#!/bin/python3
+
+counts = {"A":10, "B":8, "C":9, "S":20} #key-value pairs
+print(counts)
+
+fruits = {"Best":["Mango", "Banana"], "OK":["Orange", "Apple"], "Bad":["Berries", "Pineapple"]}
+print(fruits)
+
+#add new key-value pair
+fruits["Very bad"] = ["Tomato"]
+print(fruits)
+
+#another way to add pair
+fruits.update({"Good": ["Jackfruit", "Grapes"]})
+print(fruits)
+
+#updating value
+counts["C"] = 3
+print(counts)
+
+#returns value of key "C"
+print(counts.get("C"))
+
+```
