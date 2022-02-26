@@ -84,3 +84,21 @@ nmap -T4 -p- -A 10.0.2.4
   * From the nmap scan, we know that the SSH version on port 22 is OpenSSH 2.9p2. We can attempt to connect using ```ssh 10.0.2.4``` but it would not work unless we know the password.
 
 * After enumeration, we can research the vulnerabilities using Google and find if there are any exploits related to it. Examples of resources include [Rapid7](https://www.rapid7.com/db/) and [Exploit Database](https://www.exploit-db.com/). For offline searches, use ```searchsploit``` in the terminal.
+
+* Vulnerability scanning with Nessus:
+
+  * To setup Nessus:
+
+  ```shell
+  #After downloading Nessus package
+  cd Downloads/
+
+  dpkg -i Nessus-10.1.1-ubuntu910_amd64.deb
+
+  /bin/systemctl start nessusd.service #start Nessus scanner
+  #now go to <https://kali:8834/> to configure the scanner
+  ```
+
+  * Once Nessus is configured, we can launch a basic network scan or an advanced network scan of the Kioptrix machine.
+
+  * After the scan is completed, we can check all the vulnerabilities and based on that we can find exploits.
