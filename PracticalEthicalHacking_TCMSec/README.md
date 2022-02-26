@@ -19,3 +19,5 @@ Topics:
 * [Python Basics](Python/README.md)
 
 * [Reconnaissance](Recon/README.md)
+
+* [Scanning and Enumeration](ScanAndEnum/README.md)
