@@ -21,3 +21,5 @@ Topics:
 * [Reconnaissance](Recon/README.md)
 
 * [Scanning and Enumeration](ScanAndEnum/README.md)
+
+* [Exploitation Basics](ExploitationBasics/README.md)
