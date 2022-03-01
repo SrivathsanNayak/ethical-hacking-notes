@@ -187,3 +187,7 @@ sudo systemctl start apache2
 crontab -e
 #to edit crontabs
 ```
+
+## Windows
+
+---
