@@ -2,6 +2,8 @@
 
 1. [Networking](#networking)
 2. [Web](#web)
+3. [Linux](#linux)
+4. [Windows](#windows)
 
 ## Networking
 
@@ -111,3 +113,77 @@
   * Content-Encoding - Method used to compress data.
 
 * Web server - software that listens for incoming connections and then utilises the HTTP protocol to deliver web content to its clients.
+
+## Linux
+
+---
+
+* ssh:
+
+```shell
+ssh tryhackme@10.10.19.63 #here, username is tryhackme, with IP address of machine 
+```
+
+* su:
+
+```shell
+su user2 #switch user
+```
+
+* wget:
+
+```shell
+wget https://www.google.com/robots.txt #download files from web via HTTP
+```
+
+* scp:
+
+```shell
+scp imp.txt ubuntu@192.168.1.30:/home/ubuntu/transfer.txt
+#scp or secure copy is used to transfer files from host using SSH
+#this is for copying imp.txt from our machine to remote machine, where we want to save it as transfer.txt
+
+scp ubuntu@192.168.1.30:/home/ubuntu/docs.txt notes.txt
+#to copy docs.txt from remote machine to our machine as notes.txt
+```
+
+* http.server:
+
+```shell
+python3 -m http.server
+#to start http.server module; turns our computer into a web server to serve our files
+
+#to download a file from our webserver, we can use wget
+wget http://127.0.0.1:8000/file
+```
+
+* ps:
+
+```shell
+ps #view a list of running processes
+
+ps aux #more detailed view, including other users' processes
+```
+
+* systemctl:
+
+```shell
+sudo systemctl start apache2
+#systemctl allows us to interact with systemd process (or daemon)
+#the four options with systemctl for any service are - start, stop, enable, disable
+```
+
+* To push a process into background, use ```&``` at end of command or press ```Ctrl+Z``` (stops the process).
+
+* To bring a process to foreground, use ```fg```.
+
+* crontab:
+
+```shell
+#crontab is a special file with formatting recognized by 'cron' process for automation
+0 *12 * * * cp -R /home/username1/Documents /var/backups/ #min hour dom mon dow cmd - format
+#this is used to backup Documents every 12 hours
+
+crontab -e
+#to edit crontabs
+```
