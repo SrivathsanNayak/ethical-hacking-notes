@@ -191,3 +191,36 @@ crontab -e
 ## Windows
 
 ---
+
+* NTFS (New Technology File System) - File system used in modern versions of Windows; can set permissions to grant/deny access to files; journaling file system; supports EFS (Encryption File System) and ADS (Alternate Data Streams).
+
+* The NTFS permissions are - full control, modify, read & execute, list folder contents, read, and write.
+
+* Environment variables - store information about OS environment; includes OS path, number of processors used, and location of temporary folders.
+
+* System variable for Windows folder - %windir%
+
+* ```lusrmgr.msc``` can be used to check and control Users and Groups.
+
+* System Configuration (MSConfig) - utility for advanced troubleshooting and diagnosing startup issues.
+
+* Task Manager (taskmgr) - to manage startup items.
+
+* Command Prompt (cmd):
+
+```shell
+hostname #outputs computer name
+
+whoami #name of logged-in user
+
+ipconfig #show network address settings
+
+ipconfig /? #get manual page for ipconfig
+#use cls to clear screen
+
+netstat #protocol stats and current tcp/ip connections
+```
+
+* Windows Registry (regedit) - central hierarchical database; stores info required to configure system for users, applications and hardware devices.
+
+* Volume Shadow Copy Service (VSS) - creates a consistent shadow copy (snapshot) of data to be backed up; copies stored on System Volume Information folder on each drive with protection enabled.
