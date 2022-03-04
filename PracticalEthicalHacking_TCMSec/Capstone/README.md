@@ -228,7 +228,11 @@ Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
 
   * This method works and we get access as root on Academy. We can view the flag.txt as well.
 
+---
+
 ## Dev
+
+---
 
 * Scanning using netdiscover and nmap:
 
@@ -381,6 +385,8 @@ Running: Linux 4.X|5.X
 ---
 
 ## Butler
+
+---
 
 * Recon:
 
@@ -557,5 +563,7 @@ Host script results:
 ---
 
 ## Blackpearl
+
+---
 
 ---
