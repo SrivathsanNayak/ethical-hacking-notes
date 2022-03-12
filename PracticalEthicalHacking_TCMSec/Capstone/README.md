@@ -561,9 +561,3 @@ Host script results:
     ```
 
 ---
-
-## Blackpearl
-
----
-
----
