@@ -7,3 +7,5 @@ Learning Paths:
 * [Pre Security](PreSecurity/README.md)
 
 * [Jr Penetration Tester](JrPentester/README.md)
+
+* [CompleteBeginner](CompleteBeginner/README.md)
