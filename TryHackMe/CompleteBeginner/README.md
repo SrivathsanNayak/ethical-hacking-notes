@@ -201,6 +201,13 @@
   * Brute force - attacking cryptography by trying every different password or key.
   * Cryptanalysis - attacking cryptography by finding a weakness in underlying maths.
   * Rainbow table - lookup table of hashes to plaintexts.
+  * Ciphertext - encrypted plaintext.
+  * Cipher - method of encrypting/decrypting data; could be cryptographic or non-cryptographic.
+  * Encryption - transforming data into ciphertext using cipher.
+  * Key - information required to decrypt ciphertext and get plaintext.
+  * Passphrase - password used to protect key.
+  * Asymmetric encryption - uses different keys to encrypt/decrypt.
+  * Symmetric encryption - uses same keys to encrypt/decrypt.
 
 * To protect against rainbow tables, add salt to the passwords.
 
@@ -299,6 +306,29 @@
 
   john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa_hash.txt
   ```
+
+* Encryption:
+
+  * Symmetric encryption - same key to encrypt/decrypt data; faster algorithms, smaller keys. Examples are DES (broken) and AES.
+
+  * Asymmetric encryption - different keys to encrypt/decrypt data (public and private key); slower algorithms, larger keys. Examples include RSA and Elliptic Curve Cryptography. Data encrypted with private key can be decrypted with public key, and vice-versa.
+
+  * Tools and guides to break RSA encryption:
+
+    * [RsaCtfTool](https://github.com/Ganapati/RsaCtfTool)
+    * [rsatool](https://github.com/ius/rsatool)
+    * [RSA Explainer](https://muirlandoracle.co.uk/2020/01/29/rsa-encryption/)
+
+  * In CTFs, key variables in RSA are:
+
+    ```markdown
+    p,q - large prime numbers
+    n - product of p and q
+    (n,e) - public key
+    (n,d) - private key
+    m - message (plaintext)
+    c - ciphertext (encrypted text)
+    ```
 
 ## Windows Exploitation Basics
 
