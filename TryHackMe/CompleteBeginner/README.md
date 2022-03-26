@@ -191,6 +191,115 @@
 
 ---
 
+* Terminology:
+
+  * Plaintext - data before encryption or hashing.
+  * Encoding - form of data representation, immediately reversible.
+  * Hash - output of hash function.
+  * Use of hashing - verify integrity of data; verify passwords.
+  * Hash collision - when 2 different inputs give the same output.
+  * Brute force - attacking cryptography by trying every different password or key.
+  * Cryptanalysis - attacking cryptography by finding a weakness in underlying maths.
+  * Rainbow table - lookup table of hashes to plaintexts.
+
+* To protect against rainbow tables, add salt to the passwords.
+
+* Online tools for help:
+
+  * [CrackStation](https://crackstation.net/)
+  * [Hash Examples](https://hashcat.net/wiki/doku.php?id=example_hashes)
+  * [Hash Identifier](https://hashes.com/en/tools/hash_identifier)
+
+* Hash cracking:
+
+  ```shell
+  #using hashcat
+  #first try to get type of hash
+  #for example, bcrypt
+  hashcat -h #help
+
+  hashcat -h | grep bcrypt #gives reference value 3200
+
+  hashcat -m 3200 -a 0 hash1.txt /usr/share/wordlists/rockyou.txt
+  #-m for reference value, '-a 0' for dictionary attack mode
+  #hash1.txt contains the hash to be cracked
+
+  #use -a 3 if -a 0 does not work
+  ```
+
+  ```shell
+  #using john
+  man john
+
+  john hash1.txt --wordlist=/usr/share/wordlists/rockyou.txt --format=bcrypt
+
+  #to show passwords after cracking
+  john hash1.txt --show
+  ```
+
+* John The Ripper:
+
+  ```shell
+  john --help
+
+  #automatic cracking
+  john --wordlist=/usr/share/wordlists/rockyou.txt hashfile.txt
+
+  #to identify format, we can use online tools or hash-identifier
+  wget https://gitlab.com/kalilinux/packages/hash-identifier/-/raw/kali/master/hash-id.py
+  python3 hash-id.py #enter hash value
+
+  #format-specific cracking
+  john --format=raw-md5 --wordlist=/usr/share/wordlists/rockyou.txt hashfile.txt
+  #use -raw prefix in formats if standard, non-salted
+
+  #check all supported formats
+  john --list=formats
+  ```
+
+  ```shell
+  #authentication hashes - hashed passwords stored by OS, might need brute force
+  #for ntlm hashes, use --format=NT
+
+  #cracking hashes from /etc/shadow
+  unshadow /etc/passwd /etc/shadow > unshadowed.txt
+  #unshadow combines files from /etc/passwd and /etc/shadow; use path of file with contents
+  #unshadowed.txt stores the user:password hash
+
+  #to crack unshadowed.txt
+  john --wordlist=/usr/share/wordlists/rockyou.txt --format=sha512crypt unshadowed.txt
+  ```
+
+  ```shell
+  #single crack mode - word mangling the usernames
+  john --single --format=raw-sha256 hashes.txt
+  #here, hashes.txt has to follow the format of username:hash
+
+  #john also supports creation of custom rules with regex
+  ```
+
+  ```shell
+  #crack protected zip files
+  #use zip2john to convert zip to hash format
+  zip2john zipfile.zip > ziphash.txt
+
+  john --wordlist=/usr/share/wordlists/rockyou.txt ziphash.txt
+
+  #similarly, we can crack protected rar files using rar2john
+  rar2john rarfile.rar > rarhash.txt
+
+  john --wordlist=/usr/share/wordlists/rockyou.txt rarhash.txt
+  ```
+
+  ```shell
+  #john can be used to crack ssh key passwords as well
+  ssh2john id_rsa > id_rsa_hash.txt
+  #if ssh2john is not installed, we can use this as well
+  python /usr/share/john/ssh2john.py id_rsa > id_rsa_hash.txt
+
+  john --wordlist=/usr/share/wordlists/rockyou.txt id_rsa_hash.txt
+  ```
+
 ## Windows Exploitation Basics
 
 ---
