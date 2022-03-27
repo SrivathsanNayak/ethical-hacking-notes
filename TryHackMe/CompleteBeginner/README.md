@@ -334,6 +334,46 @@
 
 ---
 
+* To check and set files' or folders' permissions in Windows, ```icacls``` tool can be used.
+
+* Types of Active Directory:
+
+  * On-premise Active Directory (AD) - Authentication uses following protocols:
+
+    * NTLM
+    * LDAP/LDAPS
+    * KERBEROS
+
+  * Azure Active Directory (AAD) - Authentication uses following methods:
+
+    * SAML
+    * OAUTH 2.0
+    * OpenID Connect
+
+* Active Directory - directory service for Windows Domain Networks; collection of machines and servers connected inside of domains, that make up the AD network. Some of its components include:
+
+  * Domain controllers - Windows server that has Active Directory Domain Services (AD DS) installed, to control the domain.
+
+  * Forest - collection of domain trees inside of AD network; to categorize the parts of network as a whole.
+
+  * AD DS - core functions of an AD network; allow for management of domain, security certificates, LDAPs (Lightweight Directory Access Protocols), etc.
+
+* [CheatSheet for Powerview](https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993) in Active Directory:
+
+  ```shell
+  Get-NetComputer -fulldata | select operatingsystem
+  #get list of all OS on domain
+
+  Get-NetUser | select cn
+  #get list of all users on domain
+
+  Get-NetGroup -GroupName *
+  #list of all groups
+
+  Get-NetUser -SPN | ?{$_.memberof -match 'Domain Admins'}
+  #details of particular user
+  ```
+
 ## Basic Computer Exploitation
 
 ---
