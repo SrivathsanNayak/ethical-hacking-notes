@@ -4,3 +4,4 @@
 
     1. [RootMe - Easy](RootMe.txt)
     2. [c4ptur3-th3-fl4g - Easy](c4ptur3-th3-fl4g.txt)
+    3. [SimpleCTF - Easy](simplectf.txt)
