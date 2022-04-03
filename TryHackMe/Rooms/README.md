@@ -7,3 +7,5 @@
     3. [SimpleCTF - Easy](simplectf.txt)
     4. [Crack The Hash - Easy](CrackTheHash.txt)
     5. [OhSINT - Easy](OhSINT.txt)
+    6. [Attacktive Directory - Medium](AttacktiveDirectory.txt)
+    7. [Agent Sudo - Easy](AgentSudo.txt)
