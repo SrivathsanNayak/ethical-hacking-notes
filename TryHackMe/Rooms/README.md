@@ -9,3 +9,4 @@
     5. [OhSINT - Easy](OhSINT.txt)
     6. [Attacktive Directory - Medium](AttacktiveDirectory.txt)
     7. [Agent Sudo - Easy](AgentSudo.txt)
+    8. [Lazy Admin - Easy](LazyAdmin.txt)
