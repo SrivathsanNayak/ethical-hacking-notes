@@ -11,6 +11,8 @@ Writeups for practice challenges in picoGym:
   7. [Information](#information)
   8. [Transformation](#transformation)
   9. [GET aHEAD](#get-ahead)
+  10. [Static ain't always noise](#static-aint-always-noise)
+  11. [Matryoshka doll](#matryoshka-doll)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -105,3 +107,23 @@ For all questions, the flag is in the format of picoCTF{}
 * The title itself is suggesting us a clue; we have to get header of the webpage.
 
 * We can use ```curl -I websitelink.com``` to get the header, which contains the flag.
+
+## Static ain't always noise
+
+* We are given a binary and a bash script. We have to analyze it and find the flag.
+
+* On simply using ```strings staticbinary```, we get the flag.
+
+## Matryoshka doll
+
+* We are given an image, and we have to apply forensics to find the secret.
+
+* On executing ```file dolls.jpg```, we get to know that it is a PNG image.
+
+* Using ```binwalk -e dolls.jpg```, we get more info about the image.
+
+* As the title suggests, it consists of multiple layers of different files.
+
+* As an alternative, we can also use ```hexdump -C 2_c.jpg | grep "PK"``` to see if the image file is actually a zip file.
+
+* We keep repeating the process, as the files are hidden inside more files, until we get ```flag.txt``` inside the third layer.
