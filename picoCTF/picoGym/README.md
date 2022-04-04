@@ -7,6 +7,10 @@ Writeups for practice challenges in picoGym:
   3. [Wave a Flag](#wave-a-flag)
   4. [Nice Netcat](#nice-netcat)
   5. [2Warm](#2warm)
+  6. [Python Wrangling](#python-wrangling)
+  7. [Information](#information)
+  8. [Transformation](#transformation)
+  9. [GET aHEAD](#get-ahead)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -59,3 +63,45 @@ For all questions, the flag is in the format of picoCTF{}
 * Then, we have to find the power (raised to), and place 1 in that digit position, and 0 for the rest of them.
 
 * So, here we have 42 = 2^5 + 2^3 + 2^1, therefore binary representation would be 101010, since we need to start from index 0.
+
+## Python Wrangling
+
+* The question gives us a Python script, a password, and an encrypted flag.
+
+* We have to run the script with the password to decrypt the flag.
+
+* Firstly, we have to note the password using ```cat pw.txt```.
+
+* Then running the Python script without any parameters ```python3 ende.py``` shows us the usage of the script.
+
+* So, we use ```python3 ende.py -d flag.txt.en``` to decrypt the encrypted flag, and we get a prompt to enter the password, and if entered correctly, we get the flag.
+
+## Information
+
+* The question gives us an image, which contains the flag.
+
+* We can use tools such as ```exiftool``` and ```steghide``` to check for the flag.
+
+* Using ```exiftool cat.jpg``` gives us some info, but it does not seem to be that useful.
+
+* However, the metadata contains a string under License which looks like it is base64-encoded.
+
+* Upon decoding that string from base64 to text, we get the flag.
+
+## Transformation
+
+* The question presents us with a code segment and a file containing random Chinese characters.
+
+* Using ```file enc```, we get to know that those are UTF-8 Unicode characters.
+
+* With the help of the given code segment, we have to reverse engineer our way to the string, so that we can get the flag by decoding the encoded string.
+
+* [This writeup](https://vishnuram1999.github.io/transformation_pico_ctf_2021.html) has explained the process clearly.
+
+## GET aHEAD
+
+* The question is about web exploitation, so it presents us with a link. We need to find the flag there.
+
+* The title itself is suggesting us a clue; we have to get header of the webpage.
+
+* We can use ```curl -I websitelink.com``` to get the header, which contains the flag.
