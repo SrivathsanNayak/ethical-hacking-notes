@@ -13,6 +13,10 @@ Writeups for practice challenges in picoGym:
   9. [GET aHEAD](#get-ahead)
   10. [Static ain't always noise](#static-aint-always-noise)
   11. [Matryoshka doll](#matryoshka-doll)
+  12. [Mind your Ps and Qs](#mind-your-ps-and-qs)
+  13. [Tab, Tab, Attack](#tab-tab-attack)
+  14. [Insp3ct0r](#insp3ct0r)
+  15. [The Numbers](#the-numbers)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -127,3 +131,49 @@ For all questions, the flag is in the format of picoCTF{}
 * As an alternative, we can also use ```hexdump -C 2_c.jpg | grep "PK"``` to see if the image file is actually a zip file.
 
 * We keep repeating the process, as the files are hidden inside more files, until we get ```flag.txt``` inside the third layer.
+
+## Mind your Ps and Qs
+
+* The question gives us a file for RSA values.
+
+* It contains the values for ```c```, ```n```, and ```e```.
+
+* We can use an online tool to crack this. For example, [RsaCtfTool](https://github.com/Ganapati/RsaCtfTool).
+
+* With the help of RsaCtfTool, we can crack the algorithm using the following command ```python3 RsaCtfTool.py -n {valueOfn} -e {valueOfe} --uncipher {valueOfc}```
+
+* This will give us the flag as plaintext.
+
+## Tab, Tab, Attack
+
+* The question presents us with a zip file with a really long name.
+
+* Using ```unzip```, we unzip the file, giving way to more folders with long, gibberish names. We have to find our flag in one of these files.
+
+* The final directory contains an executable, we can simply use ```strings``` to get the required flag.
+
+## Insp3ct0r
+
+* Given, a link that leads to a webpage requiring inspection.
+
+* Using developer tools, we can view the first part of the flag in the HTML code, in one of the comments.
+
+* The second part of the flag is found in one of the CSS comments.
+
+* The third and final part of the flag is found in the JS code.
+
+## The Numbers
+
+* We are given an image and we have to find the flag.
+
+* Using ```exiftool``` and ```hexdump``` does not give any useful output.
+
+* However, executing ```hexdump -C the_numbers.png | grep "PK"``` gives us a positive output, so this might contain a zip file inside.
+
+* We can confirm our assumption by using ```binwalk -e the_numbers.png```, which gives us a file.
+
+* The file, however, does not contain anything significant.
+
+* On a second glance, the numbers in the image include curly braces, that is, this could be the flag itself.
+
+* So, decoding the numbers using A1Z26 cipher, we get the flag.
