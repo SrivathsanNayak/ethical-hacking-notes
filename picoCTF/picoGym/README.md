@@ -17,6 +17,8 @@ Writeups for practice challenges in picoGym:
   13. [Tab, Tab, Attack](#tab-tab-attack)
   14. [Insp3ct0r](#insp3ct0r)
   15. [The Numbers](#the-numbers)
+  16. [Glory of the Garden](#glory-of-the-garden)
+  17. [Scavenger Hunt](#scavenger-hunt)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -177,3 +179,27 @@ For all questions, the flag is in the format of picoCTF{}
 * On a second glance, the numbers in the image include curly braces, that is, this could be the flag itself.
 
 * So, decoding the numbers using A1Z26 cipher, we get the flag.
+
+## Glory of the Garden
+
+* We are given an image file of a garden; using forensics we have to find the flag.
+
+* Using ```exiftool```, we get some details with regards to the image.
+
+* We do not get anything using ```binwalk``` or ```steghide``` as well.
+
+* However, using ```strings``` gives us the flag.
+
+## Scavenger Hunt
+
+* We are given a website link, we have to find the flag using that.
+
+* The first part of the flag is in the HTML code, can be viewed using Developer tools.
+
+* The second part is included in the CSS code.
+
+* The third part is found in the /robots.txt file, as the clue is given in JS code about Google indexing its webpage.
+
+* The fourth part is found out from the Apache server clue given in the /robots.txt file; that is, /.htaccess.
+
+* The fifth part is derived from the fact that the webpage has been created on a Mac computer, so we have to go to /.DS_Store to get the final part of the flag.
