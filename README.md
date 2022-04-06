@@ -17,3 +17,19 @@ This is where I'll be writing my notes on the topic of Ethical Hacking and whate
 * [TryHackMe](TryHackMe/README.md)
 
 * [picoCTF](picoCTF/README.md)
+
+Some helpful resources:
+
+* [CyberChef](https://gchq.github.io/CyberChef/)
+
+* [GTFOBins](https://gtfobins.github.io/)
+
+* [PentestMonkey CheatSheet](https://pentestmonkey.net/category/cheat-sheet)
+
+* [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings)
+
+* [CheatSheet-God](https://github.com/OlivierLaflamme/Cheatsheet-God)
+
+* [Command Injection Payload List](https://github.com/payloadbox/command-injection-payload-list)
+
+* [Pentest CheatSheets](https://github.com/coreb1t/awesome-pentest-cheat-sheets)
