@@ -19,6 +19,7 @@ Writeups for practice challenges in picoGym:
   15. [The Numbers](#the-numbers)
   16. [Glory of the Garden](#glory-of-the-garden)
   17. [Scavenger Hunt](#scavenger-hunt)
+  18. [Who are you?](#who-are-you)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -203,3 +204,23 @@ For all questions, the flag is in the format of picoCTF{}
 * The fourth part is found out from the Apache server clue given in the /robots.txt file; that is, /.htaccess.
 
 * The fifth part is derived from the fact that the webpage has been created on a Mac computer, so we have to go to /.DS_Store to get the final part of the flag.
+
+## Who are you?
+
+* We are given a website which requires us to use a PicoBrowser in order to login.
+
+* The source code contains a particular code segment which looks out of place; we can try to edit it with the help of tools such as ```Burp Suite``` and ```curl```.
+
+* We also attempted to scan the website directories using ```ffuf``` but to no avail.
+
+* Getting back to ```Burp Suite```, we modified the User-Agent header's value to 'PicoBrowser', as the message on the browser said "Only people who use the official PicoBrowser are allowed on this site!".
+
+* This gives us a different error message "I don't trust users visiting from another site". This signals us towards adding the Referer header, with value of current website "mercury.picoctf.net:46199"
+
+* This gives us an error message saying "Sorry, this site only worked in 2018". So, we will add a Date header with any date in 2018, with value being "Wed, 21 Oct 2018 07:28:00 GMT".
+
+* This gives us an error message saying "I don't trust users who can be tracked". This can be resolved by adding a DNT header with the value 1, denoting that the user can't be tracked.
+
+* This gives us one more message "This website is only for people from Sweden", so we add a header for X-Forwarded-For, which shows the originating IP address. We will have to add an IP address from Sweden as the value, and it could be found on the web.
+
+* The error message this time is "You're in Sweden but you don't speak Swedish?", indicating that we will have to edit the header for language, that is, the Accept-Language header should be used with the value "sv-SE". This gives us the flag.
