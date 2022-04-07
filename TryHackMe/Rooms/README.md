@@ -12,3 +12,4 @@
     8. [Lazy Admin - Easy](LazyAdmin.txt)
     9. [WebOSINT - Easy](WebOSINT.txt)
     10. [Wgel CTF - Easy](WgelCTF.txt)
+    11. [Bounty Hacker - Easy](BountyHacker.txt)
