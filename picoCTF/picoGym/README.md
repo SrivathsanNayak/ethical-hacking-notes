@@ -20,6 +20,9 @@ Writeups for practice challenges in picoGym:
   16. [Glory of the Garden](#glory-of-the-garden)
   17. [Scavenger Hunt](#scavenger-hunt)
   18. [Who are you?](#who-are-you)
+  19. [Cookies](#cookies)
+  20. [Magikarp Ground Mission](#magikarp-ground-mission)
+  21. [Where are the robots](#where-are-the-robots)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -224,3 +227,39 @@ For all questions, the flag is in the format of picoCTF{}
 * This gives us one more message "This website is only for people from Sweden", so we add a header for X-Forwarded-For, which shows the originating IP address. We will have to add an IP address from Sweden as the value, and it could be found on the web.
 
 * The error message this time is "You're in Sweden but you don't speak Swedish?", indicating that we will have to edit the header for language, that is, the Accept-Language header should be used with the value "sv-SE". This gives us the flag.
+
+## Cookies
+
+* We are given the link to a website and told to figure out the best cookie.
+
+* The website contains a form where we can submit cookie names.
+
+* As this does not give us much idea about it, we can use ```curl``` to get some clues.
+
+* Running the command ```curl -c - mercury.picoctf.net:29649``` gives us the cookies of the website, it does not contain anything however.
+
+* Back in the website, we have 'snickerdoodle' written in the entry field, so we enter that and submit.
+
+* On submitting, the cookies value in the Inspect tab turns from -1 to 0.
+
+* We can fiddle with the value by incrementing it by 1.
+
+* Finally, when the cookie value is 18, you will get the flag.
+
+## Magikarp Ground Mission
+
+* Given, an instance for which we have to login using SSH.
+
+* Once we log into it using given creds, we have to do ```ls```.
+
+* The three parts of the flags are in the file system only, we just have to follow along the clues with the help of commands such as ```cd``` to move through directories and ```cat``` to print the files.
+
+## Where are the robots
+
+* We have been given the link and told to find the robots.
+
+* By instinct, we will go to /robots.txt.
+
+* It contains a disallow rule for a particular link.
+
+* When we visit that link, we get the flag.
