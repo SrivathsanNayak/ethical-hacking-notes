@@ -1,10 +1,10 @@
-WebOSINT - Easy
+# WebOSINT - Easy
 
-We have to find as much as information as possible about the website RepublicOfKoffee.com, which does not exist.
+* We have to find as much as information as possible about the website RepublicOfKoffee.com, which does not exist.
 
-We can search it up with quotes, so that the search engine does not redirect us to the URL.
+* We can search it up with quotes, so that the search engine does not redirect us to the URL.
 
-The most basic form of domain recon is a 'whois' lookup. An example for such a service is https://lookup.icann.org/lookup
+* The most basic form of domain recon is a 'whois' lookup. An example for such a service is <https://lookup.icann.org/lookup>
 
 ---
 
@@ -20,7 +20,7 @@ The most basic form of domain recon is a 'whois' lookup. An example for such a s
 
 ---
 
-We can use archive.org to see snapshots of our target domain.
+* We can use archive.org to see snapshots of our target domain.
 
 ---
 
@@ -32,7 +32,7 @@ We can use archive.org to see snapshots of our target domain.
 
 ---
 
-For DNS lookups, we can use websites such as https://viewdns.info/
+* For DNS lookups, we can use websites such as <https://viewdns.info/>
 
 ---
 
@@ -44,7 +44,7 @@ For DNS lookups, we can use websites such as https://viewdns.info/
 
 ---
 
-Now, we have to use OSINT to find details about the domain "heat.net"
+* Now, we have to use OSINT to find details about the domain "heat.net"
 
 ---
 
@@ -64,9 +64,11 @@ Now, we have to use OSINT to find details about the domain "heat.net"
 
 ---
 
-In order to analyze websites and find more clues, we can look into the page source of the website.
-For quick wins, we can search for terms such as <!--> (comment), @ (email), .jpg (or other file extensions).
-We can use websites such as https://www.nerdydata.com to check if a particular code has been used in any other website or not.
+* In order to analyze websites and find more clues, we can look into the page source of the website.
+
+* For quick wins, we can search for terms such as <!--> (comment), @ (email), .jpg (or other file extensions).
+
+* We can use websites such as <https://www.nerdydata.com> to check if a particular code has been used in any other website or not.
 
 ---
 
@@ -84,10 +86,12 @@ We can use websites such as https://www.nerdydata.com to check if a particular c
 
 ---
 
-Now, we have to find the link between heat.net and purchase.org, as to why both these websites are connected.
-We can use the ViewDNS website we used earlier to research into this.
+* Now, we have to find the link between heat.net and purchase.org, as to why both these websites are connected.
 
-When we check the IP history of both websites, we can see that both had the same owner, Liquid Web.
+* We can use the ViewDNS website we used earlier to research into this.
+
+* When we check the IP history of both websites, we can see that both had the same owner, Liquid Web.
+
 ---
 
 1. Use the tools to confirm the link between the two sites. - Liquid Web, L.L.C
