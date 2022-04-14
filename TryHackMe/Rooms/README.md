@@ -15,3 +15,4 @@
     11. [Bounty Hacker - Easy](BountyHacker.md)
     12. [Crack The Hash Level 2 - Medium](CrackTheHashLevel2.md)
     13. [ffuf](ffuf.md)
+    14. [Advent of Cyber 1 - Easy](AdventOfCyber1.md)
