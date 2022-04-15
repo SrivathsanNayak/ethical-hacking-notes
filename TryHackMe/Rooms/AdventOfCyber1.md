@@ -27,12 +27,32 @@
 
 ## Inventory Management
 
-```shell
+```markdown
+This involves the usage of Developer tools and cookies.
+
+First, we have to go to the page and register by creating a new account.
+
+Then, after logging in using the same credentials, we get login access.
+
+Using developer tools, we can view the cookie name 'authid'.
+
+The cookie value can be decoded from Base64 to give us 'v4er9ll1!ss7' as the fixed part of the cookie.
+
+Using this, we infer that the cookie value for authentication is the username appended by the fixed part, converted to Base64.
+
+So we get mcinventory's login access; the item ordered was 'firewall'.
 ```
 
 ## Arctic Forum
 
-```shell
+```markdown
+This challenge involves finding hidden directories and web enumeration.
+
+Firstly, we have to use ffuf to find hidden directories. The /sysadmin directory, in this case, is the required one.
+
+With the help of the comments in the page source, we get to know that the credentials are 'admin:defaultpass'.
+
+Therefore, after logging in, we get the final flag 'eggnog'.
 ```
 
 ## Evil Elf
