@@ -144,12 +144,50 @@ Finally, the woman on her blog is Ada Lovelace, and it was found using reverse i
 
 ## Data Elf-iltration
 
-```shell
+```markdown
+This challenge is based on data exfiltration techniques. We are given a PCAP file.
+
+By using the DNS filter, we can see that there is some activity related to the domain holidaythief.com
+
+We also see that there is a hex data transferred using DNS; upon converting that to ascii, we get the string 'Candy Cane Serial Number 8491', which gives us our first answer.
+
+Using the HTTP protocol to confirm this, we observe that files are being downloaded.
+
+We can view those files in Wireshark by going to File > Export Objects > HTTP > filename
+
+This way, we have two files to inspect - a zip file and an image file.
+
+The image file can be checked for data using 'steghide extract -sf filename'; this gives us a poem for RFC527, our third answer.
+
+Similarly, the zip file can be cracked using zip2john and JtR to give a few text files.
+
+The file containing Timmy's wish gives us the second answer, pentester.
 ```
 
 ## Skilling Up
 
+```markdown
+Here, we are required to scan a machine in our network and use tools such as nmap.
+```
+
 ```shell
+#nmap scan
+nmap -T4 -p- -A 10.10.4.127
+
+#nmap tcp scan 
+sudo nmap -sT -p- -O -sV -T3 10.10.4.127
+```
+
+```markdown
+After scanning initially, we get the following results:
+
+    Number of open TCP ports under 1000: 3
+
+    Host OS: Linux
+
+    SSH version: 7.4
+
+    Name of file found on server: interesting.file
 ```
 
 ## SUID Shenanigans
