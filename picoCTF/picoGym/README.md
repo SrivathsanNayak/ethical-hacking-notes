@@ -28,6 +28,9 @@ Writeups for practice challenges in picoGym:
   24. [Strings It](#strings-it)
   25. [Caesar](#caesar)
   26. [Bases](#bases)
+  27. [Codebook](#codebook)
+  28. [convertme.py](#convertme.py)
+  29. [HashingJobApp](#hashingjobapp)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -318,3 +321,29 @@ For all questions, the flag is in the format of picoCTF{}
 * While it seems random, due to the inclusion of numbers and characters, and the hint being related to bases, we can converted it to different base systems.
 
 * On converting the given string from base64 to ascii, we get the flag text.
+
+## Codebook
+
+* We are given two files, code.py and codebook.txt
+
+* We have to run code.py in the same directory as codebook.txt
+
+* After downloading the files, we simply have to run ```python3 code.py```, this prints the flag.
+
+## convertme.py
+
+* We are given a Python script, and we have to convert the given number from decimal to binary to get the flag.
+
+* On running the script using ```python3 convertme.py```, we are prompted to enter the binary equivalent of a number.
+
+* Once we enter the binary, we get the flag.
+
+## HashingJobApp
+
+* We are given a command ```nc saturn.picoctf.net 63116```.
+
+* This gives us a prompt to enter MD5 hash for a given phrase.
+
+* We can do so using online tools such as [CyberChef](https://gchq.github.io/CyberChef/), it has an option to calculate the MD5 hash of text.
+
+* After three rounds of calculating MD5 hashes for random phrases, we get the flag required.
