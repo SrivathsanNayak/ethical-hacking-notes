@@ -23,6 +23,8 @@ Writeups for practice challenges in picoGym:
   19. [Cookies](#cookies)
   20. [Magikarp Ground Mission](#magikarp-ground-mission)
   21. [Where are the robots](#where-are-the-robots)
+  22. [MacroHard WeakEdge](#macrohard-weakedge)
+  23. [Vault Door Training](#vault-door-training)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -263,3 +265,23 @@ For all questions, the flag is in the format of picoCTF{}
 * It contains a disallow rule for a particular link.
 
 * When we visit that link, we get the flag.
+
+## MacroHard WeakEdge
+
+* We have been given a .pptm file, which is related to PPTs.
+
+* Trying basic forensics tools like ```strings``` and ```file``` does not give anything useful.
+
+* However, using ```binwalk -e``` to extract the file contents gives us a zip file.
+
+* The zip file contains a lot of folders and files, however, one particular file called 'hidden' contains some characters.
+
+* After removing whitespace characters and converting it to base64, we get the flag.
+
+## Vault Door Training
+
+* We are given a .java file, and we have to reverse-engineer it using the source code to get the flag.
+
+* The source code contains checks for passwords, and the substring used is given below.
+
+* We just have to prepend the picoCTF{} part to the flag value given below, and that would give us the flag required.
