@@ -25,6 +25,9 @@ Writeups for practice challenges in picoGym:
   21. [Where are the robots](#where-are-the-robots)
   22. [MacroHard WeakEdge](#macrohard-weakedge)
   23. [Vault Door Training](#vault-door-training)
+  24. [Strings It](#strings-it)
+  25. [Caesar](#caesar)
+  26. [Bases](#bases)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -285,3 +288,33 @@ For all questions, the flag is in the format of picoCTF{}
 * The source code contains checks for passwords, and the substring used is given below.
 
 * We just have to prepend the picoCTF{} part to the flag value given below, and that would give us the flag required.
+
+## Strings It
+
+* We are given an executable, we have to find the flag without running the file.
+
+* As suggested in the filename and name of the challenge, we have to use ```strings filename```.
+
+* We have to include ```grep``` as well, so that we can find the flag easily.
+
+* So, our command should be ```strings filename | grep "pico"```, and this will give us the flag.
+
+## Caesar
+
+* We are given a file containing ciphertext.
+
+* It contains jumbled characters as the flag.
+
+* Assuming from the name, this could be related to the Caesar cipher.
+
+* As the characters are shifted by a certain number of characters, we can use online tools to decode this.
+
+* Shifting by 1, we get the string required for the flag.
+
+## Bases
+
+* We are given a random looking string.
+
+* While it seems random, due to the inclusion of numbers and characters, and the hint being related to bases, we can converted it to different base systems.
+
+* On converting the given string from base64 to ascii, we get the flag text.
