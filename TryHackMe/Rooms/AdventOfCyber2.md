@@ -27,17 +27,70 @@
 
 ## A Christmas Crisis
 
-```shell
+```markdown
+According to the instructions, we register by creating an account on the IP address.
+
+Using those credentials, we log into our account.
+
+In Developer tools, we can view more info about cookies.
+
+Name of cookie used for authentication - auth.
+
+Clearly, the value of this cookie is encoded in hexadecimal.
+
+Now, after decoding the value of cookie, we get a JSON string.
+
+Here, the string is quite predictable as all we have to do is replace the username part, and convert the JSON string to hex.
+
+For Santa's cookie, we just need to replace the username part to 'santa' and convert to hex and remove whitespace.
+
+Once we paste Santa's cookie value in the Developer Tools section and refresh the website, we get admin controls.
+
+On turning everything back to normal, we get the flag required.
 ```
 
 ## The Elf Strikes Back
 
-```shell
+```markdown
+The reference material highlights that with POST requests the data being sent is included in the "body" of the request, while with GET requests, the data is included in the URL as a "parameter".
+
+We are also given an ID number - ODIzODI5MTNiYmYw - to gain access to upload section of site.
+
+Once we go to the website, we are told to enter our ID as a GET parameter.
+
+So we need to append '?id=ODIzODI5MTNiYmYw' to the URL.
+
+This leads to the upload page. We get to know that image files are accepted by the site.
+
+Now, on checking the page source code, we get to know that the accepted file extensions include .jpg, .jpeg and .png
+
+So we can use a PHP reverse shell file, but rename it with the extension .jpg.php, to bypass the filter.
+
+This file gets uploaded, and we can check the uploads in /uploads/ directory.
+
+Set up a listener using 'nc -nvlp 1234'
+
+Once we go to the /uploads/ directory and select the reverse shell file (with the .jpg.php extension), the page indefinitely loads.
+
+At our netcat listener, we have received the reverse shell, and now we can view the flag at /var/www/flag.txt
+
+Flag - THM{MGU3Y2UyMGUwNjExYTY4NTAxOWJhMzhh}
 ```
 
 ## Christmas Chaos
 
-```shell
+```markdown
+For this room, we have to use Burp Suite to brute-force and do a dictionary attack on the login form.
+
+We have to start Burp to intercept the traffic, proxy should be turned on.
+
+Once we are on the login form, we have to enter random credentials and submit details into the form.
+
+The request would be captured by Proxy in Burp, and we have to forward it to Intruder, where we can do the Cluster Bomb attack as given in the reference.
+
+Once the attack is done, we get the credentials admin:12345
+
+Using credentials to login, we get the flag.
 ```
 
 ## Santa's Watching
