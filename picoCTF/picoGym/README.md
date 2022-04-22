@@ -34,6 +34,11 @@ Writeups for practice challenges in picoGym:
   30. [fixme1.py](#fixme1.py)
   31. [fixme2.py](#fixme2.py)
   32. [Glitch Cat](#glitch-cat)
+  33. [PW Crack 1](#pw-crack-1)
+  34. [PW Crack 2](#pw-crack-2)
+  35. [PW Crack 3](#pw-crack-3)
+  36. [PW Crack 4](#pw-crack-4)
+  37. [PW Crack 5](#pw-crack-5)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -386,3 +391,115 @@ For all questions, the flag is in the format of picoCTF{}
 * Converting those characters, we get the string ```a4392d2e```.
 
 * Appending this to our partial flag, and completing it with a closing bracket, we get our flag.
+
+## PW Crack 1
+
+* Given, we have a password checker file and an encrypted flag.
+
+* At first, the encrypted flag seems to contain gibberish text.
+
+* On running the password checker using ```python3 level1.py```, we are prompted to enter a password.
+
+* As we do not know the password yet, we view the program using ```vim python3```, which shows us the code.
+
+* We can observe that the program checks if entered password is equal to '691d' or not, and then prints flag.
+
+* So, we run the program again, and enter '691d' this time, and we get the flag.
+
+## PW Crack 2
+
+* Similar to previous challenge, we have two files - password checker and encrypted password.
+
+* Here, we can start by viewing the code using ```vim level2.py```.
+
+* It shows that the program checks if password is equal to ```chr()``` conversions of some strings in hex.
+
+* When we convert the strings from hex to ascii and remove whitespace, we get '4ec9'.
+
+* Now, we can run the program using ```python3 level2.py``` and when prompted enter '4ec9' to get the flag.
+
+## PW Crack 3
+
+* We are given three files - password checker, encrypted flag and hash.
+
+* It is given that there are 7 potential passwords, out of which only 1 is correct.
+
+* We can view the hash file using ```bvi level3.hash.bin```; ```bvi``` is vi for binary.
+
+* We can view the Python script using ```vim level3.py```.
+
+* We can see the 7 candidate passwords given.
+
+* The password that we enter is passed onto a function, converted to bytes, encoded using md5 and then converted to byte-equivalent form.
+
+* As we have only 7 candidates here, we can try them one-by-one.
+
+* Upon trying 'dba8', we get the flag.
+
+## PW Crack 4
+
+* Similar to previous challenge, we are given three files - password checker, encrypted flag and the hash file.
+
+* However, this time we have 100 potential passwords, so trial-and-error cannot be an option.
+
+* Use ```bvi level4.hash.bin``` to view the hash file.
+
+* For the script, we can edit it and add a for-loop so that it tries all the passwords, as the automation will take less time.
+
+* Modified code segment:
+
+```python
+def level_4_pw_check(pos_pw):
+    #user_pw = input("Please enter correct password for flag: ")
+    user_pw_hash = hash_pw(pos_pw)
+    
+    if( user_pw_hash == correct_pw_hash ):
+        print("Welcome back... your flag, user:")
+        decryption = str_xor(flag_enc.decode(), pos_pw)
+        print(decryption)
+        return
+    print("That password is incorrect")
+
+#pos_pw_list - 100 potential passwords here
+
+for pos_pw in pos_pw_list:
+    level_4_pw_check(pos_pw)
+```
+
+* If we run this program using ```python3 level4.py | grep "flag" -C 1```, which runs our script and greps one line above and below the line where 'flag' is found, we get our flag required.
+
+## PW Crack 5
+
+* Similar to previous challenge, we are given three files - password checker, encrypted flag and hash.
+
+* This time, instead of being given the list of potential passwords, we are given a huge dictionary of passwords.
+
+* The python script is similar to previous two problems.
+
+* We have to modify the program such that the dictionary values are tried for the user password.
+
+* Modified code segment:
+
+```python
+def level_5_pw_check(user_pw):
+    #user_pw = input("Please enter correct password for flag: ")
+    user_pw_hash = hash_pw(user_pw)
+    
+    if( user_pw_hash != correct_pw_hash ):
+        return
+    
+    else:
+        print("Welcome back... your flag, user:")
+        decryption = str_xor(flag_enc.decode(), user_pw)
+        print(decryption)
+        return
+
+
+dictfile = open('dictionary.txt', 'r')
+lines = dictfile.readlines()
+
+for line in lines:
+    level_5_pw_check(line.strip())
+```
+
+* Running this program using ```python3 level5.py``` gives us the flag.
