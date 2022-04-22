@@ -31,6 +31,9 @@ Writeups for practice challenges in picoGym:
   27. [Codebook](#codebook)
   28. [convertme.py](#convertme.py)
   29. [HashingJobApp](#hashingjobapp)
+  30. [fixme1.py](#fixme1.py)
+  31. [fixme2.py](#fixme2.py)
+  32. [Glitch Cat](#glitch-cat)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -347,3 +350,39 @@ For all questions, the flag is in the format of picoCTF{}
 * We can do so using online tools such as [CyberChef](https://gchq.github.io/CyberChef/), it has an option to calculate the MD5 hash of text.
 
 * After three rounds of calculating MD5 hashes for random phrases, we get the flag required.
+
+## fixme1.py
+
+* We are given a Python script, we have to fix the syntax error to print the flag.
+
+* We first need to run the script using ```python3 fixme1.py```.
+
+* This gives us an error about the intendation.
+
+* Once fixed (by removing the unnecessary intendation), we can run it again; this gives us the flag.
+
+## fixme2.py
+
+* Similar to the previous challenge, we are given a Python script with a syntax error.
+
+* On running the script by ```python3 fixme2.py```, we get an error in the ```if``` statement.
+
+* We can fix the error by adding one more equal sign, to make it ```flag == ""```
+
+* Now, on running the program, we get the flag.
+
+## Glitch Cat
+
+* We are given a command ```nc saturn.picoctf.net 53933```.
+
+* This prints a partial flag ```picoCTF{gl17ch_m3_n07_```, followed by other characters.
+
+* It includes the ```chr()``` function, which is used to get character from Unicode code integer.
+
+* So, we can manually convert the Unicode integers to their equivalent string representations.
+
+* As the characters are given in ```0x``` format, we know that those have to be converted from hex to ascii.
+
+* Converting those characters, we get the string ```a4392d2e```.
+
+* Appending this to our partial flag, and completing it with a closing bracket, we get our flag.
