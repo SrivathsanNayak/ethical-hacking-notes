@@ -39,6 +39,11 @@ Writeups for practice challenges in picoGym:
   35. [PW Crack 3](#pw-crack-3)
   36. [PW Crack 4](#pw-crack-4)
   37. [PW Crack 5](#pw-crack-5)
+  38. [Serpentine](#serpentine)
+  39. [Based](#based)
+  40. [Plumbing](#plumbing)
+  41. [flag_shop](#flagshop)
+  42. [mus1c](#mus1c)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -503,3 +508,73 @@ for line in lines:
 ```
 
 * Running this program using ```python3 level5.py``` gives us the flag.
+
+## Serpentine
+
+* We are given a Python script, we have to find the flag inside it.
+
+* ```python3 serpentine.py``` runs the script, but it tells us that flag can be found in source code.
+
+* Using ```vim serpentine.py```, we can view the script; it shows us the function print_flag(), which prints the flag.
+
+* However, the function is not called in the first place. So we edit the script and add a line so that the function is called this time.
+
+* Now, on running the program again, we get the flag.
+
+## Based
+
+* We are given a command ```nc jupiter.challenges.picoctf.org 29221```.
+
+* On running that, we are prompted to decode numbers of different bases to words.
+
+* We can do that using CyberChef tool.
+
+* After decoding three different terms to ascii, we get the flag.
+
+## Plumbing
+
+* We are told to connect to ```jupiter.challenges.picoctf.org 7480```, we can do so using ```nc```.
+
+* When we run ```nc jupiter.challenges.picoctf.org 7480```, we get a lot of output, and there is no time to read through it.
+
+* So, we can redirect the output to a text file, and then search the file for the flag value.
+
+* We can do this using ```nc jupiter.challenges.picoctf.org 7480 > plumbing.txt```.
+
+* We can stop the ```nc``` connection after a while using ```Ctrl+C``` or ```Ctrl+\```.
+
+* Now, we need to search for the flag inside file.
+
+* ```cat plumbing.txt | grep "pico"``` does it for us, and gives us the flag.
+
+## flag_shop
+
+* We are given a command ```nc jupiter.challenges.picoctf.org 4906``` and a C program.
+
+* The C program is the code for the ```nc``` connection program.
+
+* Now, looking at the hint, it mentions 2's complement.
+
+* So, we can use the concept of integer overflow, and add a really big number which is larger than signed and unsigned numbers.
+
+* For example, here, when we press '2' in the program, we are directed to choose flags.
+
+* Choose the 1st option, and on being prompted, enter a really large number; this will increase our balance due to overflow.
+
+* After this, we can buy the 1337 flag.
+
+* Reference - <https://d3vnull.com/integer-overflow/>
+
+## mus1c
+
+* We are given a lyrics.txt file, we have to put it in the flag format.
+
+* We can view it using ```gedit lyrics.txt&```, so that it opens as a background process.
+
+* The hint uses the term 'rockstar', and the lyrics uses the terms ```shout```, ```put```, and ```build``` a lot.
+
+* Googling these terms together gives us info about Rockstar language, a programming language.
+
+* After searching for an online Rockstar language compiler, we can copy-paste the lyrics there.
+
+* The output is a bunch of numbers, which, when converted to ascii, give us the flag.
