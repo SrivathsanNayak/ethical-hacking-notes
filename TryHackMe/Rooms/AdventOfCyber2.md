@@ -95,7 +95,28 @@ Using credentials to login, we get the flag.
 
 ## Santa's Watching
 
-```shell
+```markdown
+The reference material has given commands for tools such as gobuster and wfuzz
+
+wfuzz command required for given URL question - wfuzz -c -z file,big.txt http://shibes.xyz/api.php?breed=FUZZ
+
+Now, we need to use gobuster to find the API directory (for the given IP)
+Command - gobuster dir -u http://10.10.187.195 -w /usr/share/seclists/Discovery/Web-Content/big.txt -x php
+
+This gives us the directory /api, where we find the file site-log.php
+
+Now, we need to fuzz the date parameter on /site-log.php, so the URL should look like /site-log.php?date=DATE
+
+The date parameter required for fuzzing are given to us in a wordlist file.
+
+We can use wfuzz.
+
+Command - wfuzz -z file,wordlist --hh 0 http://10.10.187.195/api/site-log.php?date=FUZZ
+Here, '--h 0' is used to hide responses with 0 characters.
+
+As a result, we get the payload on date=20201125.
+
+Flag - THM{D4t3_AP1}
 ```
 
 ## Someone stole Santa's gift list
@@ -145,7 +166,52 @@ Using credentials to login, we get the flag.
 
 ## Where's Rudolph
 
-```shell
+```markdown
+The reference material gives us a list of resources which can be used for OSINT in this case:
+
+<https://namechk.com/>
+<https://whatsmyname.app/>
+<https://namecheckup.com/>
+<https://github.com/WebBreacher/WhatsMyName>
+<https://github.com/sherlock-project/sherlock>
+
+Now, it's given that the Reddit username of Rudolph is 'IGuidetheClaus2020'.
+
+On Googling the username, we can view the Reddit and Twitter profile.
+```
+
+```markdown
+1. What URL will take me directly to Rudolph's Reddit comment history? - https://www.reddit.com/user/IGuidetheClaus2020/comments/
+
+2. According to Rudolph, where was he born? - Chicago
+
+3. Rudolph mentions Robert.  Can you use Google to tell me Robert's last name? - May
+
+4. On what other social media platform might Rudolph have an account? - Twitter
+
+5. What is Rudolph's username on that platform? - IGuideClaus2020
+```
+
+```markdown
+Now that we have found both profiles of Rudolph, we have to use reverse image searching to find details about the photo, such as location, and other metadata.
+
+exiftool is a great tool for getting metadata from images.
+
+We can also use discovered emails and usernames to search through breached data to identify possible passwords, names, and other data.
+```
+
+```markdown
+6. What appears to be Rudolph's favorite TV show right now? - Bachelorette
+
+7. Based on Rudolph's post history, he took part in a parade.  Where did the parade take place? - Chicago
+
+8. Okay, you found the city, but where specifically was one of the photos taken? - 41.891815, 87.624277
+
+9. Did you find a flag too? - {FLAG}ALWAYSCHECKTHEEXIFD4T4
+
+10. Has Rudolph been pwned? What password of his appeared in a breach? - spygame
+
+11. Based on all the information gathered.  It's likely that Rudolph is in the Windy City and is staying in a hotel on Magnificent Mile.  What are the street numbers of the hotel address? - 540
 ```
 
 ## There's a Python in my stocking
