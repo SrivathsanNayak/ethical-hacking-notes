@@ -165,12 +165,51 @@ sqlmap -r nameofrequestfile --tamper=space2comment --dbms=SQLite --dump-all
 
 ## Be careful with what you wish on a Christmas night
 
-```shell
+```markdown
+OWASP ZAP, a open-source web app security scanner, can be used to scan the given website for web vulnerabilities.
+
+Other than that, we can use XSS payloads in the website.
+
+After trying the payloads, we can see that the website is indeed vulnerable to stored cross-site scripting.
+
+Example of payload - <script>alert('1')</script>
+
+Furthermore, on using search query, we can see that the parameter 'q' can be used for reflected XSS.
+
+Example - http://10.10.233.121:5000/?q=<script>alert(document.domain)</script>
+
+Now, we can use ZAP to scan the website and check the alerts.
 ```
 
 ## The Grinch Really Did Steal Christmas
 
-```shell
+```markdown
+While using Wireshark for the task files, we can use filters to narrow down our search results.
+
+For pcap1.pcap:
+
+1. What is the IP address that initiates an ICMP/ping? - 10.11.3.2
+
+2. If we only wanted to see HTTP GET requests, what filter would we use? - http.request.method == GET
+
+3. Apply the filter; what is the name of the article that the IP address 10.10.67.199 visited? - reindeer-of-the-week
+
+For pcap2.pcap:
+
+1. From the captured FTP traffic, what password was leaked during the login process? - plaintext_password_fiasco
+
+2. What is the name of the protocol that is encrypted? - SSH
+
+For pcap3.pcap:
+
+1. What is on Elf McSkidy's wishlist that will be used to replace Elf McEager? - rubber ducky
+
+Checking the protocols used, we can see that HTTP was used.
+We can see some files there.
+
+In Wireshark, choose File > Export Objects > HTTP, and export the zip file.
+
+In the zip file, we can view the wishlist.
 ```
 
 ## What's Under the Christmas Tree
