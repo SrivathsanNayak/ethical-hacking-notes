@@ -44,6 +44,9 @@ Writeups for practice challenges in picoGym:
   40. [Plumbing](#plumbing)
   41. [flag_shop](#flagshop)
   42. [mus1c](#mus1c)
+  43. [So Meta](#so-meta)
+  44. [extensions](#extensions)
+  45. [What Lies Within](#what-lies-within)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -578,3 +581,29 @@ for line in lines:
 * After searching for an online Rockstar language compiler, we can copy-paste the lyrics there.
 
 * The output is a bunch of numbers, which, when converted to ascii, give us the flag.
+
+## So Meta
+
+* We are given a picture, we have to find the flag.
+
+* Using ```exiftool```, we get the flag.
+
+## extensions
+
+* We are given a flag.txt file, we have to find the flag.
+
+* ```cat flag.txt``` shows gibberish output.
+
+* ```file flag.txt``` shows that this is a PNG file.
+
+* We use ```mv flag.txt flag.png``` to edit the file extension.
+
+* ```display flag.png``` gives us the flag.
+
+## What Lies Within
+
+* We are given a buildings.png file.
+
+* The image does not have anything in particular, but ```exiftool``` shows that it can be a zip file.
+
+* ```binwalk -e``` extracts the files from the image for us.
