@@ -46,7 +46,7 @@ Writeups for practice challenges in picoGym:
   42. [mus1c](#mus1c)
   43. [So Meta](#so-meta)
   44. [extensions](#extensions)
-  45. [What Lies Within](#what-lies-within)
+  45. [shark on wire 1](#shark-on-wire-1)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -600,10 +600,16 @@ for line in lines:
 
 * ```display flag.png``` gives us the flag.
 
-## What Lies Within
+## shark on wire 1
 
-* We are given a buildings.png file.
+* We are given a packet capture file, which can be opened using Wireshark.
 
-* The image does not have anything in particular, but ```exiftool``` shows that it can be a zip file.
+* On opening the capture file, we can analyze the packet further.
 
-* ```binwalk -e``` extracts the files from the image for us.
+* As given in the hints, we can view the streams by selecting the item and going to Follow > Stream.
+
+* After sorting the capture by protocols, we can view the protocols' streams one-by-one.
+
+* One of the UDP streams has the flag, and it can be found by using the same methodology.
+
+* Flag - picoCTF{StaT31355_636f6e6e}
