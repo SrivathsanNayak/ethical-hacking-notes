@@ -576,11 +576,105 @@ This is a short introduction to Python.
 ## ReverseELFneering
 
 ```shell
+#logging in using given creds
+ssh elfmceager@10.10.240.224
+
+ls
+#view challenge1 file
+
+./challenge1
+#does not give any output
+#we can debug it
+
+r2 -d ./challenge1
+#open binary in debug mode
+#in radare2 now
+
+aa
+#analysis command
+
+afl
+#list of functions
+
+afl | grep main
+#find main function
+
+pdf @main
+#print disassembly function of main
+#analyze code
+
+db 0x00400b51
+#set required breakpoints
+
+db 0x00400b62
+
+db 0x00400b69
+
+pdf @main
+#print function to check breakpoints
+
+dc
+#execute program till breakpoint hit
+
+pdf @main
+#view rip (current instruction)
+
+px @ rbp-0xc
+#view contents of local_ch variable
+#where rbp-0xc is memory address of local_ch
+#this shows that local_ch value is 0
+
+ds
+#executes next instruction (next step)
+
+px @ rbp-0xc
+#now, on viewing contents of local_ch again
+#we see that value is 1
+
+#similarly, we can follow this method
+#to view contents of other variables at breakpoints set
+
+dr
+#to view register contents
+
+ds
+#next step
+
+dr
+#this shows eax value as 6 now
+
+exit
+#exit radare2
+```
+
+```markdown
+1. What is the value of local_ch when its corresponding movl instruction is called? - 1
+
+2. What is the value of eax when the imull instruction is called? - 6
+
+3. What is the value of local_4h before eax is set to 0? - 6
 ```
 
 ## The Bits of Christmas
 
-```shell
+```markdown
+Given, we can disassemble apps created using .NET framework, using tools such as ILSpy or Dotpeek.
+
+We can connect remotely using the command 'xfreerdp /u:cmnatic /p:Adventofcyber! /v:10.10.247.137'
+
+After connecting, we can open the TBFC_APP in ILSpy to decompile it.
+
+Once it loads, we can expand the resources given in the app, and start going through each element.
+
+We come across an element named 'crackme' with more resources nested inside, we can go through them to find the password.
+
+Once we get the password, we can submit the password to the app in order to get the flag.
+```
+
+```markdown
+1. What is Santa's password? - santapassword321
+
+2. What is the flag? - thm{046af}
 ```
 
 ## The Naughty or Nice List
