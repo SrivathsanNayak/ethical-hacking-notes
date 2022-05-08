@@ -570,7 +570,39 @@ This is a short introduction to Python.
 
 ## Help! Where is Santa
 
-```shell
+```markdown
+Firstly, we have to find the port number for the web server.
+
+We can simply find it out using a nmap scan.
+
+Now, it is given that the webpage is at 10.10.31.62/static/index.html
+
+Going through the links in the website, we can see that one of the links points to the /api/ directory.
+
+Now, we have to find the correct API number for the link to work.
+
+We can use a Python script to get the response from each API number appended to the website.
+
+Once we execute the script, we get a positive response in 10.10.31.62/api/57.
+```
+
+```python
+import requests
+
+for i in range(1,101):
+    url = 'http://10.10.31.62/api/' + str(i)
+    rm = requests.get(url)
+    print(rm.content)
+```
+
+```markdown
+1. What is the port number for the web server? - 80
+
+2. Without using enumerations tools such as Dirbuster, what is the directory for the API? - /api/
+
+3. Where is Santa right now? - Winter Wonderland, Hyde Park, London
+
+4. Find out the correct API key. - 57
 ```
 
 ## ReverseELFneering
@@ -679,12 +711,132 @@ Once we get the password, we can submit the password to the app in order to get 
 
 ## The Naughty or Nice List
 
-```shell
+```markdown
+This challenge is a demonstration of Server-Side Request Forgery (SSRF) attacks.
+
+Firstly we connect to the web app using the given link.
+
+Then, we have to search some name in the website using the given field.
+
+Once the page loads, we can see that the URL contains the parameter we entered; it can be URL-decoded for readability.
+
+http://10.10.180.106/?proxy=http://list.hohoho:8080/search.php?name=randomname
+
+Now, as given in the reference material, we can try to modify the URL and fetch different URLs.
+
+We can also try to change the port numbers given in the URL.
+
+According to the modifications, the URLs will keep showing different error messages.
+
+For example, visiting the URL http://10.10.180.106/?proxy=http://list.hohoho:22/, gives us an error message related to the SSH port; we can infer that the SSH port 22 is open.
+
+Following the rest of the walkthrough gives a clear idea about SSRF attacks by taking advantage of DNS subdomains in this case.
+```
+
+```markdown
+1. What is Santa's password? - Be good for goodness sake!
+
+2. What is the challenge flag? - THM{EVERYONE_GETS_PRESENTS}
 ```
 
 ## PowershELlf to the rescue
 
 ```shell
+#using PowerShell over SSH
+#log in using given creds
+ssh mceager@10.10.158.210
+
+powershell
+#launch powershell
+
+Set-Location .\Documents\
+#changing directories
+
+Get-Help Get-ChildItem
+#show help for a cmdlet
+
+Get-ChildItem
+#list contents of current directory
+
+Get-Content .\elfone.txt
+#read file
+
+Get-ChildItem -File -Hidden -ErrorAction SilentlyContinue
+#show all hidden files of current directory
+
+Get-Content .\e1fone.txt
+#gives first flag
+
+Set-Location ..
+
+Get-ChildItem
+
+Set-Location .\Desktop\
+
+Get-ChildItem -Directory -Hidden -ErrorAction SilentlyContinue
+#show hidden folders in Desktop
+
+Get-ChildItem
+
+Get-Content .\e70smsW10Y4k.txt
+#gives second flag
+
+Set-Location ..
+
+Set-Location ..
+
+Set-Location ..
+
+Set-Location ..
+
+Get-ChildItem
+#shows Windows folder
+
+Get-Content .\Windows\
+
+Get-ChildItem -Directory -Hidden -Recurse -ErrorAction SilentlyContinue
+#shows many hidden folders
+#hidden folder for elf3 in System32
+
+Set-Location .\System32\
+
+Get-ChildItem -Directory -Hidden -ErrorAction SilentlyContinue
+
+Set-Location .\3lfthr3e\
+
+Get-ChildItem
+#empty
+
+Get-ChildItem -File -Hidden -Recurse -ErrorAction SilentlyContinue
+#shows 2 files
+
+Get-Content .\1.txt | Measure-Object -Word
+#shows number of words in 1.txt
+
+(Get-Content 1.txt)[551]
+#shows word at index 551 in file
+
+(Get-Content 1.txt)[6991]
+
+Select-String -Path .\2.txt -Pattern 'Red Ryder'
+#to search pattern in file
+
+Select-String -Path .\2.txt -Pattern 'RedRyder'
+#gives final flag
+```
+
+```markdown
+1. What does Elf 1 want? - 2 front teeth
+
+2. What is the name of that movie that Elf 2 wants? - Scrooged
+
+3. What is the name of the hidden folder? - 3lfthr3e
+
+4. How many words does the first file contain? - 9999
+
+5. What 2 words are at index 551 and 6991 in the first file? - Red Ryder
+
+6. What does Elf 3 want? - red ryder bb gun
 ```
 
 ## Time for some ELForensics
