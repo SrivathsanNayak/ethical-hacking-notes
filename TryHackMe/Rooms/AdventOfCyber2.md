@@ -741,7 +741,7 @@ Following the rest of the walkthrough gives a clear idea about SSRF attacks by t
 
 ## PowershELlf to the rescue
 
-```shell
+```powershell
 #using PowerShell over SSH
 #log in using given creds
 ssh mceager@10.10.158.210
@@ -841,12 +841,96 @@ Select-String -Path .\2.txt -Pattern 'RedRyder'
 
 ## Time for some ELForensics
 
-```shell
+```powershell
+xfreerdp /u:littlehelper /p:iLove5now! /v:10.10.246.69
+#login to system remotely using given creds
+
+#open powershell
+Get-ChildItem
+
+Set-Location .\Documents\
+
+Get-ChildItem
+
+Get-Content '.\db file hash.txt'
+#get contents of text file
+#contains file hash for db.exe
+
+Get-FileHash -Algorithm MD5 .\deebee.exe
+#view file hash of executable
+
+#now, to view hidden flag inside executable, we use Strings tool
+C:\Tools\strings64.exe -accepteula .\deebee.exe
+#Strings tool shows hints related to Alternate Data Streams
+
+#to view ADS
+Get-Item -Path .\deebee.exe -Stream *
+#shows Stream and Length parameters, which includes hidedb, an ADS
+
+#windows management instrumentation can be used to launch hidden file
+wmic process call create $(Resolve-Path .\deebee.exe:hidedb)
+#launches the db connector file and gives flag
+```
+
+```markdown
+1. What is the file hash for db.exe? -  596690FFC54AB6101932856E6A78E3A1
+
+2. What is the file hash of the mysterious executable within the Documents folder? - 5F037501FB542AD2D9B06EB12AED09F0
+
+3. Using Strings find the hidden flag within the executable? - THM{f6187e6cbeb1214139ef313e108cb6f9}
+
+4. What is the flag that is displayed when you run the database connector file? - THM{088731ddc7b9fdeccaed982b07c297c}
 ```
 
 ## Elf McEager becomes CyberElf
 
-```shell
+```markdown
+Firstly, we have to remotely connect to the machine.
+Command: xfreerdp /u:Administrator /p:'sn0wF!akes!!!' /v:10.10.206.137
+
+Once we get access, we can see the folder with the weird name on Desktop.
+
+We can use the CyberChef shortcut stored in C:\Tools to continue.
+
+Now we have to decode the folder name using CyberChef. We can use the Magic recipe to decode it.
+
+This gives us the password to the KeePass database.
+
+After logging in, we can view the database for clues to decode the passwords as given.
+
+We can copy the password value of the entry by Right Click > Copy Password.
+Then, we have to decode it using CyberChef.
+
+Now, for Elf Server, we get the clue 'HEXtra', which could refer to 'hexdump' option in CyberChef; on using that option, we get the decoded password.
+
+Similarly, for Elf Mail, we get the clue 'Entities', which refers to the 'From HTML entity' option; alternatively, using the Magic recipe gives us the answer.
+
+For the flag value, we have to check the Elf Security System notes.
+The password does not have anything, the clue is in the notes.
+
+It shows us a big list of numbers with a function. From its name, we can assume it has something to do with character codes; this is confirmed using given hint.
+
+So, to debug this we use 'From Charcode' option, by using delimiter as Comma and Base 10.
+
+This gives us some JavaScript code containing more character codes.
+
+Going through the code, we can see that only one out of the two arrays of char codes is useful.
+
+We use those character codes and decode using the previously used recipe.
+
+This gives us a GitHub Gist link, which contains the required flag.
+```
+
+```markdown
+1. What is the password to the KeePass database? - thegrinchwashere
+
+2. What is the encoding method listed as the 'Matching ops'? - base64
+
+3. What is the decoded password value of the Elf Server? - sn0wM4n!
+
+4. What is the decoded password value for ElfMail? - ic3Skating!
+
+5. What is the flag? - THM{657012dcf3d1318dca0ed864f0e70535}
 ```
 
 ## The Grinch strikes again
