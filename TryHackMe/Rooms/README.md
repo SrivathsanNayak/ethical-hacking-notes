@@ -18,3 +18,4 @@
     14. [Searchlight - IMINT - Easy](SearchlightIMINT.md)
     15. [Advent of Cyber 1 - Easy](AdventOfCyber1.md)
     16. [Advent of Cyber 2 - Easy](AdventOfCyber2.md)
+    17. [Advent of Cyber 3 - Easy](AdventOfCyber3.md)
