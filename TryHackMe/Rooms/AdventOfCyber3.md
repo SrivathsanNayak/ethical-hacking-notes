@@ -1,5 +1,29 @@
 # Advent of Cyber 3 - Easy
 
+1. [Save The Gifts](#save-the-gifts)
+2. [Elf HR Problems](#elf-hr-problems)
+3. [Christmas Blackout](#christmas-blackout)
+4. [Santa's Running Behind](#santas-running-behind)
+5. [Pesky Elf Forum](#pesky-elf-forum)
+6. [Patch Management Is Hard](#patch-management-is-hard)
+7. [Migration Without Security](#migration-without-security)
+8. [Santa's Bag of Toys](#santas-bag-of-toys)
+9. [Where Is All This Data Going](#where-is-all-this-data-going)
+10. [Offensive Is The Best Defence](#offensive-is-the-best-defence)
+11. [Where Are The Reindeers?](#where-are-the-reindeers)
+12. [Sharing Without Caring](#sharing-without-caring)
+13. [They Lost The Plan!](#they-lost-the-plan)
+14. [Dev(Insecure)Ops](#devinsecureops)
+15. [Ransomware Madness](#ransomware-madness)
+16. [Elf Leaks](#elf-leaks)
+17. [Playing With Containers](#playing-with-containers)
+18. [Something Phishy Is Going On](#something-phishy-is-going-on)
+19. [What's the Worst That Could Happen?](#whats-the-worst-that-could-happen)
+20. [Needles In Computer Stacks](#needles-in-computer-stacks)
+21. [How It Happened](#how-it-happened)
+22. [PowershELlF Magic](#powershellf-magic)
+23. [Learning From The Grinch](#learning-from-the-grinch)
+
 ## Save The Gifts
 
 ```markdown
@@ -328,7 +352,7 @@
 6. There is still a second flag somewhere... can you find it on the machine?
 ```
 
-## PowershELlf Magic
+## PowershELlF Magic
 
 ```markdown
 1. What command was executed as Elf McNealy to add a new user to the machine?
