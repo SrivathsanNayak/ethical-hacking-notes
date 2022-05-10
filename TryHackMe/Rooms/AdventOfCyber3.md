@@ -27,47 +27,99 @@
 ## Save The Gifts
 
 ```markdown
-1. After finding Santa's account, what is their position in the company?
+This challenge is about IDOR (Insecure Direct Object Reference) vulnerabilities.
 
-2. After finding McStocker's account, what is their position in the company?
+IDOR vulnerabilities rely on changing user-supplied data, from query components, post variables or cookies.
 
-3. After finding the account responsible for tampering, what is their position in the company?
+Now, in the given website, we have four pages, out of which 'Your Activity' contains user input that can be modified.
 
-4. What is the received flag when McSkidy fixes the Inventory Management System?
+We change the user_id value and try to find the odd user out.
+
+When user_id=9, we get the Grinch's account.
+
+After reverting the actions, we get the flag.
+```
+
+```markdown
+1. After finding Santa's account, what is their position in the company? - The Boss!
+
+2. After finding McStocker's account, what is their position in the company? - Build Manager
+
+3. After finding the account responsible for tampering, what is their position in the company? - Mischief Manager
+
+4. What is the received flag when McSkidy fixes the Inventory Management System? - THM{AOC_IDOR_2B34BHI3}
 ```
 
 ## Elf HR Problems
 
 ```markdown
-1. What is the name of the new cookie that was created for your account?
+In this challenge, we learn about cookies and how to manipulate them.
 
-2. What encoding type was used for the cookie value?
+In the given website, we create an account and attempt to register.
 
-3. What object format is the data of the cookie stored in?
+We are not able to bypass the login portal, however a cookie is created.
 
-4. What is the value of the administrator cookie?
+The value of the cookie is encoded in 'From Hex', decoded using CyberChef tool.
 
-5. What team environment is not responding?
+Now, in order to manipulate the cookie, we modify the decoded cookie such that the JSON data now includes 'admin'.
 
-6. What team environment has a network warning?
+Then, we encode it to hexadecimal again, so that we can use it in Developer Tools.
+
+This allows us to bypass login.
+```
+
+```markdown
+1. What is the name of the new cookie that was created for your account? - user-auth
+
+2. What encoding type was used for the cookie value? - hexadecimal
+
+3. What object format is the data of the cookie stored in? - JSON
+
+4. What is the value of the administrator cookie? - 7b636f6d70616e793a2022546865204265737420466573746976616c20436f6d70616e79222c206973726567697374657265643a2254727565222c20757365726e616d653a2261646d696e227d
+
+5. What team environment is not responding? - HR
+
+6. What team environment has a network warning? - Application
 ```
 
 ## Christmas Blackout
 
 ```markdown
-1. What is the name of the folder?
+This challenge highlights the topic of content discovery.
 
-2. What is the password?
+We can use ffuf to scan the website
 
-3. What is the value of the flag?
+Command: ffuf -u http://10.10.30.30/FUZZ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -s
+
+We get some folders; one of them contains a login panel.
+
+We can use default creds administrator:administrator to login, which gives us the flag.
+```
+
+```markdown
+1. What is the name of the folder? - admin
+
+2. What is the password? - administrator
+
+3. What is the value of the flag? - THM{ADM1N_AC3SS}
 ```
 
 ## Santa's Running Behind
 
 ```markdown
-1. What valid password can you use to access the "santa" account?
+This challenge is about fuzzing login forms.
 
-2. What is the flag in Santa's itinerary?
+Referring the given walkthrough, we can make use of Burp Suite to fuzz the login form.
+
+While fuzzing in Intruder, we have to fuzz only the password field, as we know the username is "santa".
+
+After fuzzing, we get the password which can be used for login to get flag.
+```
+
+```markdown
+1. What valid password can you use to access the "santa" account? - cookie
+
+2. What is the flag in Santa's itinerary? - THM{SANTA_DELIVERS}
 ```
 
 ## Pesky Elf Forum
