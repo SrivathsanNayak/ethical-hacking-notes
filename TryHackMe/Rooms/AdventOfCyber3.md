@@ -220,60 +220,143 @@ Required URL: <http://10.10.59.80/index.php?err=../../../../var/www/html/include
 
 ## Migration Without Security
 
+```shell
+ssh thm@10.10.128.156 -p 2222
+
+mongo
+#connect and interact with mongodb
+
+show databases
+
+use flagdb
+
+db.getCollectionNames();
+
+db.flagColl.find()
+#gives flag
+```
+
 ```markdown
-1. Interact with the MongoDB server to find the flag. What is the flag?
+We visit the link given and attempt to search for an user.
 
-2. Log into the application that Grinch Enterprise controls as admin and retrieve the flag?
+We can intercept the login request using Burp and modify the POST parameter.
 
-3. Use the gift search page to list all usernames that have guest roles. What is the flag?
+Original: username=joe&password=mama
 
-4. What is the details record?
+Modified: username=admin&password[$ne]=mama
+
+After bypassing login, we can retrieve the flag.
+
+Now, for searching the guest roles, we have to modify the parameter again.
+
+Original: GET /search?username=guest&role=user
+
+Modified: GET /search?username[$ne]=guest&role=guest
+
+This gives us the flag.
+
+For the final part, we have to get mcskidy record, for which we have to modify the parameter again.
+
+Modified: GET /search?username=mcskidy&role[$ne]=user
+```
+
+```markdown
+1. Interact with the MongoDB server to find the flag. What is the flag? - THM{8814a5e6662a9763f7df23ee59d944f9}
+
+2. Log into the application that Grinch Enterprise controls as admin and retrieve the flag? - THM{b6b304f5d5834a4d089b570840b467a8}
+
+3. Use the gift search page to list all usernames that have guest roles. What is the flag? - THM{2ec099f2d602cc4968c5267970be1326}
+
+4. What is the details record? - 
+ID:6184f516ef6da50433f100f4:mcskidy:admin
 ```
 
 ## Santa's Bag of Toys
 
 ```markdown
-1. What operating system is Santa's laptop running?
+First, we remotely connect to the system.
 
-2. What was the password set for the new "backdoor" account?
+Command: xfreerdp /u:Administrator /p:grinch123! /v:10.10.52.155
 
-3. What is the full path of the original file?
+We have to view the PowerShell Transcription Logs, in the folder SantasLaptopLogs.
 
-4. What is the name of this LOLbin?
+From the 5 log files given to us, we can find the answers.
 
-5. What specific folder name clues us in that this might be publicly accessible software hosted on a code-sharing platform?
+Now, we have to decode from base64 the UsrClass.dat file contents, which can be copied from the logs, and decoded in CyberChef.
 
-6. What is the name of the file found in this folder?
+After downloading the decoded file, we have to use it in ShellBagsExplorer now.
 
-7. What is the name of the user that owns the SantaRat repository?
+File > Load offline hive > decoded.dat
 
-8. What is the name of the repository that seems especially pertinent to our investigation?
+Now we can go through the discovered Shellbags.
 
-9. What is the name of the executable that installed a unique utility the actor used to collect the bag of toys?
+The directories give us some clues regarding the contents of the folders.
 
-10. What are the contents of these "malicious" files?
+From these clues, we can search on Github for the required repository.
 
-11. What is the password to the original bag_of_toys.uha archive?
+We can get the password for the UHA file from the previous GitHub commits.
 
-12. How many original files were present in Santa's Bag of Toys?
+This password can be used to unlock the UHA file.
+```
+
+```markdown
+1. What operating system is Santa's laptop running? - Microsoft Windows 11 Pro
+
+2. What was the password set for the new "backdoor" account? - grinchstolechristmas
+
+3. What is the full path of the original file? - C:\Users\santa\AppData\Local\Microsoft\Windows\UsrClass.dat
+
+4. What is the name of this LOLbin? - certutil.exe
+
+5. What specific folder name clues us in that this might be publicly accessible software hosted on a code-sharing platform? - .github
+
+6. What is the name of the file found in this folder? - bag_of_toys.zip
+
+7. What is the name of the user that owns the SantaRat repository? - Grinchiest
+
+8. What is the name of the repository that seems especially pertinent to our investigation? - operation-bag-of-toys
+
+9. What is the name of the executable that installed a unique utility the actor used to collect the bag of toys? - uharc-cmd-install.exe
+
+10. What are the contents of these "malicious" files? - GRINCHMAS
+
+11. What is the password to the original bag_of_toys.uha archive? - TheGrinchiestGrinchmasOfAll
+
+12. How many original files were present in Santa's Bag of Toys? - 228
 ```
 
 ## Where Is All This Data Going
 
 ```markdown
-1. In the HTTP #1 - GET requests section, which directory is found on the web server?
+We have to use Wireshark to analyze the given packet files. We can use filters to search.
 
-2. What is the username and password used in the login page in the HTTP #2 - POST section?
+Required filters:
 
-3. What is the User-Agent's name that has been sent in HTTP #2 - POST section?
+    http.request.method == GET
 
-4. In the DNS section, there is a TXT DNS query. What is the flag in the message of that DNS query?
+    http.request.method == POST
 
-5. In the FTP section, what is the FTP login password?
+    dns
 
-6. In the FTP section, what is the FTP command used to upload the secret.txt file?
+    ftp
 
-7. In the FTP section, what is the content of the secret.txt file?
+    ftp-data
+```
+
+```markdown
+1. In the HTTP #1 - GET requests section, which directory is found on the web server? - login
+
+2. What is the username and password used in the login page in the HTTP #2 - POST section? - McSkidy:Christmas2021!
+
+3. What is the User-Agent's name that has been sent in HTTP #2 - POST section? - TryHackMe-UserAgent-THM{d8ab1be969825f2c5c937aec23d55bc9}
+
+4. In the DNS section, there is a TXT DNS query. What is the flag in the message of that DNS query? - THM{dd63a80bf9fdd21aabbf70af7438c257}
+
+5. In the FTP section, what is the FTP login password? - TryH@ckM3!
+
+6. In the FTP section, what is the FTP command used to upload the secret.txt file? - STOR
+
+7. In the FTP section, what is the content of the secret.txt file? - 123^-^321
 ```
 
 ## Offensive Is The Best Defence
