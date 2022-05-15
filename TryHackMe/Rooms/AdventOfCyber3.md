@@ -805,67 +805,196 @@ cat root/envconsul/config.hcl | grep "token"
 ## Something Phishy Is Going On
 
 ```markdown
-1. Who was the email sent to?
+On opening the mail application, we can view the Email.eml file.
 
-2. Who does it say the email was from?
+We have to inspect its contents by viewing its source code.
 
-3. If this email was replied to, what email address will receive the email response?
+The source code contains a lot of clues for getting the flag.
 
-4. What is the misspelled word?
+After checking the source code, we can open the terminal, to view the email artifacts.
 
-5. What is the link to the credential harvesting website?
+The email artifacts can be viewed normally as well.
+```
 
-6. What is the header and its value?
+```shell
+ls
 
-7. What is the name of the attachment?
+cd Desktop
 
-8. What is the flag in the PDF file?
+ls
+
+cd Email\ Artifacts/
+
+ls
+#shows the required files
+
+cat attachment-base64-only.txt | base64 -d > file.pdf
+#convert base64 string to original file format
+```
+
+```markdown
+1. Who was the email sent to? - elfmcphearson@tbfc.com
+
+2. Who does it say the email was from? - customerservice@t8fc.info
+
+3. If this email was replied to, what email address will receive the email response? - fisher@tempmailz.grinch
+
+4. What is the misspelled word? - stright
+
+5. What is the link to the credential harvesting website? - https://89xgwsnmo5.grinch/out/fishing/
+
+6. What is the header and its value? - X-GrinchPhish: >;^)
+
+7. What is the name of the attachment? - password-reset-instructions.pdf
+
+8. What is the flag in the PDF file? - THM{A0C_Thr33_Ph1sh1ng_An4lys!s}
 ```
 
 ## What's the Worst That Could Happen?
 
+```shell
+cd Desktop
+
+ls
+
+ls Samples/
+
+file Samples/exmatter
+
+file Samples/bizarro
+
+file testfile
+
+strings testfile
+
+strings Samples/exmatter > strings_output.txt
+#this contains some clues
+
+md5sum testfile
+#hash for required file
+```
+
 ```markdown
-1. What is the output?
+Now, after calculating the file hash, we can submit it to VirusTotal.
 
-2. What is the file type?
+We can go through the results to answer the questions.
 
-3. When was the file first seen in the wild?
+Furthermore, we can visit <https://www.eicar.org/download-anti-malware-testfile/> to get more info about the file used.
+```
 
-4. What is the classification assigned to the file by Microsoft?
+```markdown
+1. What is the output? - X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*
 
-5. What were the first two names of this file?
+2. What is the file type? - EICAR virus test files
 
-6. What is the maximum number of total characters that can be in the file?
+3. When was the file first seen in the wild? - 2005-10-17 22:03:48 UTC
+
+4. What is the classification assigned to the file by Microsoft? - Virus:DOS/EICAR_Test_File
+
+5. What were the first two names of this file? - ducklin.htm or ducklin-html.htm
+
+6. What is the maximum number of total characters that can be in the file? - 128
 ```
 
 ## Needles In Computer Stacks
 
 ```markdown
-1. What boolean operator shall we replace the 'and' with, in order for the rule to still hit the file?
+This challenge is about YARA, a multi-platform tool for matching patterns of interest in malicious files.
 
-2. What option is used in the Yara command in order to list down the metadata of the rules that are a hit to a file?
+We have to use the text editor and write demo rules for detecting few strings found in the EICAR testfile.
+```
 
-3. What section contains information about the author of the Yara rule?
+```markdown
+rule eicaryara   {
+    meta:
+      author="tryhackme"
+      description="eicar string"
+    strings:
+      $a="X5O"
+      $b="EICAR"
+      $c="ANTIVIRUS"
+      $d="TEST"
+    condition:
+      $a and $b and $c and $d
+  }
+```
 
-4. What option is used to print only rules that did not hit?
+```shell
+cd Desktop
 
-5. What is the result?
+ls
+
+yara eicaryara testfile
+#here eicaryara is the rulefile
+#testfile is the file to be tested
+#rule is not hit
+
+yara -m eicaryara testfile
+#prints metadata if hit
+
+yara -s eicaryara testfile
+#print strings that matched file
+
+yara --help
+
+yara -c eicaryara testfile
+#print count of matched strings
+```
+
+```markdown
+1. What boolean operator shall we replace the 'and' with, in order for the rule to still hit the file? - or
+
+2. What option is used in the Yara command in order to list down the metadata of the rules that are a hit to a file? - -m
+
+3. What section contains information about the author of the Yara rule? - metadata
+
+4. What option is used to print only rules that did not hit? - -n
+
+5. What is the result? - 0
 ```
 
 ## How It Happened
 
+```shell
+oledump.py -s 8 -d C:\Users\Administrator\Desktop\Santa_Claus_Naughty_List_2021\Santa_Claus_Naughty_List_2021.doc
+#dumps obfuscated, encoded string
+
+oledump.py C:\Users\Administrator\Desktop\Santa_Claus_Naughty_List_2021\Santa_Claus_Naughty_List_2021.doc
+#to find number of streams
+#check each stream for flag
+
+oledump.py -s 7 -d C:\Users\Administrator\Desktop\Santa_Claus_Naughty_List_2021\Santa_Claus_Naughty_List_2021.doc
+#gives first flag
+```
+
 ```markdown
-1. What is the username from the decoded script?
+The obfuscated string from oledump can be copied in CyberChef.
 
-2. What is the mailbox password you found?
+The recipe to decode it is Base64, XOR-35 (decimal), and Base64 again.
 
-3. What is the subject of the email?
+This gives us the details regarding Grinch Enterprises.
 
-4. What port is the script using to exfiltrate data from the North Pole?
+After that, we have to find the flag hidden in one of the streams of the document.
 
-5. What is the flag hidden found in the document that Grinch Enterprises left behind?
+We can do that using oledump.
 
-6. There is still a second flag somewhere... can you find it on the machine?
+For second flag, we have to check files in the machine.
+
+There is a PNG file in the Pictures folder named flag2. On opening that file, we get the flag.
+```
+
+```markdown
+1. What is the username from the decoded script? - Grinch.Enterprises.2021@gmail.com
+
+2. What is the mailbox password you found? - S@ntai$comingt0t0wn
+
+3. What is the subject of the email? - Christmas Wishlist
+
+4. What port is the script using to exfiltrate data from the North Pole? - 587
+
+5. What is the flag hidden found in the document that Grinch Enterprises left behind? - YouFoundGrinchCookie
+
+6. There is still a second flag somewhere... can you find it on the machine? - S@nt@c1Au$IsrEAl
 ```
 
 ## PowershELlF Magic
