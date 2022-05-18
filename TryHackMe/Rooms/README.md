@@ -20,3 +20,4 @@
     16. [Advent of Cyber 2 - Easy](AdventOfCyber2.md)
     17. [Advent of Cyber 3 - Easy](AdventOfCyber3.md)
     18. [Sakura Room - Easy](SakuraRoom.md)
+    19. [Attacking Kerberos - Easy](AttackingKerberos.md)
