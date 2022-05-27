@@ -18,6 +18,8 @@ This is where I'll be writing my notes on the topic of Ethical Hacking and whate
 
 * [picoCTF](picoCTF/README.md)
 
+* [HackTheBox](HackTheBox/README.md)
+
 Some helpful resources:
 
 * [CyberChef](https://gchq.github.io/CyberChef/)
