@@ -6,3 +6,4 @@
     2. [Redeemer - Very Easy](Redeemer.md)
     3. [Appointment - Very Easy](Appointment.md)
     4. [Sequel - Very Easy](Sequel.md)
+    5. [Crocodile - Very Easy](Crocodile.md)
