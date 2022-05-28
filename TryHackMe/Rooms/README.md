@@ -22,3 +22,4 @@
     18. [Sakura Room - Easy](SakuraRoom.md)
     19. [Attacking Kerberos - Easy](AttackingKerberos.md)
     20. [Post-Exploitation Basics - Easy](PostExploitationBasics.md)
+    21. [Zero Logon - Hard](ZeroLogon.md)
