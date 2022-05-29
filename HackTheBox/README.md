@@ -7,3 +7,4 @@
     3. [Appointment - Very Easy](Appointment.md)
     4. [Sequel - Very Easy](Sequel.md)
     5. [Crocodile - Very Easy](Crocodile.md)
+    6. [Responder - Very Easy](Responder.md)
