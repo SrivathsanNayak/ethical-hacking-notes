@@ -23,3 +23,4 @@
     19. [Attacking Kerberos - Easy](AttackingKerberos.md)
     20. [Post-Exploitation Basics - Easy](PostExploitationBasics.md)
     21. [Zero Logon - Hard](ZeroLogon.md)
+    22. [Linux Forensics - Easy](LinuxForensics.md)
