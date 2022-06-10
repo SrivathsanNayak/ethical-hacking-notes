@@ -25,3 +25,4 @@
     21. [Zero Logon - Hard](ZeroLogon.md)
     22. [Linux Forensics - Easy](LinuxForensics.md)
     23. [Sysmon - Easy](Sysmon.md)
+    24. [Osquery - Easy](Osquery.md)
