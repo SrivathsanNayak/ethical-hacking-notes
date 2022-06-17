@@ -8,7 +8,7 @@ Learning Paths:
 
 * [Jr Penetration Tester](JrPentester/README.md)
 
-* [CompleteBeginner](CompleteBeginner/README.md)
+* [Complete Beginner](CompleteBeginner/README.md)
 
 Writeups for other rooms:
 
