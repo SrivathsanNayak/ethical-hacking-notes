@@ -20,6 +20,8 @@ This is where I'll be writing my notes on the topic of Ethical Hacking and whate
 
 * [HackTheBox](HackTheBox/README.md)
 
+* [Cloud Security - Cisco Networking Academy](CloudSecurity/README.md)
+
 Some helpful resources:
 
 * [CyberChef](https://gchq.github.io/CyberChef/)
