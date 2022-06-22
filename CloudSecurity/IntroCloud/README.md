@@ -22,6 +22,10 @@
 
 ## Cloud Essential Characteristics
 
+* NIST model of cloud computing.
+
+![NIST Model of Cloud Computing](Assets/nist_model_cloud.jpg)
+
 ## Cloud Service Models
 
 ## Cloud Deployment Models
