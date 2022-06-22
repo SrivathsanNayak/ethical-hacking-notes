@@ -26,7 +26,28 @@
 
 ![NIST Model of Cloud Computing](../../Assets/nist_model_cloud.jpg)
 
+* Essential characteristics - Broad network access, rapid elasticity, measured service, on-demand self-service, resource pooling.
+
+* Multitenancy - allowing multiple consumers to use a shared resource pool. Its features are:
+
+  * Policy-driven enforcement
+  * Segmentation
+  * Isolation
+  * Governance
+  * Service levels
+  * Chargeback/Billing models
+
 ## Cloud Service Models
+
+* SPI stack model:
+
+![Cloud Service Models(SPI)](../../Assets/iaas.jpg)
+
+* Infrastructure as a Service (IaaS) - provisions basic computing resources; consumer deploys, runs any software.
+
+* Platform as a Service (Paas) - app dev frameworks, middleware and functions (databases, message queues, etc.); deploy consumer-created apps onto cloud infra, created using languages and tools supported by cloud provider.
+
+* Software as a Service (Saas) - consumer uses the provider's apps; not necessarily based on Iaas or Paas; user does not manage underlying cloud infra.
 
 ## Cloud Deployment Models
 
