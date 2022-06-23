@@ -11,7 +11,6 @@
 * Resource pools are collections of physical resources such as Network, Compute and Storage. Building these involves two techniques:
 
     1. Abstraction (Virtualization) - Hypervisors, software-defined networking, storage abstraction.
-
     2. Automation (Orchestration) - Provision, Deprovision, Resize.
 
 * Traditional virtualization - manual abstraction of resource pools; not elastic, and no self-service.
@@ -51,4 +50,40 @@
 
 ## Cloud Deployment Models
 
+* Types of deployment models:
+
+  * Public Cloud - cloud infra available publicly
+  * Private Cloud - operated for a single organisation only
+  * Community Cloud - operated by and for a specialized community
+  * Hybrid Cloud - cloud infra is composition of multiple deployment models
+
+![Deployment Models](../../Assets/deployment_models.png)
+
+* Hybrid Cloud:
+
+![Hybrid Cloud](../../Assets/hybrid_cloud.png)
+
+* Logical Model:
+
+  * Infrastructure - core computing components
+  * Metastructure (Management plane) - protocols interfacing between infra and other layers
+  * Applistructure - structure and services used for apps
+  * Infostructure - info, content, databases, etc.
+
 ## Shared Responsibilities
+
+* Shared Responsibilities Model:
+
+![Shared Responsibilities Model](../../Assets/shared_responsibilities.png)
+
+* Security impact of service model:
+
+![Security impact of service model](../../Assets/security_impact_model.png)
+
+* Cloud Security considerations:
+
+  * Identify requirements
+  * Provider, service and deployment models
+  * Architecture
+  * Assess and design security controls, control gaps
+  * Manage changes
