@@ -26,3 +26,4 @@
     22. [Linux Forensics - Easy](LinuxForensics.md)
     23. [Sysmon - Easy](Sysmon.md)
     24. [Osquery - Easy](Osquery.md)
+    25. [Investigating Windows - Easy](InvestigatingWindows.md)
