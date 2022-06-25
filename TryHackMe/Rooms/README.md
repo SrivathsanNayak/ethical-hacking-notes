@@ -27,3 +27,4 @@
     23. [Sysmon - Easy](Sysmon.md)
     24. [Osquery - Easy](Osquery.md)
     25. [Investigating Windows - Easy](InvestigatingWindows.md)
+    26. [Windows Forensics 1 - Medium](WindowsForensics1.md)
