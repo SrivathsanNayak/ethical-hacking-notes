@@ -47,6 +47,9 @@ Writeups for practice challenges in picoGym:
   43. [So Meta](#so-meta)
   44. [extensions](#extensions)
   45. [shark on wire 1](#shark-on-wire-1)
+  46. [First Find](#first-find)
+  47. [Big Zip](#big-zip)
+  48. [Wireshark doo dooo do doo...](#wireshark-doo-dooo-do-doo)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -613,3 +616,43 @@ for line in lines:
 * One of the UDP streams has the flag, and it can be found by using the same methodology.
 
 * Flag - picoCTF{StaT31355_636f6e6e}
+
+## First Find
+
+* We are given a zip file, we need to find a file named 'uber-secret.txt'.
+
+```shell
+unzip files.zip
+#unarchives the zip file
+
+ls files
+
+find -type f -name uber-secret.txt
+#gives a path for file
+
+cat files/adequate_books/more_books/.secret/deeper_secrets/deepest_secrets/uber-secret.txt
+#gives flag picoCTF{f1nd_15_f457_ab443fd1}
+```
+
+## Big Zip
+
+* We are given a zip file containing a lot of files, we need to find the flag.
+
+```shell
+unzip big-zip-files.zip
+
+grep -nr picoCTF
+#gives us the flag picoCTF{gr3p_15_m4g1c_ef8790dc}
+```
+
+## Wireshark doo dooo do doo
+
+* We are given a packet capture file, we need to find the flag.
+
+* We can look into File > Export Objects > HTTP.
+
+* This contains a lot of pages, however there is a page which contains few characters.
+
+* On checking that page, we get the string ```Gur synt vf cvpbPGS{c33xno00_1_f33_h_qrnqorrs}```.
+
+* On applying ROT13, we get the flag ```picoCTF{p33kab00_1_s33_u_deadbeef}```.
