@@ -152,4 +152,37 @@
 
 ## Management Plane Security
 
+* Management plane:
+
+  * Key functions - provisioning resources, starting/stopping/terminating, config resources
+  * Security considerations - authentication, access control, logging/monitoring
+  * Access methods - Web console (MFA), API (REST, uses keys/tokens)
+  * All connections should always use TLS
+
+* Management plane security:
+
+  * Secure root account
+  * Manage non-root users
+  * Enable monitoring/auditing
+
+* Root account security:
+
+  * Enable hardware MFA (multi-factor authentication)
+  * Use isolated credentials
+  * Use account security questions
+  * Never use account except for emergencies
+
+* Cloud IAM (Identity & Access Management):
+
+  * Role-based access control (RBAC)
+  * Variable granularity across providers
+  * Variable granularity within product lines
+  * Integrate with SSO or directory services
+
+* Privileged users (from highest to lowest) - root, super-admin, service admin, service.
+
+* Monitoring/auditing:
+
+![Monitoring/Auditing Management Plane](../../Assets/monitoring_plane.png)
+
 ## Business Continuity & Disaster Recovery
