@@ -186,3 +186,22 @@
 ![Monitoring/Auditing Management Plane](../../Assets/monitoring_plane.png)
 
 ## Business Continuity & Disaster Recovery
+
+* Cloud platforms should be:
+
+  * Architected for failure and resiliency
+  * Designed for high availability in cloud provider using Availability Zones
+  * Prepared for graceful failure in case of cloud provider outage
+
+* Key aspects of BC/DR:
+
+  * Continuity within provider/platform
+  * Preparing for and managing cloud provider outages
+  * Portability
+
+* The entire stack should be covered:
+
+  * Metastructure - cloud configuration, IAM, monitoring, compliance artifacts; software-defined infra is key.
+  * Infrastructure - core config, leverage provider resiliency capabilities.
+  * Infostructure - leverage resilient provider storage; keep backups for rapid restore.
+  * Applistructure - PaaS limitations, downtime; adopt chaos engineering.
