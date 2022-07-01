@@ -69,7 +69,55 @@
 
 ## Compliance
 
+* Sources of obligations include legislation, contracts, regulations (broad-based or industry-specific).
+
+* Compliance validates awareness of corporate obligations and adhering to it; audits are key tools of proving compliance.
+
+* Cloud changes compliance:
+
+  * Cloud customer is responsible for compliance and has to rely on provider as well.
+  
+  * Cloud customers rely more on third-party assessments.
+
+  * The cloud metastructure may span jurisdictions, while the assets don't, so this must be integrated into compliance activities.
+
+  * Not all cloud providers and services are within same audit/certification scope.
+
+* Compliance inheritance - if a provider's service is compliant with a standard, then consumers can build compliant services using that service; however, this does not guarantee compliance.
+
+* Compliance, audit and assurance should be continuous.
+
 ## Legal Considerations for Cloud
+
+* APAC:
+  
+  * Australia - Privacy Act of 1988, Australian Consumer Law (ACL)
+  
+  * China - 2017 Cyber Security Law
+
+  * Japan - Act on the Protection of Personal Information (APPI)
+
+  * Russia - Data protection laws
+
+* EMEA:
+
+  * European Union & European Economic Area - 2018 General Data Protection Regulation (GDPR), 2022 Directive on Privacy and Electronic Communications, Network Information Security Directive (NIS Directive).
+
+  * Countries outside EU/EEA - 1995 EU Data Protection Directive
+
+* Americas:
+
+  * Central & South - European directive 95/46/EC, APEC Privacy Framework
+
+  * Canada - Personal Information Protection and Electronic Documents Act (PIPEDA)
+
+  * US - no single national law for data protection & regulation
+
+  * US federal laws - Children's Online Privacy Protection Act of 1998 (COPPA), Accountability Act of 1996 (HIPAA)
+
+* Industry standards - created by private organisations, so these are not laws.
+
+* Contract terms - pricing, allocation of risk/responsibility, termination, representation & warranties, data ownership and location, SLA, PLA (privacy level agreement).
 
 ## Audit
 
