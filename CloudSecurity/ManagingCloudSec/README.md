@@ -121,4 +121,68 @@
 
 ## Audit
 
+* Audits/Assements/Attestations can vary across providers with different focuses.
+
+* Attestations are legal statements; providers may be required by the auditor to have an NDA with customer before releasing.
+
+* Cloud providers should have a rigorous portfolio of compliance attestations to support customers.
+
+* Previous Audit results:
+
+![Previous Audit results](../../Assets/prev_audit_results.png)
+
+* Artifacts of compliance:
+
+  * Policy & procedure documentation
+
+  * Audit logs
+
+  * Activity reporting
+
+  * System config details
+
+* In cloud, assessing risk (collecting audit evidence) can be challenging; understand requirements for logging and what data to collect.
+
+* Due to evolving nature of cloud, frequent assessment is required.
+
 ## CSA Tools
+
+* CCM (Cloud Controls Matrix):
+  
+  * A controls framework for organizations to operate securely when cloud services are utilized.
+
+  * Intended for cloud providers, SaaS providers, end-user services; designed by SMEs.
+
+  * Provides security principles to providers for best practices and assists customers to assess providers; standardized guidance.
+
+  * Addresses intra- and inter-org challenges by delineating control ownership.
+
+  * Aids in internal and external assessments and audits.
+
+* CAIQ (Consensus Assessments Initiative Questionnaire):
+
+  * Assesses the security postures of a cloud service provider.
+
+  * To standardize approach of validation of cloud provider's security.
+
+  * Streamlines compliance assessments and improves communication.
+
+* STAR (Security, Trust & Assurance Registry):
+
+  * Promotes security governance, assurance and compliance in cloud.
+
+  * Third-party resources that encompass transparency, auditing and standards harmonization.
+
+  * Offers self-assessment, third-party certification and attestation, and continuous auditing.
+
+  * Customers can access security documentation for cloud providers from a single trusted repo.
+
+* STARWatch:
+
+  * SaaS application to help cloud providers manage compliance with CSA STAR requirements.
+
+  * Helps in adoption and implementation of CCM and CAIQ; streamlines compliance efforts.
+
+  * Allows users to create, edit, import and export CAIQs.
+
+  * Incorporates a maturity model to measure evolution of security posture of organization.
