@@ -29,3 +29,4 @@
     25. [Investigating Windows - Easy](InvestigatingWindows.md)
     26. [Windows Forensics 1 - Medium](WindowsForensics1.md)
     27. [Windows Forensics 2 - Medium](WindowsForensics2.md)
+    28. [Redline - Medium](Redline.md)
