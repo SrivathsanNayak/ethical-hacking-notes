@@ -104,6 +104,60 @@
 
 ## Secure Operations, Architecture & Related Technologies
 
+* Secure operations:
+
+  * After app is deployed and running in cloud
+
+  * Focus on management plane
+
+  * Monitor for changes in environment
+
+  * Do not neglect ongoing testing
+
+  * Cloud config within scope of change management
+
+  * WAF (web app firewall) must auto-scale, embedded in workload or cloud-hosted
+
+* Impact of cloud on app design and architecture:
+
+  * Segregation by default
+
+  * Immutable infra
+
+  * Increased use of microservices
+
+  * PaaS and serverless
+
+* PaaS/Serverless and Security:
+
+  * Provider takes on more security responsibilities
+
+  * Communicating via API on provider's platform reduces network attack paths
+
+  * Enables software-defined security
+
+  * May enable event-driven security
+
+* App Security recommendations:
+
+  * Understand security capabilities of cloud providers
+
+  * Build security into initial design process
+
+  * Consider moving to continuous deployment and automating security into deployment pipeline
+
+  * Threat modeling, SAST and DAST should be integrated
+
+  * Understand new architectural options and requirements in cloud
+
+  * Update security policies and standards
+
+  * Integrate security testing into deployment process
+
+  * Use software-defined security and event-driven security to automate security controls and detection of issues
+
+  * Use different cloud environments to segregate management plane access
+
 ## Identity & Access Management (IAM) Definitions
 
 ## Identity & Access Management (IAM) Standards
