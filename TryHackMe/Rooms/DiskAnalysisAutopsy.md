@@ -16,6 +16,14 @@
 
 * We can go through all the images in the ```Images/Videos``` tab and search for images with names in them.
 
+* The first flag can be found by viewing the console history of PowerShell for all users. This will lead us to the second exploit which is a PowerShell script.
+
+* The required hacktools can be found in Windows Defender's scan history.
+
+* For the YARA file, we know that the extension is ```.yar```; searching for this term leads us to a YARA file for passwords, which can be Googled to find the author.
+
+* The archive file to be found can be discovered by going through ```Recent Documents```, but I had to search in the Extensions filter and Downloads as well.
+
 ```markdown
 1. What is the MD5 hash of the E01 image? - 3f08c518adb3b5c1359849657a9b2079
 
@@ -37,13 +45,13 @@
 
 10. A user has his full name printed on his desktop wallpaper. What is the user's full name? - Anto Joshwa
 
-11. A user had a file on her desktop. It had a flag but she changed the flag using PowerShell. What was the first flag?
+11. A user had a file on her desktop. It had a flag but she changed the flag using PowerShell. What was the first flag? - flag{HarleyQuinnForQueen}
 
-12. The same user found an exploit to escalate privileges on the computer. What was the message to the device owner?
+12. The same user found an exploit to escalate privileges on the computer. What was the message to the device owner? - flag{I-Hacked-You}
 
-13. 2 hack tools focused on passwords were found in the system. What are the names of these tools?
+13. 2 hack tools focused on passwords were found in the system. What are the names of these tools? - lazagne, mimikatz
 
-14. There is a YARA file on the computer. Inspect the file. What is the name of the author?
+14. There is a YARA file on the computer. Inspect the file. What is the name of the author? - Benjamin DELPY gentilkiwi
 
-15. One of the users wanted to exploit a domain controller with an MS-NRPC based exploit. What is the filename of the archive that you found?
+15. One of the users wanted to exploit a domain controller with an MS-NRPC based exploit. What is the filename of the archive that you found? - 2.2.0 20200918 Zerologon encrypted.zip
 ```
