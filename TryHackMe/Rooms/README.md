@@ -31,3 +31,4 @@
     27. [Windows Forensics 2 - Medium](WindowsForensics2.md)
     28. [Redline - Medium](Redline.md)
     29. [Disk Analysis & Autopsy - Medium](DiskAnalysisAutopsy.md)
+    30. [Windows Privilege Escalation - Medium](WindowsPrivilegeEscalation.md)
