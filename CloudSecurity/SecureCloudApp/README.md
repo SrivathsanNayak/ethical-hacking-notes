@@ -160,6 +160,66 @@
 
 ## Identity & Access Management (IAM) Definitions
 
+* Entity - discrete types that will have identity (users, devices, organisations, etc.)
+
+* Identity - unique expression of an entity within a given namespace
+
+* Identifier - means by which an identity can be asserted
+
+* Attributes - facets of an identity
+
+* Persona - expression of an identity with attributes for context
+
+* Role - to indicate a persona or subset
+
+* Authentication - process of confirming an identity (MFA - multifactor authn)
+
+* Access control - resisting access to a resource; access management is the process
+
+* Authoritative source - root source for an identity
+
+* Authorization - allowing an identity access
+
+* Entitlement - mapping an identity to an authorization
+
+* Federated identity management - process of asserting an identity across different systems
+
+* Identity provider - trusted source of identity in federation
+
+* Relying party - system that relies on identity assertion from identity provider
+
 ## Identity & Access Management (IAM) Standards
 
+* IAM for cloud relies on federated identity due to required management of authentication and authorization between cloud consumer and provider.
+
+* Some common IAM standards for cloud are SAML (Security Assertion Markup Language), OAuth, OpenID, XACML (eXtensible Access Control Markup Language) and SCIM.
+
 ## Identity & Access Management (IAM) in Practice
+
+* Managing users and identities for cloud can follow two models:
+
+  * Free form - multiple identity providers and service providers.
+
+  * Hub & spoke - multiple providers, combined with a central broker proxy/repo
+
+* Cloud providers need to support internal identities and federation; consumers need to determine where to manage identities and how to integrate with providers.
+
+* Additional identity decisions include identity management, identity provisioning process, supporting multiple providers/platforms and deprovisioning.
+
+* For authentication, MFA options include hard token, soft token, out-of-band password and biometrics.
+
+* Shift from RBAC (role-based access controls) to ABAC (attribute-based access controls) in identity management is good as ABAC is far more granular and flexible.
+
+* Identity management recommendations:
+
+  * Organizations should develop a planned way for managing identities and authorizations with cloud services.
+
+  * When connecting to external cloud providers, use federation to extend existing identity management.
+
+  * Consider using identity brokers.
+
+  * Cloud consumers are responsible for maintaining identity provider and defining identities & attributes.
+
+  * Develop entitlement matrix for each cloud provider and project.
+
+  * Translate entitlement matrices into technical policies.
