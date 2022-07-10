@@ -74,6 +74,34 @@
 
 ## Incident Response
 
+* Likelihood of incidents change frequently with the environment, the metastructure is the key difference.
+
+* IR (Incident Response) Lifecycle:
+
+  * Preparation - understand data, SLAs, contracts; architect for faster detection, investigation and remediation
+
+  * Detection & Analysis - depends on data availability; impacted by lack of transparency to provider's infra
+
+  * Containment, Eradication & Recovery - start with metastructure; software-defined infra can help with containment
+
+  * Post-Mortem - pay attention to data source, metastructure response and communications with cloud provider
+
+* IR recommendations:
+
+  * SLAs and setting expectations for customer and provider responsibilities
+
+  * Clear communication
+
+  * Cloud customers must embrace monitoring of cloud-based resources
+
+  * Automation and orchestration can accelerate the response
+
+  * Incident handling should be planned beforehand
+
+  * SLA must guarantee support for incident handling
+
+  * Regular testing should be done
+
 ## SECaaS Fundamentals
 
 ## SECaaS Categories
