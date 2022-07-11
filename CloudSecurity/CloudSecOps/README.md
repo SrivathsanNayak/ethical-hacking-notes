@@ -104,6 +104,85 @@
 
 ## SECaaS Fundamentals
 
+* SECaaS (Security as a Service) - security product or service, with cloud-based management data; this can secure data and systems in cloud, in trad networks or hybrid environments.
+
+* SECaaS Characteristics:
+
+  * Security products or services delivered as a cloud service
+
+  * Meets NIST essential characteristics
+
+* SECaaS potential benefits:
+
+  * Cloud computing benefits
+
+  * Staffing & expertise
+
+  * Intelligence sharing
+
+  * Deployment flexibility
+
+  * Insulation of clients
+
+  * Scaling & costs
+
+* SECaaS potential concerns:
+
+  * Lack of visibility
+
+  * Regulation differences
+
+  * Handling of regulated data
+
+  * Data leakage
+
+  * Changing providers
+
+  * Migrating to SECaaS
+
+* The cloud consumer can never outsource their accountability.
+
 ## SECaaS Categories
+
+* IAM services:
+
+  * Federated Identity Brokers
+  * Strong Authentication
+  * Cloud-based directories
+
+* CASBs (Cloud Access Security Brokers) - can be cloud-hosted; used to manage SaaS apps
+
+* Web Security Gateways - delivered via cloud by proxying web traffic to provider; policy rules and allowed time frames for web access also enforced; protective, detective and reactive control
+
+* Email Security - filter inbound & outbound email to block spam, phishing, malware, etc.; protects from email floods
+
+* Security assessment:
+
+  * Traditional vulnerability
+  * Application security
+  * Cloud platform assessment
+
+* Web Application Firewalls (WAFs)
+
+* Encryption & key management:
+
+  * Cloud-based key management
+  * Encryption/decryption via API & encrypted connections
+
+* SIEM (Security Information and Event Management) - aggregate log and event data from networks, apps, systems, etc.; provide alerts based on mutually agreed rule set
+
+* BC/DR - using cloud service to back up internal controls; needs sync and clear demarcation of accountability
+
+* Other categories include DDoS protection, Security management, endpoint security (IDS)
+
+* SECaaS recommendations:
+
+  * Understand security-specific needs for data handling, investigative and compliance support
+
+  * Pay attention to handling of regulated data
+
+  * Understand data retention needs
+
+  * Ensure the SECaaS service is compatible with current and future plans
 
 ## Domain 14 Considerations
