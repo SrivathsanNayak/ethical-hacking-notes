@@ -186,3 +186,37 @@
   * Ensure the SECaaS service is compatible with current and future plans
 
 ## Domain 14 Considerations
+
+* Related technologies - key technologies interrelated with cloud computing; for example, big data, IoT, etc.
+
+* Big Data - high volume, high velocity, high variety; distributed data collection, storage and processing.
+
+* Big Data cloud security:
+
+  * Know your platform
+
+  * Secure the platform
+
+  * Securing all the storage
+
+  * Encryption key management (BYOK)
+
+* IoT security priorities:
+
+  * APIs and Device authentication/authorization
+
+  * Data collection
+
+  * Encrypted communications
+
+  * Device patching and updating
+
+* Mobile & Cloud:
+
+  * Most mobile apps connect to cloud
+
+  * Device registration, authentication and authorization
+
+  * Application APIs can expose cloud deployment
+
+* Serverless includes PaaS and FaaS; IAM and logging are key security issues for serverless apps; more security benefits due to higher responsibility of cloud provider.
