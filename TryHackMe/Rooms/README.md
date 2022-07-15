@@ -32,3 +32,4 @@
     28. [Redline - Medium](Redline.md)
     29. [Disk Analysis & Autopsy - Medium](DiskAnalysisAutopsy.md)
     30. [Windows Privilege Escalation - Medium](WindowsPrivilegeEscalation.md)
+    31. [MAL: Malware Introductory - Easy](MalwareIntroductory.md)
