@@ -33,3 +33,4 @@
     29. [Disk Analysis & Autopsy - Medium](DiskAnalysisAutopsy.md)
     30. [Windows Privilege Escalation - Medium](WindowsPrivilegeEscalation.md)
     31. [MAL: Malware Introductory - Easy](MalwareIntroductory.md)
+    32. [MAL: Strings - Easy](Strings.md)
