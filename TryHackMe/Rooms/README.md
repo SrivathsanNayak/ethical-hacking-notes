@@ -34,3 +34,4 @@
     30. [Windows Privilege Escalation - Medium](WindowsPrivilegeEscalation.md)
     31. [MAL: Malware Introductory - Easy](MalwareIntroductory.md)
     32. [MAL: Strings - Easy](Strings.md)
+    33. [MAL: REMnux - The Redux - Easy](REMnux.md)
