@@ -36,3 +36,4 @@
     32. [MAL: Strings - Easy](Strings.md)
     33. [MAL: REMnux - The Redux - Easy](REMnux.md)
     34. [Alfred - Easy](Alfred.md)
+    35. [HackPark - Medium](HackPark.md)
