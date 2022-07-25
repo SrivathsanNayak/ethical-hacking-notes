@@ -37,3 +37,4 @@
     33. [MAL: REMnux - The Redux - Easy](REMnux.md)
     34. [Alfred - Easy](Alfred.md)
     35. [HackPark - Medium](HackPark.md)
+    36. [Game Zone - Easy](GameZone.md)
