@@ -1,23 +1,137 @@
 # Zeek - Medium
 
+1. [Network Security Monitoring and Zeek](#network-security-monitoring-and-zeek)
+2. [Zeek Logs](#zeek-logs)
+3. [CLI Kung-Fu](#cli-kung-fu)
+4. [Zeek Signatures](#zeek-signatures)
+5. [Zeek Scripts | Fundamentals](#zeek-scripts--fundamentals)
+6. [Zeek Scripts | Scripts and Signatures](#zeek-scripts--scripts-and-signatures)
+7. [Zeek Scripts | Frameworks](#zeek-scripts--frameworks)
+8. [Zeek Scripts | Packages](#zeek-scripts--packages)
+
 ## Network Security Monitoring and Zeek
 
+* Network Monitoring - set of management actions to watch and save network traffic for further investigation.
+
+* Zeek is a Network Monitoring tool and offers in-depth traffic investigation; its frameworks are used to provide extended functionality in scripting layer.
+
+* Default log path: ```/opt/zeek/logs```
+
+```shell
+zeek -v
+#check version
+
+cd Desktop/Exercise-Files/TASK-2
+
+sudo su
+#root
+
+zeekctl
+#ZeekControl module
+#commands - status, start, stop
+
+exit
+
+zeek -C -r sample.pcap
+#-r for reading a pcap file
+#-C for ignoring checksum errors
+#to process pcap files with Zeek
+
+ls -l
+#view generated logs
+```
+
 ```markdown
-1. What is the installed Zeek instance version number?
+1. What is the installed Zeek instance version number? - 4.2.1
 
-2. What is the version of the ZeekControl module?
+2. What is the version of the ZeekControl module? - 2.4.0
 
-3. Investigate the sample.pcap file. What is the number of generated alert files?
+3. Investigate the sample.pcap file. What is the number of generated alert files? - 8
 ```
 
 ## Zeek Logs
 
+* Zeek generates log files according to the traffic data, some of which are:
+
+  * Overall info - conn.log, files.log, intel.log, loaded_scripts.log
+
+  * Protocol-based - http.log, dns.log, ftp.log, ssh.log
+
+  * Detection - notice.log, signatures.log, pe.log, traceroute.log
+
+  * Observation - known_host.log, known_services.log, software.log, weird.log
+
+* ```zeek-cut``` tool helps in extracting specific columns from log files.
+
+```shell
+cd Desktop/Exercise-Files/TASK-3
+
+ls
+
+sudo su
+
+zeek -C -r sample.pcap
+#generates log files
+
+cat dhcp.log
+#note dowwn fields of interest
+#in this case, hostname
+
+cat dhcp.log | zeek-cut host_name
+#gives hostname
+
+cat dns.log
+
+cat dns.log | zeek-cut query
+
+cat conn.log
+
+cat conn.log | zeek-cut duration
+```
+
 ```markdown
-1. Investigate the sample.pcap file. Investigate the dhcp.log file. What is the available hostname?
+1. Investigate the sample.pcap file. Investigate the dhcp.log file. What is the available hostname? - Microknoppix
 
-2. Investigate the dns.log file. What is the number of unique DNS queries?
+2. Investigate the dns.log file. What is the number of unique DNS queries? - 2
 
-3. Investigate the conn.log file. What is the longest connection duration?
+3. Investigate the conn.log file. What is the longest connection duration? - 332.319364
+```
+
+## CLI Kung-Fu
+
+```shell
+#view command history
+history
+
+#execute 10th command in history
+!10
+
+#execute previous command
+!!
+
+#cut 1st field
+cat test.txt | cut -f 1
+
+#cut 1st column
+cat test.txt | cut -c1
+
+#show line numbers
+cat test.txt | nl
+
+#print line 23
+cat test.txt | sed -n '23p'
+
+#print lines 20-25
+cat test.txt | sed -n '20-25p'
+
+#print lines below 11
+cat test.txt | awk 'NR < 11 {print $0}'
+
+#remove duplicates and count frequencies
+cat test.txt | sort | uniq -c
+
+#search 'Testvalue1' string, organise column spaces and view output
+grep -rin Testvalue1 * | column -t | less -S
 ```
 
 ## Zeek Signatures
