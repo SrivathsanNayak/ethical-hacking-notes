@@ -40,3 +40,4 @@
     36. [Game Zone - Easy](GameZone.md)
     37. [Zeek - Medium](Zeek.md)
     38. [Zeek Exercises - Medium](ZeekExercises.md)
+    39. [Skynet - Easy](Skynet.md)
