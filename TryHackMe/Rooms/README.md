@@ -42,3 +42,5 @@
     38. [Zeek Exercises - Medium](ZeekExercises.md)
     39. [Skynet - Easy](Skynet.md)
     40. [Threat Intelligence Tools - Easy](ThreatIntelTools.md)
+    41. [Agent T - Easy](AgentT.md)
+    42. [Committed - Easy](Committed.md)
