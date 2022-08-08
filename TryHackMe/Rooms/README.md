@@ -44,3 +44,4 @@
     40. [Threat Intelligence Tools - Easy](ThreatIntelTools.md)
     41. [Agent T - Easy](AgentT.md)
     42. [Committed - Easy](Committed.md)
+    43. [Mr Robot CTF - Medium](MrRobotCTF.md)
