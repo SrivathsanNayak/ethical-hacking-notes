@@ -45,3 +45,4 @@
     41. [Agent T - Easy](AgentT.md)
     42. [Committed - Easy](Committed.md)
     43. [Mr Robot CTF - Medium](MrRobotCTF.md)
+    44. [Velociraptor - Medium](Velociraptor.md)
