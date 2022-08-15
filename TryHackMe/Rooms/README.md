@@ -47,3 +47,4 @@
     43. [Mr Robot CTF - Medium](MrRobotCTF.md)
     44. [Velociraptor - Medium](Velociraptor.md)
     45. [Hacker vs. Hacker - Easy](HackerVsHacker.md)
+    46. [Hacking with PowerShell - Easy](HackingWithPowerShell.md)
