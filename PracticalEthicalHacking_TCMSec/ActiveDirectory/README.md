@@ -2,6 +2,7 @@
 
 1. [Introduction](#introduction)
 2. [Attacking Active Directory: Initial Attack Vectors](#attacking-active-directory-initial-attack-vectors)
+3. [Attacking Active Directory: Post-Compromise Enumeration](#attacking-active-directory-post-compromise-enumeration)
 
 ## Introduction
 
@@ -187,3 +188,69 @@
     * Mark Admin users as Protected Users or sensitive accounts.
 
 * [Pass-Back attacks](https://www.mindpointgroup.com/blog/how-to-hack-through-a-pass-back-attack) can be used for printer hacking.
+
+## Attacking Active Directory: Post-Compromise Enumeration
+
+* [PowerView](https://gist.github.com/HarmJ0y/184f9822b195c52dd50c379ed3117993):
+
+  ```ps
+  powershell -ep bypass
+
+  . .\PowerView.ps1
+  #runs the script, does not show any output
+
+  Get-NetDomain
+  #gives info about domain
+
+  Get-NetDomainController
+  #info about dc
+
+  Get-DomainPolicy
+
+  (Get-DomainPolicy)."system access"
+  #info about particular policy
+
+  Get-NetUser
+  #all users
+
+  Get-NetUser | select cn
+  #only usernames
+
+  Get-NetUser | select description
+  #only description
+
+  Get-UserProperty -Properties pwdlastset
+  #view a particular property
+
+  Get-NetComputer
+  #list all computers in domain
+
+  Get-NetComputer -FullData
+
+  Get-NetComputer -FullData | select OperatingSystem
+
+  Get-NetGroup -GroupName *admin*
+  #view group names having 'admins'
+
+  Invoke-ShareFinder
+
+  Get-NetGPO
+  #view all group policies
+
+  Get-NetGPO | select displayname, whenchanged
+  ```
+
+* Bloodhound: Recon tool for Active Directory environments.
+
+  ```ps
+  powershell -ep bypass
+
+  . .\SharpHound.ps1
+  #setup Bloodhound
+
+  Invoke-BloodHound -CollectionMethod All -Domain MARVEL.local -ZipFileName file.zip
+  #data collection
+  #exports data into zip file
+  ```
+
+  * This zip file can be imported in BloodHound. We can use Pre-Built Analytics Queries to plan further.
