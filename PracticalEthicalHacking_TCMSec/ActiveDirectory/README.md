@@ -285,3 +285,13 @@
   psexec.py "Frank Castle":@192.168.57.141 -hashes <complete NTLM hash>
   #alt pass the hash method
   ```
+
+  * Mitigations:
+
+    * Limit account reuse
+
+    * Disable Guest and Administrator accounts
+
+    * Use strong passwords
+
+    * Privilege Access Management (PAM)
