@@ -9,3 +9,5 @@
     5. [Crocodile - Very Easy](Crocodile.md)
     6. [Responder - Very Easy](Responder.md)
     7. [Archetype - Very Easy](Archetype.md)
+    8. [Oopsie - Very Easy](Oopsie.md)
+    9. [Three - Very Easy](Three.md)
