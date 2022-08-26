@@ -49,3 +49,4 @@
     45. [Hacker vs. Hacker - Easy](HackerVsHacker.md)
     46. [Hacking with PowerShell - Easy](HackingWithPowerShell.md)
     47. [Enumeration - Easy](Enumeration.md)
+    48. [Brim - Medium](Brim.md)
