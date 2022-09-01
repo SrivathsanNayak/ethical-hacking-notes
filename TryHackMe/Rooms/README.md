@@ -50,3 +50,4 @@
     46. [Hacking with PowerShell - Easy](HackingWithPowerShell.md)
     47. [Enumeration - Easy](Enumeration.md)
     48. [Brim - Medium](Brim.md)
+    49. [Daily Bugle - Hard](DailyBugle.md)
