@@ -54,3 +54,4 @@
     50. [Overpass 2 - Hacked - Easy](Overpass2Hacked.md)
     51. [Relevant - Medium](Relevant.md)
     52. [Intro to C2 - Medium](IntroC2.md)
+    53. [Red Team Recon - Easy](RedTeamRecon.md)
