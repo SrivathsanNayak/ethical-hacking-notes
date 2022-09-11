@@ -56,3 +56,4 @@
     52. [Intro to C2 - Medium](IntroC2.md)
     53. [Red Team Recon - Easy](RedTeamRecon.md)
     54. [Password Attacks - Hard](PasswordAttacks.md)
+    55. [Phishing - Medium](Phishing.md)
