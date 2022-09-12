@@ -57,3 +57,4 @@
     53. [Red Team Recon - Easy](RedTeamRecon.md)
     54. [Password Attacks - Hard](PasswordAttacks.md)
     55. [Phishing - Medium](Phishing.md)
+    56. [Windows Local Persistence - Medium](WindowsLocalPersistence.md)
