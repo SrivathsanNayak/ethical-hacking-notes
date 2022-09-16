@@ -2,7 +2,7 @@
 
 This is where I'll be writing my notes on the topic of Ethical Hacking and whatever I learn about it.
 
-* [Learn Ethical Hacking From Scratch - Udemy Course](LearnEthicalHackingFromScratch_Udemy/README.md)
+* [Learn Ethical Hacking From Scratch - Udemy](LearnEthicalHackingFromScratch_Udemy/README.md)
 
 * [CompTIA A+ 220-1001 - Professor Messer](CompTIA_220-1001/README.md)
 
@@ -23,6 +23,8 @@ This is where I'll be writing my notes on the topic of Ethical Hacking and whate
 * [Cloud Security - Cisco Networking Academy](CloudSecurity/README.md)
 
 * [PortSwigger - Web Security Academy](PortSwigger/README.md)
+
+* [IBM Cybersecurity Analyst Professional Certificate - Coursera](CybersecurityAnalyst/README.md)
 
 Some helpful resources:
 
