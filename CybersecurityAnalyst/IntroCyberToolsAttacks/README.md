@@ -106,4 +106,48 @@
 
 ## Security Concepts
 
+* CIA triad - Confidentiality, Integrity, Availability.
+
+* Non-repudiation - valid proof of the identity of the data sender/receiver; implemented in digital signatures, logs.
+
+* Access management - access criteria:
+
+  * Groups
+  * Time frame, specific dates
+  * Physical location
+  * Transaction type
+
+* Authentication concepts:
+
+  * Identity proof
+  * Kerberos (Single Sign On)
+  * Mutual authentication
+  * SIDs (Security ID), DACL (Discretionary Access Control List)
+
+* Incident management - monitoring and detection of security events; components include events, incidents, response team and investigation.
+
+* Incident Response - key concepts:
+
+  * E-discovery - data inventory; helps to understand current status
+
+  * Automated systems - using SIEM, SOA, UBA, big data analysis, etc.
+
+  * BCP & Disaster Recovery - business continuity plan
+
+  * Post-incident - root-cause analysis
+
+* Incident Response Phases - Prepare, Respond, Follow-up
+
+* Security standards and compliance:
+
+  * Best practices, baselines and frameworks - to improve controls, methodologies, performance.
+
+  * Normative and compliance - enforcement for industry; common compliance policies include SOX, HIPAA, GLBA, PCI/DSS.
+
+* IT governance components - policies, procedures, strategic and tactic plans, and other documentation.
+
+* Audits can be internal or external.
+
+* Pentest (ethical hacking) - method of evaluating computer & network security by simulating an attack from internal and external threats.
+
 ## Security Tools
