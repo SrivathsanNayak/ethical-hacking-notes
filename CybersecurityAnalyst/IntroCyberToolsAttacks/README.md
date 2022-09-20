@@ -151,3 +151,103 @@
 * Pentest (ethical hacking) - method of evaluating computer & network security by simulating an attack from internal and external threats.
 
 ## Security Tools
+
+* Firewalls - isolate organization's network from larger Internet.
+
+* Uses of firewalls:
+
+  * Prevent denial of service attacks
+  * Prevent illegal modification/access of internal data
+  * Allow only authorized access to internal network
+
+* Types of firewalls on basis of packet-filtering:
+
+  * Application-level - filters packets on application data as well as on IP/TCP/UDP fields.
+
+  * Packet-filtering - routers filters packet-by-packet; decision to drop packet based on:
+
+    * source and destination IP address
+    * TCP/UDP source and destination port numbers
+    * ICMP message type
+    * TCP SYN and ACK bits
+
+* Types of firewalls on basis of state:
+
+  * Stateless firewalls:
+
+    * no concept of 'state'
+    * also known as packet filter
+    * filters packets based on Layer 3,4 info (IP, port)
+    * less secure
+
+  * Stateful firewalls:
+
+    * have state tables
+    * slower but more secure
+    * application firewalls can make decisions based on layer 7 info
+
+* Proxy firewalls - act as intermediary servers; proxies terminate connections and initiate new ones.
+
+* Limitations of firewalls and gateways:
+
+  * IP spoofing
+  * Each specialized application needs its own gateway
+  * Client software must know how to contact of gateway
+  * Cannot fully protect from attacks
+
+* Antivirus/Antimalware - specialized software that detects, prevents and removes computer virus or malware; scans system and searches for matches against constantly updated malware definitions.
+
+* Types of ciphers:
+
+  * Stream cipher - encrypt/decrypt bit-by-bit
+
+  * Block cipher - encrypt/decrypt in blocks
+
+* Types of cryptography:
+
+  * Symmetric encryption:
+
+    * uses same key to encrypt and decrypt
+    * strengths include speed and cryptographic strength per bit of key
+    * key needs to be shared via a secure, out-of-band method
+    * examples are DES, triple DES and AES
+
+  * Asymmetric encryption:
+
+    * uses two keys, public and private key
+    * one key for encryption and other key for decryption
+    * uses 'one-way' algorithms to generate the two keys
+    * used in digital certificates and PKI (public key infrastructure)
+    * slower than symmetric encryption
+
+  * Hash functions:
+
+    * provides encryption using algorithm, no key
+    * for integrity verification
+    * commonly used hash function is SHA-2
+
+* Cryptographic attacks:
+
+  * Brute force
+  * Rainbow tables
+  * Social engineering
+  * Known plaintext
+  * Known ciphertext
+
+* Penetration testing - testing a computer system, network or app to find security vulnerabilities that an attacker could exploit.
+
+* Threat actors - entities that are partially or wholly responsible for an incident that affects an organization's security.
+
+* Pentest methodologies:
+
+  * OSSTMM - Open Source Security Testing Methodology Manual
+
+  * NIST (SP 800-42) - National Institute of Standards and Technology, Guideline on Network Security Training
+
+  * FFIEC - Federal Financial Institutions Examination Council Information Technology Examination
+
+  * ISSAF - Information Systems Security Assessment Framework
+
+* Digital forensics - identification, recovery, investigation, validation and presentation of facts regarding digital evidence found on computers.
+
+* Chain of custody - chronological documentation (paper trail) that records sequence of custody, control, transfer, analysis and disposition of evidence; required for evidence to be shown in court.
