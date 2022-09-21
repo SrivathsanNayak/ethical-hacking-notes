@@ -66,7 +66,61 @@
 
 ## Examples & Princples of the CIA Triad
 
+* Key objectives of network security:
+
+  * Confidentiality
+  * Integrity
+  * Availability
+  * Authenticity
+  * Accountability
+
 ## Authentication and Access Control
+
+* Identification and AAA - Authentication, Authorization, Accountability
+
+* Control types - Administrative, Technical and Physical
+
+* Each control type can be:
+
+  * Corrective
+  * Preventive
+  * Dissuasive
+  * Recovery
+  * Detective
+  * Compensatory
+
+* Access control models:
+
+  * MAC (Mandatory Access Control) - use labels to regulate access; military use.
+
+  * DAC (Discretionary Access Control) - each object (file/folder) has an owner, who defines the privilege.
+
+  * RBAC (Role Based Access Control) - rights configured based on user roles.
+
+  * Centralized - SSO (Single Sign on); AAA.
+
+  * Decentralized - independent access control methods; local power.
+
+* Best practices for access control:
+
+  * Least privilege
+  * Separation of duties
+  * Rotation of duties
+
+* Physical access control methods:
+
+  * Perimetral
+  * Building
+  * Work areas
+  * Servers and networks
+
+* Monitoring the access control process:
+
+  * IDS
+  * IPS
+  * Host IDS and IPS
+  * HoneyPot
+  * Sniffers
 
 ## Windows Operating System Security Basics
 
