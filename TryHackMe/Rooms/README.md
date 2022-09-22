@@ -59,3 +59,4 @@
     55. [Phishing - Medium](Phishing.md)
     56. [Windows Local Persistence - Medium](WindowsLocalPersistence.md)
     57. [Lateral Movement and Pivoting - Easy](LateralMovementPivoting.md)
+    58. [Microsoft Windows Hardening - Easy](WindowsHardening.md)
