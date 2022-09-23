@@ -226,3 +226,30 @@
 * There are 3 types of permissions - Read(r), Write(w), Execute(x).
 
 ## Overview of Virtualization
+
+* Virtualization allows creation of multiple simulated environments or dedicated resources from a single system.
+
+* Hypervisor - separates physical resources from virtual environments; can sit on top of OS (end user), or be installed directly on hardware (enterprise).
+
+* Virtual machine - single data file; do not interact with host machine directly; hypervisor relays requests from VM to hardware, if required.
+
+* Steps for cloud deployment:
+
+  * Consolidate, Virtualize
+  * Automate, Manage
+  * Integrate, Optimize
+
+* Benefits of cloud computing:
+
+  * Flexibility
+  * Efficiency
+  * Strategic value
+
+* Cloud security considerations:
+
+  * DR/BC Planning
+  * Governance
+  * Compliance
+  * Availability
+  * Data security
+  * Identity and Access Management
