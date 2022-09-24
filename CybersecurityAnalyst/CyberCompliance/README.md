@@ -83,4 +83,104 @@
 
 ## Server and User Administration
 
+* Windows Access Control:
+
+  * After an user is authenticated, the OS determines if user has correct permissions to access a resource.
+
+  * In access control model, users & groups (Security Principals) have assigned permissions.
+
+  * Shared resources use ACLs (Access Control Lists) to assign permissions.
+
+  * Privileged accounts such as Administrators have direct/indirect access to most assets.
+
+* Default local user accounts:
+
+  * Administrator
+  * Guest
+  * HelpAssistant
+  * Default
+
+* Default local system accounts:
+
+  * SYSTEM
+  * NETWORK SERVICE
+  * LOCAL SERVICE
+
+* Security considerations for local user accounts:
+
+  * Restrict local accounts with admin rights
+  * Enfore local account restrictions for remote access
+  * Deny network logon to all local admin accounts
+  * Create unique passwords for local accounts with admin rights
+
+* AD DS (Active Directory Domain Services) - stores info about objects on network and makes this info easy for admins and users to use; objects include shared resources; security integrated in AD via authentication, access control and policy-based administration.
+
+* AD features:
+
+  * Schema (set of rules)
+  * Global catalog
+  * Query & index mechanism
+  * Replication service
+
+* Default local accounts in AD:
+
+  * Administrator
+  * Guest
+  * HelpAssistant
+  * KRBTGT
+
+* Security considerations for AD accounts:
+
+  * Manage default local accounts in AD
+  * Secure and manage DC (Domain Controllers)
+  * Separate admin accounts from user accounts
+  * Create dedicated workstation hosts without Internet and email access
+  * Restrict admin logon access to servers & workstations
+  * Disable account delegation right for admin accounts
+
+* Administrative responsibilities in AD:
+
+  * Service administrators
+  * Data administrators
+
+* Types of groups in AD:
+
+  * Distribution groups - to create email distribution lists.
+
+  * Security groups - to assign permissions to shared resources.
+
+* Group scopes in AD:
+
+  * Universal
+  * Global
+  * Domain local
+
+* Kerberos Authentication - protocol used to verify identity of user/host; Kerberos Key Distribution Center (KDC) is integrated with other Windows Server security services and uses AD DS database.
+
+* Benefits of using Kerberos:
+
+  * Delegated authentication
+  * SSO (Single Sign On)
+  * Interoperability
+  * Efficient authentication
+  * Mutual authentication
+
+* Types of events that can be audited in Event Viewer:
+
+  * Account logon events
+  * Account management
+  * Directory service access
+  * Logon events
+  * Object access
+  * Policy change
+  * Privilege use
+  * Process tracking
+  * System events
+
+* Types of Linux commands:
+
+  * Internal commands - built-in commands, shell-dependent; can be checked using 'type' command.
+
+  * External commands - commands that the system offers, shell-independent; mostly found in /bin and /usr/bin.
+
 ## Cryptography and Compliance Pitfalls
