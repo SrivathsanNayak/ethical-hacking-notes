@@ -184,3 +184,38 @@
   * External commands - commands that the system offers, shell-independent; mostly found in /bin and /usr/bin.
 
 ## Cryptography and Compliance Pitfalls
+
+* Digital signature - mathematical scheme for verifying authenticity of digital messages and documents; ensures authentication, non-repudiation and integrity.
+
+* Common cryptography pitfalls:
+
+  * Missing encryption of data and communications:
+  
+    * Encrypt all sensitive data and ensure its integrity.
+    * Always assume that files containing sensitive info may be exposed and analyzed.
+
+  * Implementing your own crypto:
+
+    * Rely on proven cryptography.
+
+  * Relying on algorithms being secret:
+
+    * Reverse engineering is devoted to discovering hidden algorithms & data.
+    * "Security by obscurity" is not a good defense mechanism.
+    * Always assume that the algorithms will be known to adversary.
+
+  * Using hardcoded/predictable/weak keys:
+
+    * Rely on randomly generated keys and passwords that are stored securely.
+
+  * Ignoring encryption export regulation rules:
+
+    * All code that contains/calls/directs encryption functionality must be classified for export before being released.
+
+* Encrypting data at rest - encrypt all sensitive data at rest; symmetric key encryption is recommended.
+
+* Encrypting data in use - keep data encrypted up until it must be used; decrypt data as required, then promptly erase it in memory after use.
+
+* Encrypting data in transit - all communications should be encrypted; TLS/SSL is a commonly used protocol.
+
+* Use secure hash functions, such as SHA-2 and SHA-3; use salted hashes when validating passwords.
