@@ -46,6 +46,41 @@
 
 ## Client System Administration, Endpoint Protection and Patching
 
+* Common endpoint attacks:
+
+  * Spear-phishing - email imitating a trusted source designed to target a specific person or department.
+
+  * Watering hole - malware placed on a site frequently visited by employees.
+
+  * Ad network attacks - using ad networks to place malware on machine through ad software.
+
+  * Island hopping - supply chain infiltration.
+
+* Endpoint protection management - policy-based approach to network security that requires endpoint devices to comply with criteria before accessing network resources.
+
+* UEM (Unified Endpoint Management) - platform that converges client-based management with MDM (Mobile Device Management) APIs.
+
+* EDR (Endpoint Detection and Response):
+
+  * Automatic policy creation for endpoints
+  * Zero-day OS updates
+  * Continuous monitoring, patching and enforcement of security policies across endpoints
+
+* Factors for endpoint security solution:
+
+  * threat hunting
+  * detection response
+  * user education
+
+* Patch - set of changes to a computer program, designed to update/fix/improve it; includes fixing security vulnerabilities and bugs.
+
+* Types of Windows Patching:
+
+  * Security updates
+  * Critical updates
+  * Software updates
+  * Service packs
+
 ## Server and User Administration
 
 ## Cryptography and Compliance Pitfalls
