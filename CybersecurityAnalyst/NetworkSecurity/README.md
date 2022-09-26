@@ -32,6 +32,28 @@
 
 ## Basics of IP Addressing and the OSI Model
 
+* IPv4 - 32 bits address, divided in 4 octets.
+
+* Classful addressing:
+
+  * Class A - 0.0.0.0 - 127.255.255.255 - unicast/special
+
+  * Class B - 128.0.0.0 - 191.255.255.255 - unicast/special
+
+  * Class C - 192.0.0.0 - 223.0.0.0 - unicast/special
+
+  * Class D - 224.0.0.0 - 239.255.255.255 - multicast
+
+  * Class E - 240.0.0.0 - 255.255.255.255 - reserved
+
+* IPv6 - 128 bits address, divided in 8 hexadecimal values (16 bits each).
+
+* TCP (Transmission Control Protocol) - connection-oriented, reliable; ordered, segmented data with flow control.
+
+* UDP (User Datagram Protocol) - connectionless, unreliable; unordered, datagram data without flow control.
+
+* NGFW (next-generation firewall) - combines traditional firewall with other network device filtering functionality, such as IPS and website filtering; able to monitor the traffic from layer 2 to layer 7.
+
 ## Introduction to Databases
 
 ## Deep Dive - Injection Vulnerability
