@@ -70,3 +70,35 @@
   * Relational databases - data in multiple tables, linked to each other using keys
 
 ## Deep Dive - Injection Vulnerability
+
+* Injection flaws allow attackers to relay malicious code through vulnerable app to another system; may allow full takeover of system.
+
+* OS command injection - abuse of vulnerable app functionality that causes execution of specified OS commands; due to lack of input sanitization, and unsafe execution of OS commands.
+
+* Prevention of OS command injection:
+
+  * Do not execute OS commands, use built-in commands or 3rd party libraries
+  * Run at least possible privilege level
+  * Do not run commands through shell interpreters
+  * Use explicit paths when running executables
+  * Use safer functions when running system commands
+  * Do not let user input reach command execution unchanged
+  * Sanitize user input with strict whitelists, not blacklists
+
+* SQL injection - abuse of vulnerable app functionality that causes execution of specified SQL queries.
+
+* Types of SQL injection:
+
+  * Error-based
+  * UNION-based
+  * Blind injection
+  * Out of Band
+
+* Prevention of SQL injection:
+
+  * Use prepared statements
+  * Sanitize user input
+  * Do not expose native database errors to the user
+  * Limit database user permissions
+  * Use stored procedures
+  * Use ORM (Object-relational mapping) libraries
