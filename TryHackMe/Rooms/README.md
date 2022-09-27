@@ -58,5 +58,4 @@
     54. [Password Attacks - Hard](PasswordAttacks.md)
     55. [Phishing - Medium](Phishing.md)
     56. [Windows Local Persistence - Medium](WindowsLocalPersistence.md)
-    57. [Lateral Movement and Pivoting - Easy](LateralMovementPivoting.md)
-    58. [Microsoft Windows Hardening - Easy](WindowsHardening.md)
+    57. [Microsoft Windows Hardening - Easy](WindowsHardening.md)
