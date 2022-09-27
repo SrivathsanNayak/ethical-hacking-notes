@@ -56,4 +56,17 @@
 
 ## Introduction to Databases
 
+* Data source types:
+
+  * Distributed databases (Structured)
+  * Data warehouses (Structured)
+  * Big data (Semi-structured)
+  * File shares (Unstructured)
+
+* Types of structured data:
+
+  * Flat file databases - all info is stored in one table
+
+  * Relational databases - data in multiple tables, linked to each other using keys
+
 ## Deep Dive - Injection Vulnerability
