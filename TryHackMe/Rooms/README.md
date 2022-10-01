@@ -60,3 +60,4 @@
     56. [Windows Local Persistence - Medium](WindowsLocalPersistence.md)
     57. [Microsoft Windows Hardening - Easy](WindowsHardening.md)
     58. [Data Exfiltration - Hard](DataExfiltration.md)
+    59. [Windows Internals - Medium](WindowsInternals.md)
