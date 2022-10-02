@@ -61,3 +61,4 @@
     57. [Microsoft Windows Hardening - Easy](WindowsHardening.md)
     58. [Data Exfiltration - Hard](DataExfiltration.md)
     59. [Windows Internals - Medium](WindowsInternals.md)
+    60. [Abusing Windows Internals - Hard](AbusingWindowsInternals.md)
