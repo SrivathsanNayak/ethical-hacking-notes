@@ -92,7 +92,53 @@
 
 ## Scanning
 
+* Vulnerability scanner capabilities:
+
+  * Keeping updated database of vulnerabilities
+  * Detection of genuine vulnerabilities without a lot of false positives
+  * Performing trend analysis and generating reports
+  * Provide recommendations for countermeasures
+
+* Vulnerability scanner components:
+
+  * Engine scanner
+  * Database
+  * Report module
+  * UI
+
+* CVSS (Common Vulnerability Scoring System) - system of assigning severity rankings to vulnerabilities; provides a standardized score across the industry.
+
+* Values of CVSS - base score (exploitability & impact subscore), temporal score and environmental score.
+
+* Types of port scans:
+
+  * Ping
+  * TCP Connect
+  * Stealth
+  * TCP (half open)
+  * UDP
+
 ## Application Security and Testing
+
+* In architecture, Enterprise and Solution (more detailed) architecture break down the problem, providing different levels of abstraction.
+
+* High-level architectures are described through Architectural Building Blocks (ABBs) and Solution Building Blocks (SBBs).
+
+* The use of security architecture patterns accelerate the creation of a solution architecture.
+
+* Application security threats:
+
+  * Input validation - buffer overflow, XSS, SQLi.
+
+  * Authentication - network eavesdropping, bruteforce attack, dictionary attack.
+
+  * Authorization - privesc, data tampering, luring attacks.
+
+  * Configuration management - unauthorized access, retrieval of cleartext config data.
+
+  * Exception management - info disclosure, denial of service.
+
+  * Auditing & logging - exploitation without trace, denying an operation.
 
 ## SIEM Platforms
 
