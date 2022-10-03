@@ -42,6 +42,54 @@
 
 ## Data Loss Prevention and Mobile Endpoint Protection
 
+* Top challenges for data security:
+
+  * Explosive data growth
+  * New privacy regulations
+  * Operational complexity
+  * Cybersecurity skills shortage
+
+* Common pitfalls in data security:
+
+  * Failure to move beyond compliance
+  * Failure to recognize need for centralized data security
+  * Failure to define who owns responsibility for data
+  * Failure to adddress known vulnerabilities
+  * Failure to prioritize & leverage data activity monitoring
+
+* Data protection capabilities:
+
+  * Data discovery
+  * Data classification
+  * Vulnerability assessment
+  * Data risk analysis
+  * Data & file activity monitoring
+  * Real-time alerting
+  * Blocking, masking & quarantining
+  * Active analytics
+  * Encryption
+  * Tokenization
+  * Key management
+  * Automated compliance report
+
+* Mobile endpoints differ from traditional endpoints in the following manner:
+
+  * Users don't interact directly with OS
+  * Apps act as broker between user and OS
+  * OS stability can be easily monitored
+  * AV software can check apps and read certain signatures, but cannot peek inside the app contents
+
+* Daily operations in mobile endpoint protection:
+
+  * Monitor device OS versions
+  * Monitor app installs and versions
+  * Monitor & enforce encryption
+  * Distribute secure payloads
+  * Automate compliance actions
+  * Ensure proper NAC policies are enforced
+  * Educate users regularly
+  * Update contingency plans
+
 ## Scanning
 
 ## Application Security and Testing
