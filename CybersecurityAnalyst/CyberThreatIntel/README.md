@@ -142,4 +142,12 @@
 
 ## SIEM Platforms
 
+* SIEM (System Information Event Management) - data aggregator, search & reporting system; collects logs for analysis.
+
+* SIEM system can be rule-based or employ a statistical correlation engine to establish relationships between event log entries.
+
+* Normalization - parsing raw event data and preparing it for readability; allows for consistent storage and indexing (for fast searching & sorting).
+
 ## Threat Hunting
+
+* Cyber threat hunting - proactively identifying, intercepting, tracking, investigating & eliminating cyber adversaries as early as possible in the Cyber Kill Chain.
