@@ -45,7 +45,7 @@
   * Regularly monitor and test networks
   * Maintain Information Security policy
 
-* PoS malware:
+* PoS malware examples:
 
   * Alina
   * vSkimmer
@@ -56,4 +56,45 @@
 
 ## 3rd Party Breach
 
+* Types of 3rd party breaches
+
+  * Cloud-based
+  * Payment
+  * JavaScript library
+
 ## Ransomware
+
+* Ransomware - malware that infects computer systems, restricting user access; users are told that unless a ransom is paid, access will not be restored.
+
+* Types of ransomware:
+
+  * Crypto
+  * Locker
+  * Leakware/Doxware
+
+* Ransomware attack vectors:
+
+  * Phishing
+  * RDP (Remote Desktop Protocol)
+  * Software vulnerabilities
+  * Malicious links
+
+* Prevention:
+
+  * Backup
+  * Update software & passwords
+  * Antivirus
+  * Beware of links
+
+* Ransomware examples:
+
+  * Locky
+  * WannaCry
+  * Bad Rabbit
+  * Ryuk
+  * Troldesh
+  * Jigsaw
+  * CryptoLocker
+  * Petya
+  * GoldenEye
+  * GandCrab
