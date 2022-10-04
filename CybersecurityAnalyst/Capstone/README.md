@@ -26,7 +26,33 @@
 
 ## Phishing Scams
 
+* Types of phishing scams:
+
+  * Phishing
+  * Spear phishing
+  * Whaling
+
 ## Point of Sale Breach
+
+* For PoS (Point of Sale) Security, the PCI DSS (Payment Card Industry Data Security Standard) is the main payment card industry info security standard; with the goal to protect cardholder data & sensitive authentication data.
+
+* Security controls & processes for PCI DSS requirements:
+
+  * Build & maintain secure network & systems
+  * Protect cardholder data
+  * Maintain vulnerability management program
+  * Implement strong access control measures
+  * Regularly monitor and test networks
+  * Maintain Information Security policy
+
+* PoS malware:
+
+  * Alina
+  * vSkimmer
+  * Dexter
+  * FYSNA
+  * Decebel
+  * BlackPOS
 
 ## 3rd Party Breach
 
