@@ -1,1 +1,0 @@
-# IBM Cybersecurity Analyst Assessment

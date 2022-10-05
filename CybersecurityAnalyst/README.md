@@ -15,5 +15,3 @@
   6. [Cyber Threat Intelligence](CyberThreatIntel/README.md)
 
   7. [Cybersecurity Capstone: Breach Response Case Studies](Capstone/README.md)
-
-  8. [IBM Cybersecurity Analyst Assessment](Assessment/README.md)
