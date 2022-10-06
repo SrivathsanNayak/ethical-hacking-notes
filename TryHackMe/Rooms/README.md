@@ -63,3 +63,4 @@
     59. [Windows Internals - Medium](WindowsInternals.md)
     60. [Abusing Windows Internals - Hard](AbusingWindowsInternals.md)
     61. [AV Evasion: Shellcode - Medium](AVEvasion.md)
+    62. [Obfuscation Principles - Medium](ObfuscationPrinciples.md)
