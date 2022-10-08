@@ -41,3 +41,5 @@ Some helpful resources:
 * [Command Injection Payload List](https://github.com/payloadbox/command-injection-payload-list)
 
 * [Pentest CheatSheets](https://github.com/coreb1t/awesome-pentest-cheat-sheets)
+
+* [Steganography Resources](https://0xrick.github.io/lists/stego/)
