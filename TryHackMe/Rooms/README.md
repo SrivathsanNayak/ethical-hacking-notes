@@ -65,3 +65,4 @@
     61. [AV Evasion: Shellcode - Medium](AVEvasion.md)
     62. [Obfuscation Principles - Medium](ObfuscationPrinciples.md)
     63. [Signature Evasion - Medium](SignatureEvasion.md)
+    64. [Bypassing UAC - Medium](BypassingUAC.md)
