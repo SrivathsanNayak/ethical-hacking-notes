@@ -20,6 +20,8 @@ This is where I'll be writing my notes on the topic of Ethical Hacking and whate
 
 * [HackTheBox](HackTheBox/README.md)
 
+* [HackTheBox Academy](HTBAcademy/README.md)
+
 * [Cloud Security - Cisco Networking Academy](CloudSecurity/README.md)
 
 * [PortSwigger - Web Security Academy](PortSwigger/README.md)
