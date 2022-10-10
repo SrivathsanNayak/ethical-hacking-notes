@@ -66,3 +66,4 @@
     62. [Obfuscation Principles - Medium](ObfuscationPrinciples.md)
     63. [Signature Evasion - Medium](SignatureEvasion.md)
     64. [Bypassing UAC - Medium](BypassingUAC.md)
+    65. [Runtime Detection Evasion - Hard](RuntimeDetectionEvasion.md)
