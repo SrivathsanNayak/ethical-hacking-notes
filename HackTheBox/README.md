@@ -11,3 +11,4 @@
     7. [Archetype - Very Easy](Archetype.md)
     8. [Oopsie - Very Easy](Oopsie.md)
     9. [Three - Very Easy](Three.md)
+    10. [Vaccine - Very Easy](Vaccine.md)
