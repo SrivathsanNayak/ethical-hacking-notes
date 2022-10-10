@@ -67,3 +67,4 @@
     63. [Signature Evasion - Medium](SignatureEvasion.md)
     64. [Bypassing UAC - Medium](BypassingUAC.md)
     65. [Runtime Detection Evasion - Hard](RuntimeDetectionEvasion.md)
+    66. [Evading Logging and Monitoring - Medium](EvadingLoggingandMonitoring.md)
