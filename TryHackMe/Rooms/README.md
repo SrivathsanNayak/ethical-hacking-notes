@@ -68,3 +68,4 @@
     64. [Bypassing UAC - Medium](BypassingUAC.md)
     65. [Runtime Detection Evasion - Hard](RuntimeDetectionEvasion.md)
     66. [Evading Logging and Monitoring - Medium](EvadingLoggingandMonitoring.md)
+    67. [Living Off The Land - Medium](LivingOffTheLand.md)
