@@ -70,3 +70,4 @@
     66. [Evading Logging and Monitoring - Medium](EvadingLoggingandMonitoring.md)
     67. [Living Off The Land - Medium](LivingOffTheLand.md)
     68. [Network Security Solutions - Medium](NetworkSecuritySolutions.md)
+    69. [Firewalls - Medium](Firewalls.md)
