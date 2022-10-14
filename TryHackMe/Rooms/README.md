@@ -71,3 +71,4 @@
     67. [Living Off The Land - Medium](LivingOffTheLand.md)
     68. [Network Security Solutions - Medium](NetworkSecuritySolutions.md)
     69. [Firewalls - Medium](Firewalls.md)
+    70. [Active Directory Basics - Easy](ActiveDirectoryBasics.md)
