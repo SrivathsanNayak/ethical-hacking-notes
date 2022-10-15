@@ -6,7 +6,6 @@ This consists of some intentionally vulnerable machines which would be exploited
   2. [Academy](#academy)
   3. [Dev](#dev)
   4. [Butler](#butler)
-  5. [Blackpearl](#blackpearl)
 
 ## Blue
 
