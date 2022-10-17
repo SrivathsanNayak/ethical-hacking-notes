@@ -76,3 +76,4 @@
     72. [Brute It - Easy](BruteIt.md)
     73. [ToolsRus - Easy](ToolsRus.md)
     74. [Fowsniff CTF - Easy](FowsniffCTF.md)
+    75. [Easy Peasy - Easy](EasyPeasy.md)
