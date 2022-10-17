@@ -50,6 +50,9 @@ Writeups for practice challenges in picoGym:
   46. [First Find](#first-find)
   47. [Big Zip](#big-zip)
   48. [Wireshark doo dooo do doo...](#wireshark-doo-dooo-do-doo)
+  49. [St3go](#st3go)
+  50. [login](#login)
+  51. [Lookey here](#lookey-here)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -656,3 +659,43 @@ grep -nr picoCTF
 * On checking that page, we get the string ```Gur synt vf cvpbPGS{c33xno00_1_f33_h_qrnqorrs}```.
 
 * On applying ROT13, we get the flag ```picoCTF{p33kab00_1_s33_u_deadbeef}```.
+
+## St3go
+
+* We download the file ```pico.flag.png```.
+
+* On running ```file pico.flag.png```, it shows that it is a PNG file.
+
+* We can try running a few steganography tools as the name suggests.
+
+```shell
+exiftool pico.flag.png
+
+steghide info pico.flag.png
+
+binwalk pico.flag.png
+
+zsteg -a pico.flag.png
+#this gives us the flag picoCTF{7h3r3_15_n0_5p00n_a1062667}
+#in the rgb,lsb method
+```
+
+## login
+
+* We are given a webpage link containing a login page.
+
+* Using the browser's dev tools, we can view index.js, which shows the logic used for login.
+
+* It contains two codes used for comparison - 'YWRtaW4' for username and 'cGljb0NURns1M3J2M3JfNTNydjNyXzUzcnYzcl81M3J2M3JfNTNydjNyfQ' for password; these codes look like base64.
+
+* The code removes 'equal to' sign as well, so if we append equal-sign to this and try to convert from base64 in Cyberchef, we can crack this.
+
+* Doing so, we get the creds admin:picoCTF{53rv3r_53rv3r_53rv3r_53rv3r_53rv3r}, and using these creds, we get the flag same as our password.
+
+## Lookey here
+
+* We are given a file ```anthem.flag.txt```; the ```file``` command shows that it is Unicode text file.
+
+* On using ```cat``` and reading the contents it seems like a huge read.
+
+* On using the command ```grep "{" anthem.flag.txt``` to search for the left curly braces, we get our flag "picoCTF{gr3p_15_@w3s0m3_58f5c024}".
