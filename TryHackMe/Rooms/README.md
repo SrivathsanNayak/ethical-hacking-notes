@@ -75,3 +75,4 @@
     71. [Lian_Yu - Easy](Lian_Yu.md)
     72. [Brute It - Easy](BruteIt.md)
     73. [ToolsRus - Easy](ToolsRus.md)
+    74. [Fowsniff CTF - Easy](FowsniffCTF.md)
