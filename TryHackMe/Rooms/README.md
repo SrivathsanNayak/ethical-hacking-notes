@@ -78,3 +78,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   74. [Fowsniff CTF - Easy](FowsniffCTF.md)
   75. [Easy Peasy - Easy](EasyPeasy.md)
   76. [Anonymous - Medium](Anonymous.md)
+  77. [Break Out The Cage - Easy](BreakOutTheCage.md)
