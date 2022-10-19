@@ -80,3 +80,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   76. [Anonymous - Medium](Anonymous.md)
   77. [Break Out The Cage - Easy](BreakOutTheCage.md)
   78. [Breaching Active Directory - Medium](BreachingAD.md)
+  79. [h4cked - Easy](h4cked.md)
