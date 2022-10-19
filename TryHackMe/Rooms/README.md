@@ -81,3 +81,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   77. [Break Out The Cage - Easy](BreakOutTheCage.md)
   78. [Breaching Active Directory - Medium](BreachingAD.md)
   79. [h4cked - Easy](h4cked.md)
+  80. [Boiler CTF - Medium](BoilerCTF.md)
