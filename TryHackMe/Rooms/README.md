@@ -83,3 +83,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   79. [h4cked - Easy](h4cked.md)
   80. [Boiler CTF - Medium](BoilerCTF.md)
   81. [UltraTech - Medium](UltraTech.md)
+  82. [Overpass - Easy](Overpass.md)
