@@ -51,16 +51,16 @@ The source code for /diningRoom includes a base64 code, which translates to a hi
 
 Directories enumerated so far (manual enumeration, gobuster and the mansion map combined):
 
-  * /index.html - visited
-  * /images - visited
-  * /css - visited
-  * /js - visited
-  * /attic - visited
-  * /mansionmain - visited
-  * /diningRoom - visited
-  * /teaRoom - visited
-  * /artRoom - visited
-  * /barRoom - visited
+  * /index.html
+  * /images
+  * /css
+  * /js
+  * /attic
+  * /mansionmain
+  * /diningRoom
+  * /teaRoom
+  * /artRoom
+  * /barRoom
   * /diningRoom2F
   * /tigerStatusRoom
   * /galleryRoom
@@ -94,9 +94,35 @@ If we use Vignere decode on the encoded string with 'rebecca' as key, we get the
 So, we navigate to /diningRoom/the_great_shield_key.html
 This gives us the shield flag.
 
-We can use the shield flag as input in /attic to lead to a deeper attic; it offers us a note about crests; we can save it for now and explore the other pages.
+We can use the shield flag as input in /attic to lead to a deeper attic; it offers us a note about crest-4; we can save it for now and explore the other pages.
 
+/diningRoom2F page mentions the blue gem; however, its source code includes another cryptic string, which can be cracked using ROT-13.
 
+This gives us a hint about the blue gem; we can find it now in /diningRoom/sapphire.html; this gives us the blue jewel flag.
+
+Moving to the /tigerStatusRoom, we have the option to place a gem on the tiger's eye, that is, use the blue gem flag as input. Upon doing so, we receive another note regarding the crests; this one is about crest-1.
+
+Now, /galleryRoom offers a note about crest-2, we save it for later.
+
+/studyRoom has a locked door, we can input a helmet flag here, but we do not have it yet, so we will save this page for later.
+
+/armorRoom includes an input accepting a shield symbol; when we enter the shield flag here, it leads us to a deeper armor room, which offers us another note.
+
+Now, we have four notes for us, all of them contain clues about a crest; we can use CyberChef for the decoding process.
+
+For each crest, there are two types of hints - number of times it has been encoded, and the number of characters in the crest; we can use this to our advantage.
+
+Crest-1 can be decoded from base64, then decoded from base32, to give the 14-character string "RlRQIHVzZXI6IG".
+
+Crest-2 can be decoded from base32, then decoded from base58 to give the 18-char string "h1bnRlciwgRlRQIHBh".
+
+Crest-3 can be decoded first from base64, then from binary, and finally decoded from hex - to give us a 19-char string "c3M6IHlvdV9jYW50X2h".
+
+Finally, crest-4 can be decoded first from base58, followed by decode from hex, to give us 17-char string "pZGVfZm9yZXZlcg==".
+
+Now, according to the notes, we need to concatenate all 4 crests in order to produce a final encoded clue.
+
+When combined, the four crests give us a base64-encoded string; when decoded it gives us the FTP credentials, hunter:you_cant_hide_forever
 ```
 
 ```markdown
@@ -108,63 +134,162 @@ We can use the shield flag as input in /attic to lead to a deeper attic; it offe
 
 4. What is the gold emblem flag? - gold_emblem{58a8c41a9d08b8a4e38d02a4d7ff4843}
 
-5. What is the shield key flag?
+5. What is the shield key flag? - shield_key{48a7a9227cd7eb89f0a062590798cbac}
 
-6. What is the blue gem flag?
+6. What is the blue gem flag? - blue_jewel{e1d457e96cac640f863ec7bc475d48aa} 
 
-7. What is the FTP username?
+7. What is the FTP username? - hunter
 
-8. What is the FTP password?
+8. What is the FTP password? - you_cant_hide_forever
 ```
 
 ## The Guard house
 
 ```shell
+ftp 10.10.193.97
+#use the creds found earlier
+
+ls -la
+#use get command to transfer all files from ftp to our machine
+
+steghide info 001-key.jpg
+#shows an embedded txt file
+
+steghide extract -sf 001-key.jpg
+#extracts data
+
+cat key-001.txt
+#first clue
+
+exiftool 002-key.jpg
+#comment gives encoded text, second clue
+
+binwalk -e 003-key.jpg
+#extracts zip file
+
+gpg --decrypt helmet_key.txt.gpg
+#use password and get helmet flag
 ```
 
 ```markdown
+Now we can log into FTP using the creds we found in the previous task.
+
+We have five files in the FTP directory, we can transfer them to our machine and inspect for clues.
+
+The .txt file gives us a clue about a directory /hidden_closet, which requires the helmet flag for input - now we have two rooms, /studyRoom and /hidden_closet, which require the helmet flag.
+
+Carrying on with the inspection, we have three image files and a .gpg file, which is supposed to be the encrypted helmet flag.
+
+We can use stego techniques to get clues from the image files.
+
+Using steghide, we extract our 1st clue "cGxhbnQ0Ml9jYW" from 1st key image.
+
+Using exiftool on the 2nd key image gives us a comment "5fYmVfZGVzdHJveV9", which is our 2nd clue.
+
+Using binwalk on 3rd key image, we get a zip file, which contains a txt file with the 3rd clue "3aXRoX3Zqb2x0"
+
+Combining all 3 clues gives us a base64 encoded string, which when decoded gives us the following string:
+
+    plant42_can_be_destroy_with_vjolt
+
+This can be used as password for the encrypted gpg file, which gives us the helmet flag.
 ```
 
 ```markdown
-1. Where is the hidden directory mentioned by Barry?
+1. Where is the hidden directory mentioned by Barry? - /hidden_closet/
 
-2. Password for the encrypted file
+2. Password for the encrypted file - plant42_can_be_destroy_with_vjolt
 
-3. What is the helmet key flag?
+3. What is the helmet key flag? - helmet_key{458493193501d2b94bbab2e727f8db4b}
 ```
 
 ## The Revisit
 
-```shell
+```markdown
+Now that we have the helmet flag, we can revisit the two rooms, study room and closet room.
+
+/studyRoom accepts the helmet flag and leads us to book, which gives us a .tar.gz file; this file contains a txt file with the SSH user 'umbrella_guest'
+
+Similarly, /hidden_closet accepts helmet flag too and it leads us to an underground cave. We are introduced to Enrico, leader of STARS bravo team.
+
+In this page, we are given two items - MO disk 1 and a wolf medal.
+
+MO disk 1 contains encoded text and the wolf medal gives us the SSH password "T_virus_rules".
+
+We can use the SSH creds to log into SSH now; we will look into the encoded text later.
 ```
 
 ```markdown
-```
+1. What is the SSH login username? - umbrella_guest
 
-```markdown
-1. What is the SSH login username?
+2. What is the SSH login password? - T_virus_rules
 
-2. What is the SSH login password?
-
-3. Who the STARS bravo team leader?
+3. Who the STARS bravo team leader? - Enrico
 ```
 
 ## Underground Laboratory
 
 ```shell
+ssh umbrella_guest@10.10.193.97
+
+ls -la
+
+cd .jailcell
+
+ls -la
+
+cat chris.txt
+#contains more clues
+
+su weasker
+
+cd ../weasker
+
+ls -la
+
+cat weasker_note.txt
+
+#checking privesc
+cat /etc/crontab
+
+sudo -l
+#we can run all commands as sudo
+
+sudo su
+#switch to root
+
+cat /root/root.txt
 ```
 
 ```markdown
+After SSHing, we can see that there is a directory .jailcell
+
+Inside it there is a file named chris.txt; this contains the following clues:
+
+  * Weasker is the traitor
+  * MO disk 2 - albert
+
+Now, we can use the clue 'albert' to decode the encoded text we found earlier using Vigenere Decode. This gives us the login password for weasker.
+
+We can switch to user 'weasker' now and check the directory for clues.
+
+weasker's home directory has a note in it, which contains more clues to the story.
+
+Now, we need to find the root flag; we can check for privesc.
+
+Using 'sudo -l' we can check which commands we can run as sudo; turns out we can run all commands as sudo.
+
+Therefore, we can switch to root user and get the root flag at /root/root.txt
 ```
 
 ```markdown
-1. Where you found Chris?
+1. Where you found Chris? - jailcell
 
-2. Who is the traitor?
+2. Who is the traitor? - Weasker
 
-3. The login password for the traitor?
+3. The login password for the traitor? - stars_members_are_my_guinea_pig
 
-4. The name of the ultimate form?
+4. The name of the ultimate form? - Tyrant
 
-5. The root flag
+5. The root flag - 3c5794a00dc56c35f2bf096571edf3bf
 ```
