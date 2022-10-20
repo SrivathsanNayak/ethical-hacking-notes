@@ -84,3 +84,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   80. [Boiler CTF - Medium](BoilerCTF.md)
   81. [UltraTech - Medium](UltraTech.md)
   82. [Overpass - Easy](Overpass.md)
+  83. [Smag Grotto - Easy](SmagGrotto.md)
