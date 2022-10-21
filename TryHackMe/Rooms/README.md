@@ -87,3 +87,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   83. [Smag Grotto - Easy](SmagGrotto.md)
   84. [Biohazard - Medium](Biohazard.md)
   85. [Madness - Easy](Madness.md)
+  86. [Source - Easy](Source.md)
