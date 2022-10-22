@@ -89,3 +89,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   85. [Madness - Easy](Madness.md)
   86. [Source - Easy](Source.md)
   87. [Anthem - Easy](Anthem.md)
+  88. [GoldenEye - Medium](GoldenEye.md)
