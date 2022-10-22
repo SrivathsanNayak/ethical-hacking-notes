@@ -4,6 +4,10 @@
 2. [SQL Injection](#sql-injection)
 3. [Broken Authentication](#broken-authentication)
 4. [Sensitive Data Exposure](#sensitive-data-exposure)
+5. [XML External Entities (XXE)](#xml-external-entities-xxe)
+6. [Broken Access Control](#broken-access-control)
+7. [Security Misconfiguration](#security-misconfiguration)
+8. [Cross-Site Scripting (XSS)](#cross-site-scripting-xss)
 
 ## Installation
 
@@ -94,3 +98,50 @@ sudo docker run --rm -p 3000:3000 bkimminich/juice-shop
   * Do not store unnecessary data
   * Encrypt all data
   * Store passwords using strong hashing functions
+
+## XML External Entities (XXE)
+
+* XXE abuses systems that pass XML input; attacks include DoS, local file disclosure, RCE, etc.
+
+* XXE is carried out by exploiting the SYSTEM parameter.
+
+## Broken Access Control
+
+* Due to lack of automated detection and absence of access control; detected usually with the help of manual means.
+
+* Common vulnerabilities include bypassing access control checks, viewing other users' records, privilege escalation and metadata manipulation.
+
+* Broken access control defenses:
+
+  * Deny by default, except for public resources
+  * Disable web server directory listing
+  * Implement access control mechanisms
+
+## Security Misconfiguration
+
+* Exploiting unpatched flaws, accessing default accounts and unprotected directories are a few examples of exploiting security misconfigurations.
+
+* It is due to lack of security hardening, usage of default creds, or disabled security features.
+
+* Security misconfiguration defenses:
+
+  * Automation of security
+  * Minimal platform without unnecessary features
+  * Verify effectiveness of configurations
+
+## Cross-Site Scripting (XSS)
+
+* Types of XSS:
+
+  * Reflected XSS
+  * Stored XSS
+  * DOM XSS
+
+* An example of a simple payload for reflected XSS is ```<iframe src="javascript:alert(`xss`)">```; this can be inserted as input or as query in URL.
+
+* XSS defenses:
+
+  * Encoding
+  * Filtering
+  * Validating
+  * Sanitization
