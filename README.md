@@ -28,6 +28,8 @@ This is where I'll be writing my notes on the topic of Ethical Hacking and whate
 
 * [IBM Cybersecurity Analyst Professional Certificate - Coursera](CybersecurityAnalyst/README.md)
 
+* [Windows Privilege Escalation for Beginners - TCM Security](WindowsPrivilegeEscalation_TCMSec/README.md)
+
 Some helpful resources:
 
 * [CyberChef](https://gchq.github.io/CyberChef/)
