@@ -91,3 +91,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   87. [Anthem - Easy](Anthem.md)
   88. [GoldenEye - Medium](GoldenEye.md)
   89. [Wonderland - Medium](Wonderland.md)
+  90. [Tokyo Ghoul - Medium](TokyoGhoul.md)
