@@ -4,11 +4,11 @@ Notes for the TCM Security course [Practical Ethical Hacking](https://academy.tc
 
 The five stages of ethical hacking:
 
-    1. Reconnaissance (Active, Passive)
-    2. Scanning and Enumeration
-    3. Gaining Access, Exploitation
-    4. Maintaining Access
-    5. Covering tracks
+  1. Reconnaissance (Active, Passive)
+  2. Scanning and Enumeration
+  3. Gaining Access, Exploitation
+  4. Maintaining Access
+  5. Covering tracks
 
 Topics:
 
