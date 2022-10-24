@@ -15,3 +15,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   11. [Unified - Very Easy](Unified.md)
   12. [Explosion - Very Easy](Explosion.md)
   13. [Preignition - Very Easy](Preignition.md)
+  14. [Mongod - Very Easy](Mongod.md)
