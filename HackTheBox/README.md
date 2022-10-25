@@ -18,3 +18,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   14. [Mongod - Very Easy](Mongod.md)
   15. [Ignition - Very Easy](Ignition.md)
   16. [Bike - Very Easy](Bike.md)
+  17. [Pennyworth - Very Easy](Pennyworth.md)
