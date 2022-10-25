@@ -20,3 +20,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   16. [Bike - Very Easy](Bike.md)
   17. [Pennyworth - Very Easy](Pennyworth.md)
   18. [Tactics - Very Easy](Tactics.md)
+  19. [Included - Very Easy](Included.md)
