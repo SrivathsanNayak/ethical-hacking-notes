@@ -22,3 +22,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   18. [Tactics - Very Easy](Tactics.md)
   19. [Included - Very Easy](Included.md)
   20. [Markup - Very Easy](Markup.md)
+  21. [Base - Very Easy](Base.md)
