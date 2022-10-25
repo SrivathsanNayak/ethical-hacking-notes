@@ -17,3 +17,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   13. [Preignition - Very Easy](Preignition.md)
   14. [Mongod - Very Easy](Mongod.md)
   15. [Ignition - Very Easy](Ignition.md)
+  16. [Bike - Very Easy](Bike.md)
