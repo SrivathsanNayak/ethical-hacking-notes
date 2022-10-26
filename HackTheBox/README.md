@@ -24,3 +24,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   20. [Markup - Very Easy](Markup.md)
   21. [Base - Very Easy](Base.md)
   22. [Lame - Easy](Lame.md)
+  23. [Jerry - Easy](Jerry.md)
