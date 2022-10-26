@@ -94,3 +94,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   90. [Tokyo Ghoul - Medium](TokyoGhoul.md)
   91. [HA Joker CTF - Medium](HAJokerCTF.md)
   92. [Year of the Rabbit - Easy](YearOfTheRabbit.md)
+  93. [Archangel - Easy](Archangel.md)
