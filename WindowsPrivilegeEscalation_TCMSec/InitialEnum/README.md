@@ -134,11 +134,11 @@ systeminfo
 
 #in attacker machine
 #update windows-exploit-suggester
-./windows-exploit-suggester.py --update
+python2 windows-exploit-suggester.py --update
 #note database .xls file
 
-pip install xlrd --upgrade
+pip2 install --user xlrd==1.1.0
 
-./windows-exploit-suggester.py 2021-01-01-mssb.xls --database --systeminfo systeminfo.txt
+python2 windows-exploit-suggester.py --database 2022-10-27-mssb.xls --systeminfo samplesysinfo.txt
 #this gives us vulnerabilities list
 ```
