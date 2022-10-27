@@ -1,10 +1,11 @@
-# Initial Enumeration
+# Initial Enumeration and Automated Tools
 
 1. [System Enumeration](#system-enumeration)
 2. [User Enumeration](#user-enumeration)
 3. [Network Enumeration](#network-enumeration)
 4. [Password Hunting](#password-hunting)
 5. [AV Enumeration](#av-enumeration)
+6. [Automated Enumeration Tools](#automated-enumeration-tools)
 
 ## System Enumeration
 
@@ -96,4 +97,48 @@ netsh advfirewall firewall dump
 netsh firewall show state
 
 netsh firewall show config
+```
+
+## Automated Enumeration Tools
+
+* Executables:
+
+  * [winPEAS.exe](https://github.com/carlospolop/PEASS-ng/tree/master/winPEAS)
+  * [Seatbelt.exe](https://github.com/GhostPack/Seatbelt) (compile)
+  * [Watson.exe](https://github.com/rasta-mouse/Watson) (compile)
+  * [SharpUp.exe](https://github.com/GhostPack/SharpUp) (compile)
+
+* PowerShell
+
+  * [Sherlock.ps1](https://github.com/rasta-mouse/Sherlock)
+  * [PowerUp.ps1](https://github.com/PowerShellMafia/PowerSploit/tree/master/Privesc)
+  * [jaws-enum.ps1](https://github.com/411Hall/JAWS)
+
+* Others:
+
+  * [windows-exploit-suggester.py](https://github.com/AonCyberLabs/Windows-Exploit-Suggester) (run locally)
+  * [Exploit Suggester](https://www.rapid7.com/blog/post/2015/08/11/metasploit-local-exploit-suggester-do-less-get-more/) (Metasploit)
+
+```shell
+#exploring enumeration tools when we cannot upload executables or files
+
+#in Meterpreter shell
+#exploit suggester
+run post/multi/recon/local_exploit_suggester
+
+#shell
+shell
+
+systeminfo
+#copy sysinfo to a file sysinfo.txt
+
+#in attacker machine
+#update windows-exploit-suggester
+./windows-exploit-suggester.py --update
+#note database .xls file
+
+pip install xlrd --upgrade
+
+./windows-exploit-suggester.py 2021-01-01-mssb.xls --database --systeminfo systeminfo.txt
+#this gives us vulnerabilities list
 ```
