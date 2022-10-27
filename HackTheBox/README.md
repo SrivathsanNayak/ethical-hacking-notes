@@ -26,3 +26,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   22. [Lame - Easy](Lame.md)
   23. [Jerry - Easy](Jerry.md)
   24. [Netmod - Easy](Netmon.md)
+  25. [Blue - Easy](Blue.md)
