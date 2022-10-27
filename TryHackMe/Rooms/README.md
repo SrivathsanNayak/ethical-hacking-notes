@@ -96,3 +96,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   92. [Year of the Rabbit - Easy](YearOfTheRabbit.md)
   93. [Archangel - Easy](Archangel.md)
   94. [Mustacchio - Easy](Mustacchio.md)
+  95. [Couch - Easy](Couch.md)
