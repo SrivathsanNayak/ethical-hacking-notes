@@ -28,3 +28,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   24. [Netmod - Easy](Netmon.md)
   25. [Blue - Easy](Blue.md)
   26. [Devel - Easy](Devel.md)
+  27. [Emdee five for life - Easy](EmdeeFive.md)
