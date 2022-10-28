@@ -30,3 +30,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   26. [Devel - Easy](Devel.md)
   27. [Emdee five for life - Easy](EmdeeFive.md)
   28. [Academy - Easy](Academy.md)
+  29. [Legacy - Easy](Legacy.md)
