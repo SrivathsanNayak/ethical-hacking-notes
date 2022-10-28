@@ -97,3 +97,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   93. [Archangel - Easy](Archangel.md)
   94. [Mustacchio - Easy](Mustacchio.md)
   95. [Couch - Easy](Couch.md)
+  96. [PrintNightmare, Again! - Easy](PrintNightmareAgain.md)
