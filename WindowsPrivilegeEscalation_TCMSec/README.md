@@ -3,6 +3,7 @@
 Notes for the TCM Security course [Windows Privilege Escalation for Beginners](https://academy.tcm-sec.com/p/windows-privilege-escalation-for-beginners):
 
 1. [Initial Enumeration and Automated Tools](InitialEnum/README.md)
+2. [Escalation Paths](EscalationPaths/README.md)
 
 Resources:
 
