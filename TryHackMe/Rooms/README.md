@@ -99,3 +99,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   95. [Couch - Easy](Couch.md)
   96. [PrintNightmare, Again! - Easy](PrintNightmareAgain.md)
   97. [Cyborg - Easy](Cyborg.md)
+  98. [Watcher - Medium](Watcher.md)
