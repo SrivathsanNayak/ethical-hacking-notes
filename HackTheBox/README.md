@@ -32,3 +32,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   28. [Academy - Easy](Academy.md)
   29. [Legacy - Easy](Legacy.md)
   30. [Cap - Easy](Cap.md)
+  31. [Bashed - Easy](Bashed.md)
