@@ -100,3 +100,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   96. [PrintNightmare, Again! - Easy](PrintNightmareAgain.md)
   97. [Cyborg - Easy](Cyborg.md)
   98. [Watcher - Medium](Watcher.md)
+  99. [Warzone 1 - Medium](Warzone1.md)
