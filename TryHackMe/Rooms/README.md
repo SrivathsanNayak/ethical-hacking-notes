@@ -101,3 +101,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   97. [Cyborg - Easy](Cyborg.md)
   98. [Watcher - Medium](Watcher.md)
   99. [Warzone 1 - Medium](Warzone1.md)
+  100. [Looking Glass - Medium](LookingGlass.md)
