@@ -34,3 +34,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   30. [Cap - Easy](Cap.md)
   31. [Bashed - Easy](Bashed.md)
   32. [Chatterbox - Medium](Chatterbox.md)
+  33. [SecNotes - Medium](SecNotes.md)
