@@ -36,3 +36,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   32. [Chatterbox - Medium](Chatterbox.md)
   33. [SecNotes - Medium](SecNotes.md)
   34. [Knife - Easy](Knife.md)
+  35. [Heist - Easy](Heist.md)
