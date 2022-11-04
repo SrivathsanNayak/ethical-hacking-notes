@@ -104,3 +104,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   100. [Looking Glass - Medium](LookingGlass.md)
   101. [Gaming Server - Easy](GamingServer.md)
   102. [Enumerating Active Directory - Medium](EnumeratingAD.md)
+  103. [tomghost - Easy](tomghost.md)
