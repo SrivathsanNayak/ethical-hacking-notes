@@ -108,3 +108,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   104. [PrintNightmare - Medium](PrintNightmare.md)
   105. [PrintNightmare, thrice! - Medium](PrintNightmareThrice.md)
   106. [Solar, exploiting log4j - Medium](SolarLog4j.md)
+  107. [Ignite - Easy](Ignite.md)
