@@ -112,3 +112,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   108. [Kiba - Easy](Kiba.md)
   109. [Wireshark: Traffic Analysis - Medium](WiresharkTrafficAnalysis.md)
   110. [CMesS - Medium](CMesS.md)
+  111. [Osquery: The Basics - Easy](OsqueryBasics.md)
