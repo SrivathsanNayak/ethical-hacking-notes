@@ -110,3 +110,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   106. [Solar, exploiting log4j - Medium](SolarLog4j.md)
   107. [Ignite - Easy](Ignite.md)
   108. [Kiba - Easy](Kiba.md)
+  109. [Wireshark: Traffic Analysis - Medium](WiresharkTrafficAnalysis.md)
