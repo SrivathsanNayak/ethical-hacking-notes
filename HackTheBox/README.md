@@ -39,3 +39,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   35. [Heist - Easy](Heist.md)
   36. [Photobomb - Easy](Photobomb.md)
   37. [Jeeves - Medium](Jeeves.md)
+  38. [Access - Easy](Access.md)
