@@ -53,6 +53,8 @@ Writeups for practice challenges in picoGym:
   49. [St3go](#st3go)
   50. [login](#login)
   51. [Lookey here](#lookey-here)
+  52. [Client-side-again](#client-side-again)
+  53. [It is my Birthday](#it-is-my-birthday)
 
 For all questions, the flag is in the format of picoCTF{}
 
@@ -699,3 +701,25 @@ zsteg -a pico.flag.png
 * On using ```cat``` and reading the contents it seems like a huge read.
 
 * On using the command ```grep "{" anthem.flag.txt``` to search for the left curly braces, we get our flag "picoCTF{gr3p_15_@w3s0m3_58f5c024}".
+
+## Client-side-again
+
+* We have a login portal, accepting only password as input.
+
+* On entering any random password, we get an alert indicating that the creds are incorrect.
+
+* Checking the source code, we can see that there is a script, and it seems to contain the logical part for login.
+
+* We can use online deobfuscators for JavaScript code and try to simplify it.
+
+* On going through the code and concatenating the parts of the flag logically, we get the password picoCTF{not_this_again_337115}, which is also our flag.
+
+## It is my Birthday
+
+* We have a website with the option to upload 2 PDFs.
+
+* According to the given context, we need to find 2 PDFs with the same md5 hash, that is, a collision.
+
+* Simply Googling "MD5 collision" gives us a lot of articles on how we can generate two different files with the same MD5 hashes.
+
+* We can use them to generate the 2 PDF files required, with the same MD5 hash, and upload them to get the flag.
