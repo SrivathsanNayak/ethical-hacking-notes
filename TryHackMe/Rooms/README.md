@@ -113,3 +113,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   109. [Wireshark: Traffic Analysis - Medium](WiresharkTrafficAnalysis.md)
   110. [CMesS - Medium](CMesS.md)
   111. [Osquery: The Basics - Easy](OsqueryBasics.md)
+  112. [Dav - Easy](Dav.md)
