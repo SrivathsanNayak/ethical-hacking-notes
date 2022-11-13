@@ -41,3 +41,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   37. [Jeeves - Medium](Jeeves.md)
   38. [Access - Easy](Access.md)
   39. [Arctic - Easy](Arctic.md)
+  40. [Bastard - Medium](Bastard.md)
