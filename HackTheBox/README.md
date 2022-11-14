@@ -42,3 +42,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   38. [Access - Easy](Access.md)
   39. [Arctic - Easy](Arctic.md)
   40. [Bastard - Medium](Bastard.md)
+  41. [Bastion - Easy](Bastion.md)
