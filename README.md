@@ -30,6 +30,8 @@
 
   * [Windows Privilege Escalation for Beginners - TCM Security](WindowsPrivilegeEscalation_TCMSec/README.md)
 
+  * [Linux Privilege Escalation for Beginners - TCM Security](LinuxPrivilegeEscalation_TCMSec/README.md)
+
 * Some helpful resources:
 
   * [CyberChef](https://gchq.github.io/CyberChef/)
