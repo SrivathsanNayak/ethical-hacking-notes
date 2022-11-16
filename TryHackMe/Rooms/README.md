@@ -115,3 +115,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   111. [Osquery: The Basics - Easy](OsqueryBasics.md)
   112. [Dav - Easy](Dav.md)
   113. [Retro - Hard](Retro.md)
+  114. [Library - Easy](Library.md)
