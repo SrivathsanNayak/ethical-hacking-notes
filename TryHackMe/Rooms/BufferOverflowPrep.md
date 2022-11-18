@@ -240,72 +240,113 @@ print()
 
 ## OVERFLOW2
 
-```markdown
-1. What is the EIP offset for OVERFLOW2?
+```shell
+vim fuzzer.py
 
-2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW2?
+python3 fuzzer.py
+
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 1100
+
+vim exploit.py
+
+#restart oscp.exe in Immunity Debugger and run
+python3 exploit.py
+
+#generate badchars and run exploit again
+```
+
+* We have to follow the same steps as OVERFLOW1:
+
+  ```!mona config -set workingfolder c:\mona\%p```
+
+* For OVERFLOW2, fuzzing crashes at 700 bytes; after running exploit:
+
+  ```!mona findmsp -distance 1100```
+
+* This gives EIP offset 634; we accordingly update exploit.py variables offset and retn.
+
+* After running the exploit, and confirming the EIP register is overwritten, we can begin finding badchars.
+
+* Generating bytearray using mona:
+
+  ```!mona bytearray -b "\x00"```
+
+* Using the bytearray Python script, we can execute and copy output to the payload variable of exploit script.
+
+* After running the exploit again, we can note the ESP address and use it in the mona command:
+
+  ```!mona compare -f C:\mona\oscp\bytearray.bin -a 0192FA30```
+
+* The memory comparison gives us the badchars - 00 23 24 3c 3d 83 84 ba bb
+
+* Considering that badchars can modify the immediate next byte, the badchars are - 00 23 3c 83 ba
+
+```markdown
+1. What is the EIP offset for OVERFLOW2? - 634
+
+2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW2? - \x00\x23\x3c\x83\xba
 ```
 
 ## OVERFLOW3
 
 ```markdown
-1. What is the EIP offset for OVERFLOW3?
+1. What is the EIP offset for OVERFLOW3? - 1274
 
-2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW3?
+2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW3? - \x00\x11\x40\x5f\xb8\xee
 ```
 
 ## OVERFLOW4
 
 ```markdown
-1. What is the EIP offset for OVERFLOW4?
+1. What is the EIP offset for OVERFLOW4? - 2026
 
-2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW4?
+2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW4? - \x00\xa9\xcd\xd4
 ```
 
 ## OVERFLOW5
 
 ```markdown
-1. What is the EIP offset for OVERFLOW5?
+1. What is the EIP offset for OVERFLOW5? - 314
 
-2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW5?
+2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW5? - \x00\x16\x2f\xf4\xfd
 ```
 
 ## OVERFLOW6
 
 ```markdown
-1. What is the EIP offset for OVERFLOW6?
+1. What is the EIP offset for OVERFLOW6? - 1034
 
-2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW6?
+2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW6? - \x00\x08\x2c\xad
 ```
 
 ## OVERFLOW7
 
 ```markdown
-1. What is the EIP offset for OVERFLOW7?
+1. What is the EIP offset for OVERFLOW7? - 1306
 
-2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW7?
+2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW7? - \x00\x8c\xae\xbe\xfb
 ```
 
 ## OVERFLOW8
 
 ```markdown
-1. What is the EIP offset for OVERFLOW8?
+1. What is the EIP offset for OVERFLOW8? - 1786
 
-2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW8?
+2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW8? - \x00\x1d\x2e\xc7\xee
 ```
 
 ## OVERFLOW9
 
 ```markdown
-1. What is the EIP offset for OVERFLOW9?
+1. What is the EIP offset for OVERFLOW9? - 1514
 
-2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW9?
+2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW9? - \x00\x04\x3e\x3f\xe1
 ```
 
 ## OVERFLOW10
 
 ```markdown
-1. What is the EIP offset for OVERFLOW10?
+1. What is the EIP offset for OVERFLOW10? - 537
 
-2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW10?
+2. In byte order and including the null byte \x00, what were the badchars for OVERFLOW10? - \x00\xa0\xad\xbe\xde\xef
 ```
