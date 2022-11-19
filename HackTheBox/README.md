@@ -45,3 +45,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   41. [Bastion - Easy](Bastion.md)
   42. [Querier - Medium](Querier.md)
   43. [Optimum - Easy](Optimum.md)
+  44. [Nibbles - Easy](Nibbles.md)
