@@ -120,3 +120,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   116. [Buffer Overflow Prep - Easy](BufferOverflowPrep.md)
   117. [Tempest - Medium](Tempest.md)
   118. [Brainstorm - Medium](Brainstorm.md)
+  119. [Atlas - Easy](Atlas.md)
