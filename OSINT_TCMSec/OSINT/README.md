@@ -114,6 +114,32 @@
 
 ## Website OSINT
 
+* Online tools:
+
+  * [BuiltWith](https://builtwith.com/)
+  * [Domain Dossier](https://centralops.net/co/)
+  * [DNSlytics](https://dnslytics.com/reverse-ip)
+  * [SpyOnWeb](https://spyonweb.com/)
+  * [VirusTotal](https://www.virustotal.com/)
+  * [Visual Ping](https://visualping.io/)
+  * [Back Link Watch](http://backlinkwatch.com/index.php)
+  * [View DNS](https://viewdns.info/)
+
+* Other tools:
+
+  * [Pentest-Tools Subdomain Finder](https://pentest-tools.com/information-gathering/find-subdomains-of-domain#)
+  * [crt.sh](https://crt.sh/)
+  * [Shodan](https://www.shodan.io/)
+  * [Wayback Machine](https://web.archive.org/)
+
 ## Business OSINT
 
+* Websites:
+
+  * [LinkedIn](https://linkedin.com)
+  * [OpenCorporates](https://opencorporates.com/)
+  * [AI HIT](https://www.aihitdata.com/)
+
 ## Wireless OSINT
+
+* [WiGLE](https://wigle.net/) is used for wireless networks OSINT.
