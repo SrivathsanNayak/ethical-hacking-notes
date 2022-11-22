@@ -38,11 +38,32 @@
 
 * For physical location OSINT, we can use Google Map's features such as 'satellite view' and 'street view', and check the location surroundings.
 
+* For geographical OSINT, we have to [extract distinct features from the image](https://somerandomstuff1.wordpress.com/2019/02/08/geoguessr-the-top-tips-tricks-and-techniques/) and narrow down the region before attempting to reverse-search the image.
+
 ## Email OSINT
+
+* Websites:
+
+  * [Hunter.io](https://hunter.io/)
+  * [Phonebook.cz](https://phonebook.cz/)
+  * [VoilaNorbert](https://www.voilanorbert.com/)
+  * [Email Hippo](https://tools.emailhippo.com/)
+  * [Email Checker](https://email-checker.net/)
+  * [Clearbit Connect](https://chrome.google.com/webstore/detail/clearbit-connect-supercha/pmnhcgfcafcnkbengdcanjablaabjplo?hl=en)
 
 ## Password OSINT
 
+* Online platforms such as [Dehashed](https://dehashed.com/) can be used for hunting breached passwords with the help of other fields like email, username, name, string, etc.
+
+* Other platforms that check for breached passwords and leaks include [LeakCheck](https://leakcheck.io/), [SnusBase](https://snusbase.com/) and [HaveIBeenPwned](https://haveibeenpwned.com/).
+
 ## Username OSINT
+
+* Websites:
+
+  * [NameChk](https://namechk.com/)
+  * [WhatsMyName](https://whatsmyname.app/)
+  * [NameCheckup](https://namecheckup.com/)
 
 ## People OSINT
 
