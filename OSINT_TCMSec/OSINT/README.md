@@ -67,7 +67,50 @@
 
 ## People OSINT
 
+* Websites:
+
+  * [WhitePages](https://www.whitepages.com/)
+  * [Webmii](https://webmii.com/)
+  * [PeekYou](https://www.peekyou.com/)
+  * [411](https://www.411.com/)
+  * [Spokeo](https://www.spokeo.com/)
+  * [That'sThem](https://thatsthem.com/)
+  * [Voter Records (only USA)](https://www.voterrecords.com/)
+
+* Hunting phone numbers:
+
+  * [TrueCaller](https://www.truecaller.com/)
+  * [CallerID Test](https://calleridtest.com/)
+  * [Infobel](https://www.infobel.com/en/india)
+
+* We can also search for other related info such as birthdates and resumes.
+
 ## Social Media OSINT
+
+* Twitter:
+
+  * [Advanced search](https://twitter.com/search-advanced)
+  * [Social Bearing](https://socialbearing.com/)
+  * [Twitonomy](https://www.twitonomy.com/)
+  * [Sleeping Time](http://sleepingtime.org/)
+  * [Tweetbeaver](https://tweetbeaver.com/)
+  * [Spoonbill.io](http://spoonbill.io/)
+  * [Tinfoleak](https://tinfoleak.com/)
+  * [TweetDeck](https://tweetdeck.twitter.com/)
+
+* Facebook:
+
+  * [Sowsearch](https://www.sowsearch.info/)
+  * [IntelligenceX](https://intelx.io/tools?tab=facebook)
+
+* Instagram:
+
+  * [Code of a Ninja](https://www.codeofaninja.com/tools/find-instagram-user-id/)
+  * [ImgInn](https://imginn.com/)
+
+* Snapchat:
+
+  * [Snapchat Maps](https://map.snapchat.com)
 
 ## Website OSINT
 
