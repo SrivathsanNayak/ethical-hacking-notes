@@ -218,3 +218,10 @@ gowitness file -f $subdomain_path/alive.txt -P $screenshot_path/ --no-http
 ```
 
 ## Report Writing
+
+* Key components of OSINT report:
+
+  * Summary
+  * Key findings, artefacts
+  * Personal info, usernames, emails
+  * Technical evidence (detailed)
