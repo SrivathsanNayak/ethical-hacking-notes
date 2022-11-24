@@ -4,3 +4,4 @@ Notes for the TCM Security course [Open-Source Intelligence (OSINT) Fundamentals
 
 1. [Introduction](Intro/README.md)
 2. [OSINT](OSINT/README.md)
+3. [Tools](Tools/README.md)
