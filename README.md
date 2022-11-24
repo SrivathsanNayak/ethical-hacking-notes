@@ -32,7 +32,7 @@
 
   * [Linux Privilege Escalation for Beginners - TCM Security](LinuxPrivilegeEscalation_TCMSec/README.md)
 
-  * [Open-Source Intelligence (OSINT) Fundamentals](OSINT_TCMSec/README.md)
+  * [Open-Source Intelligence (OSINT) Fundamentals - TCM Security](OSINT_TCMSec/README.md)
 
 * Some helpful resources:
 
