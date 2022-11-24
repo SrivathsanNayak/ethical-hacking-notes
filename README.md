@@ -34,6 +34,8 @@
 
   * [Open-Source Intelligence (OSINT) Fundamentals - TCM Security](OSINT_TCMSec/README.md)
 
+  * [External Pentest Playbook - TCM Security](Pentest_TCMSec/README.md)
+
 * Some helpful resources:
 
   * [CyberChef](https://gchq.github.io/CyberChef/)
