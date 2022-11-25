@@ -123,3 +123,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   119. [Atlas - Easy](Atlas.md)
   120. [Intro to Malware Analysis - Medium](IntroMalwareAnalysis.md)
   121. [Dissecting PE Headers - Medium](DissectingPEHeaders.md)
+  122. [dogcat - Medium](dogcat.md)
