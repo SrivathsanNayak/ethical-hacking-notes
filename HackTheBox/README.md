@@ -49,3 +49,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   45. [OpenAdmin - Easy](OpenAdmin.md)
   46. [Synced - Very Easy](Synced.md)
   47. [Beep - Easy](Beep.md)
+  48. [Shocker - Easy](Shocker.md)
