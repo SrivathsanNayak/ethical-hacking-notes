@@ -1,6 +1,6 @@
 # Writeups for THM Rooms
 
-Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the order of completion:
+Writeups for rooms on TryHackMe, in the order of completion:
 
   1. [RootMe - Easy](RootMe.md)
   2. [c4ptur3-th3-fl4g - Easy](c4ptur3-th3-fl4g.md)
