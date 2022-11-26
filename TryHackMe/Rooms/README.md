@@ -125,3 +125,4 @@ Writeups for rooms (challenges and walkthroughs) in general on TryHackMe, in the
   121. [Dissecting PE Headers - Medium](DissectingPEHeaders.md)
   122. [dogcat - Medium](dogcat.md)
   123. [ColddBox - Easy](ColddBox.md)
+  124. [Warzone 2 - Medium](Warzone2.md)
