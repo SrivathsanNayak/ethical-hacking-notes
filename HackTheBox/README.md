@@ -48,3 +48,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   44. [Nibbles - Easy](Nibbles.md)
   45. [OpenAdmin - Easy](OpenAdmin.md)
   46. [Synced - Very Easy](Synced.md)
+  47. [Beep - Easy](Beep.md)
