@@ -50,3 +50,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   46. [Synced - Very Easy](Synced.md)
   47. [Beep - Easy](Beep.md)
   48. [Shocker - Easy](Shocker.md)
+  49. [Horizontall - Easy](Horizontall.md)
