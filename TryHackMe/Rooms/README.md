@@ -127,3 +127,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   123. [ColddBox - Easy](ColddBox.md)
   124. [Warzone 2 - Medium](Warzone2.md)
   125. [Res - Easy](Res.md)
+  126. [Poster - Easy](Poster.md)
