@@ -129,3 +129,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   125. [Res - Easy](Res.md)
   126. [Poster - Easy](Poster.md)
   127. [Heartbleed - Easy](Heartbleed.md)
+  128. [Oh My WebServer - Medium](OhMyWebServer.md)
