@@ -12,6 +12,7 @@
 8. [SQL injection attack, querying the database type and version on MySQL and Microsoft](#sql-injection-attack-querying-the-database-type-and-version-on-mysql-and-microsoft)
 9. [SQL injection attack, listing the database contents on non-Oracle databases](#sql-injection-attack-listing-the-database-contents-on-non-oracle-databases)
 10. [SQL injection attack, listing the database contents on Oracle](#sql-injection-attack-listing-the-database-contents-on-oracle)
+11. [Blind SQL injection with conditional responses](#blind-sql-injection-with-conditional-responses)
 
 ### SQL injection vulnerability in WHERE clause allowing retrieval of hidden data
 
@@ -213,4 +214,73 @@ This gives us the two column names we require for users and passwords; we can no
 Payload - Pets' UNION SELECT PASSWORD_CHMJXC,USERNAME_HJDKPR FROM USERS_FIORQD--
 
 This gives the password for 'administrator' - use it to login.
+```
+
+### Blind SQL injection with conditional responses
+
+```text
+In the lab home page, we can see the phrase 'Welcome back!' - this means we have access to our account.
+
+We can test this by first intercepting & capturing the request using Burp Suite and forwarding it to Repeater.
+
+In the request, there is a cookie section, which contains a 'TrackingId' field - we can use our payload here to check for blind SQLi.
+
+Payloads -
+    xyz' AND '1'='1
+    xyz' AND '1'='2
+
+The first payload is always true, so when we use it, the 'Welcome back!' string is still there in Response.
+
+However, the second payload is always false, so using this payload gives Response without the required string.
+
+We can now proceed to find the password, character-by-character; we are given that the table 'users' contains 'username' and 'password' columns and we need to find for user 'administrator'.
+
+Payload - xyz' AND SUBSTRING((SELECT password FROM users WHERE username = 'administrator'), 1, 1) > 'm
+
+This is false (since Response does not contain string "Welcome back!"), so first letter of password is lesser than 'm'
+
+Payload - xyz' AND SUBSTRING((SELECT password FROM users WHERE username = 'administrator'), 1, 1) > 'd
+
+This is also false; using trial-and-error we can find that the first letter of password is 'b'
+
+Payload - xyz' AND SUBSTRING((SELECT password FROM users WHERE username = 'administrator'), 1, 1) = 'b
+
+Now, we can determine the length of the password; we will be using a similar approach.
+
+Payload - xyz' AND (SELECT 'a' FROM users WHERE username='administrator' AND LENGTH(password)>1)='a
+
+Now, this returns true, which means our password length is more than 1 character.
+
+We can try this, fuzzing the value with different numbers, or we can automate it using Intruder.
+
+Send the captured request from Repeater to Intruder, then clear the payload positions.
+Add payload position at the number position (for password length check).
+
+Keeping the attack type 'Sniper', navigate to Payloads tab - choose Payload type as Numbers, and add a sequential number range from 1 to 30 (1 step) - this means we are checking for password lengths from 1 to 30.
+
+We can start the attack, this shows multiple requests with different payloads.
+However, after the payload 20, the length of response changes - this indicates that password length is not greater than 20 (check response to confirm).
+
+So, password length is equal to 20.
+
+We can start fuzzing the characters one-by-one using Intruder in a similar fashion.
+However, we will have two positions in payload to be modified - the substring start position, and the alphanumeric character for password.
+
+So in Intruder, we will be using the Cluster Bomb attack.
+
+Payload - xyz' AND (SELECT SUBSTRING(password,1,1) FROM users WHERE username='administrator')='a
+
+Forward the request to Intruder, add 2 payload positions - 1st for position parameter of substring function, and 2nd for the character to be bruteforced.
+
+Here, we will be only considering lowercase alphabets and numbers.
+
+For 1st payload position - set of numbers, range 1-20 with 1 step.
+For 2nd payload position - set of 'Brute forcer', with min & max length of 1 (one character at a time).
+
+Running the attack will take some time, so we can wait for it to finish.
+
+Once the attack ends, we can use 'Length' column to filter by the size of response.
+The 1st Payload column will indicate the character position in password.
+
+We can concatenate the characters accordingly to get the password for administrator user, followed by login.
 ```

