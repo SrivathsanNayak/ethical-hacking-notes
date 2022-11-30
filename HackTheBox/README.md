@@ -52,3 +52,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   48. [Shocker - Easy](Shocker.md)
   49. [Horizontall - Easy](Horizontall.md)
   50. [Precious - Easy](Precious.md)
+  51. [Shoppy - Easy](Shoppy.md)
