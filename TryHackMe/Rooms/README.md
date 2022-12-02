@@ -132,3 +132,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   128. [Oh My WebServer - Medium](OhMyWebServer.md)
   129. [Blog - Medium](Blog.md)
   130. [Plotted-TMS - Easy](Plotted-TMS.md)
+  131. [Wekor - Medium](Wekor.md)
