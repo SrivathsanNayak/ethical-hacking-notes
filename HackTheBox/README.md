@@ -54,3 +54,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   50. [Precious - Easy](Precious.md)
   51. [Shoppy - Easy](Shoppy.md)
   52. [Buff - Easy](Buff.md)
+  53. [Paper - Easy](Paper.md)
