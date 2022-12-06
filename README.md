@@ -36,6 +36,8 @@
 
   * [External Pentest Playbook - TCM Security](Pentest_TCMSec/README.md)
 
+  * [Python 101 For Hackers - TCM Security](Python101_TCMSec/README.md)
+
 * Some helpful resources:
 
   * [CyberChef](https://gchq.github.io/CyberChef/)
