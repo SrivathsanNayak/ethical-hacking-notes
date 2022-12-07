@@ -135,3 +135,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   131. [Wekor - Medium](Wekor.md)
   132. [Anonforce - Easy](Anonforce.md)
   133. [Olympus - Medium](Olympus.md)
+  134. [Sustah - Medium](Sustah.md)
