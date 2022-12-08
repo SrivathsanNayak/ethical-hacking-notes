@@ -57,3 +57,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   53. [Paper - Easy](Paper.md)
   54. [Blocky - Easy](Blocky.md)
   55. [ServMon - Easy](ServMon.md)
+  56. [Previse - Easy](Previse.md)
