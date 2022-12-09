@@ -137,3 +137,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   133. [Olympus - Medium](Olympus.md)
   134. [Sustah - Medium](Sustah.md)
   135. [Empline - Medium](Empline.md)
+  136. [Ollie - Medium](Ollie.md)
