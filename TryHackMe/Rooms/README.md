@@ -138,3 +138,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   134. [Sustah - Medium](Sustah.md)
   135. [Empline - Medium](Empline.md)
   136. [Ollie - Medium](Ollie.md)
+  137. [Jack-of-All-Trades - Easy](JackOfAllTrades.md)
