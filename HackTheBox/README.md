@@ -60,3 +60,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   56. [Previse - Easy](Previse.md)
   57. [Curling - Easy](Curling.md)
   58. [Grandpa - Easy](Grandpa.md)
+  59. [Traceback - Easy](Traceback.md)
