@@ -62,3 +62,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   58. [Grandpa - Easy](Grandpa.md)
   59. [Traceback - Easy](Traceback.md)
   60. [Popcorn - Medium](Popcorn.md)
+  61. [Valentine - Easy](Valentine.md)
