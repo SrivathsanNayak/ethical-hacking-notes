@@ -284,3 +284,274 @@ print(set4)
 
 #pop() removes arbitrary elements
 ```
+
+* Conditionals:
+
+```python
+if True:
+  print("true")
+#gets printed
+
+if False:
+  print("false")
+#does not get printed
+
+if 1 < 1:
+  print("1 < 1")
+elif 1 <= 1:
+  print("1 <= 1")
+#only this gets printed
+elif 2 <= 2:
+  print("2 <= 2")
+else:
+  print("else code")
+
+#comparisons can be combined using logical operators
+```
+
+* Loops:
+
+```python
+a = 1
+while a < 5:
+  a += 1
+  print(a)
+
+
+for i in [0,1,2,3,4]:
+  print(i+6)
+
+#nested for loops
+for i in range(3):
+  for j in range(3):
+    print(i,j)
+
+for i in range(5):
+  if i == 2:
+    break
+    #ends loop
+  print(i)
+
+for i in range(5):
+  if i == 2:
+    continue
+    #skip current iteration
+  print(i)
+
+for c in "string":
+  print(c)
+
+for k,v in {"a":1, "b":2, "c":3}.items():
+  print(k,v)
+```
+
+* Reading & writing files:
+
+```python
+f = open('top-100.txt')
+print(f.read())
+#prints file content
+
+arrayOfLines = f.readlines()
+print(f.readlines())
+#empty array because pointer is at EOF
+
+f.seek(0)
+print(f.readlines())
+#prints all lines array
+
+f.seek(0)
+for line in f:
+  print(line.strip())
+f.close()
+
+f = open("test.txt", "w")
+#write mode
+f.write("test line!")
+f.close()
+#"a" for append mode
+
+#for larger files
+with open('rockyou.txt', encoding='latin-1') as f:
+  for line in f:
+    pass
+```
+
+* User input:
+
+```python
+test = input()
+print(test)
+#prints input only after user enters some input
+
+n = input("Enter a number:")
+print(n)
+
+while True:
+  test = input("Enter IP: ")
+  print(">>> {}".format(test))
+  if test == "exit":
+    break
+  else:
+    print("checking..")
+```
+
+* Exceptions & error handling:
+
+```python
+try:
+  f = open("doesnotexistfilename")
+except:
+  print("File does not exist")
+  #prints custom error
+
+try:
+  f = open("randomfile")
+except FileNotFoundError:
+  print("File does not exist")
+except Exception as e:
+  print(e)
+  #prints specific error
+finally:
+  print("This always get printed")
+
+n = 100
+if n == 0:
+  raise Exception("n cannot be 0")
+if type(n) is not int:
+  raise Exception("n must be an integer")
+print(1/n)
+
+#assertions
+n = 1
+assert(n != 0)
+#triggers AssertionError if n is 0
+print(1/n)
+```
+
+* Comprehensions:
+
+```python
+list1 = ['a', 'b', 'c']
+
+#list comprehension
+list2 = [x for x in list1]
+
+list3 = [x for x in list1 if x == 'a']
+
+list4 = [x for x in range(5)]
+
+list5 = [hex(x) for x in range(5)]
+
+list6 = [hex(x) if x > 0 else "X" for x in range(5)]
+
+list7 = [x for x in range(5) if x == 0 or x == 1]
+
+list8 = [[1,2,3],[4,5,6],[7,8,9]]
+
+list9 = [y for x in list8 for y in x]
+#[1,2,3,4,5,6,7,8,9]
+
+set1 = {x + x for x in range(5)}
+#{0,2,4,6,8}
+
+list10 = [c for c in "stringtext"]
+
+texthere = "".join(list10)
+```
+
+* Functions & code reuse:
+
+```python
+#define function
+def function1():
+  print("function hello")
+
+#call function
+function1()
+
+#returns a value
+def function2():
+  return "hello!"
+
+func2 = function2()
+print(func2)
+
+#accepts parameters
+def function3(s):
+  print("\t{}".format(s))
+
+function3("param")
+
+def function4(s1, s2):
+  print("{} {}".format(s1,s2))
+
+function4("check","this")
+
+#default val
+def function5(s1 = "default"):
+  print(s1)
+
+#for any number of arguments
+def function6(s1, *more):
+  print("{} {}".format(s1, " ".join([s for s in more])))
+
+function6("func6", "arg1", "arg2", "arg3")
+
+#dictionary of arguments
+def function7(**ks):
+  for a in ks:
+    print(a, ks[a])
+
+function7(a="1", b="2", c="3")
+
+#global scope and function scope differ
+
+v = 100
+
+def function8():
+  #specify global scoped variable
+  global v
+  v += 1
+  print(v)
+
+function8()
+#101
+print(v)
+#101
+
+#functions can call other functions
+def function9():
+  function1()
+
+#recursion
+def function10(x):
+  print(x)
+  if x > 0:
+    function10(x-1)
+
+function10(5)
+```
+
+* Lambdas:
+
+```python
+#single line anonymous function
+
+add4 = lambda x : x + 4
+print(add4(10))
+
+add = lambda x, y : x + y
+print(add(10,4))
+
+print((lambda x, y : x * y)(2,3))
+
+is_even = lambda x : x % 2 == 0
+
+blocks = lambda x, y : [x[i:i+y] for i in range(0, len(x), y)]
+print(blocks("string", 2))
+#['st', 'ri', 'ng']
+
+to_ord = lambda x : [ord(i) for i in x]
+print(to_ord("ABCD"))
+```
