@@ -64,3 +64,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   60. [Popcorn - Medium](Popcorn.md)
   61. [Valentine - Easy](Valentine.md)
   62. [Mirai - Easy](Mirai.md)
+  63. [Armageddon - Easy](Armageddon.md)
