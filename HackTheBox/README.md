@@ -65,3 +65,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   61. [Valentine - Easy](Valentine.md)
   62. [Mirai - Easy](Mirai.md)
   63. [Armageddon - Easy](Armageddon.md)
+  64. [Blunder - Easy](Blunder.md)
