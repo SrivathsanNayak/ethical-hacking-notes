@@ -141,3 +141,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   137. [Jack-of-All-Trades - Easy](JackOfAllTrades.md)
   138. [Madeye's Castle - Medium](MadeyeCastle.md)
   139. [Gallery - Easy](Gallery.md)
+  140. [Wreath - Easy](Wreath.md)
