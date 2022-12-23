@@ -67,3 +67,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   63. [Armageddon - Easy](Armageddon.md)
   64. [Blunder - Easy](Blunder.md)
   65. [Active - Easy](Active.md)
+  66. [Forest - Easy](Forest.md)
