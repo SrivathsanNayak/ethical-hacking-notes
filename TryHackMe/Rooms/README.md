@@ -142,3 +142,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   138. [Madeye's Castle - Medium](MadeyeCastle.md)
   139. [Gallery - Easy](Gallery.md)
   140. [Wreath - Easy](Wreath.md)
+  141. [Exploiting Active Directory - Medium](ExploitingAD.md)
