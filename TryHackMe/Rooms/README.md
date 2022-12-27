@@ -144,3 +144,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   140. [Wreath - Easy](Wreath.md)
   141. [Exploiting Active Directory - Medium](ExploitingAD.md)
   142. [Persisting Active Directory - Medium](PersistingAD.md)
+  143. [VulnNet: Roasted - Easy](VulnNetRoasted.md)
