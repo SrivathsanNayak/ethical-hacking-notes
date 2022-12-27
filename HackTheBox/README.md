@@ -69,3 +69,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   65. [Active - Easy](Active.md)
   66. [Forest - Easy](Forest.md)
   67. [Sauna - Easy](Sauna.md)
+  68. [Resolute - Medium](Resolute.md)
