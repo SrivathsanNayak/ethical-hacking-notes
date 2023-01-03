@@ -145,3 +145,5 @@ Writeups for rooms on TryHackMe, in the order of completion:
   141. [Exploiting Active Directory - Medium](ExploitingAD.md)
   142. [Persisting Active Directory - Medium](PersistingAD.md)
   143. [VulnNet: Roasted - Easy](VulnNetRoasted.md)
+  144. [RazorBlack - Medium](RazorBlack.md)
+  145. [Tactical Detection - Medium](TacticalDetection.md)
