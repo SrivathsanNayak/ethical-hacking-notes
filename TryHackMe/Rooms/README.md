@@ -147,3 +147,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   143. [VulnNet: Roasted - Easy](VulnNetRoasted.md)
   144. [RazorBlack - Medium](RazorBlack.md)
   145. [Tactical Detection - Medium](TacticalDetection.md)
+  146. [New Hire Old Artifacts - Medium](NewHireOldArtifacts.md)
