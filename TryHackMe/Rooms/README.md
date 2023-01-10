@@ -148,3 +148,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   144. [RazorBlack - Medium](RazorBlack.md)
   145. [Tactical Detection - Medium](TacticalDetection.md)
   146. [New Hire Old Artifacts - Medium](NewHireOldArtifacts.md)
+  147. [Holo - Hard](Holo.md)
