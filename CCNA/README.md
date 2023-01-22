@@ -128,6 +128,34 @@ Therefore, Network Id is 192.168.225.192/27 and Broadcast Id is 192.168.225.223/
 ```
 
 ```markdown
+IP - 165.245.12.88/20
+
+Here, /20 means we have 20 (16+4) network bits, so the 4 network bits in binary representation would be 11110000, which is 240 in binary.
+
+So subnet mask - 255.255.240.0
+
+Also, as we have 4 network bits in third octet, we will have 2^4=16 subnets.
+
+So, network Id for the subnets would be 165.245.0.0, 165.245.16.0, 165.245.32.0, and so on (since 256/16=16)
+
+For corresponding IP, network Id - 165.245.0.0 and broadcast Id - 165.245.15.255
+```
+
+```markdown
+IP - 18.172.200.77/11
+
+/11 means we have 11 (8+3) network bits; converting the 3 network bits from binary to decimal gives us 224.
+
+So, subnet mask - 255.224.0.0
+
+As we have 3 network bits in second octet, we have 2^3=8 subnets.
+
+So, network Id for subnets would be 18.0.0.0, 18.32.0.0, 18.64.0.0 and so on.
+
+Therefore, for given IP, network Id - 18.160.0.0 and broadcast Id - 18.191.255.255
+```
+
+```markdown
 We need to design a network with 3 subnets with requirements of 60, 100 and 34 computers for each subnet (VLSM).
 
 For the requirement of 100 computers, we can use the subnet with 126 hosts such that Network Id - 192.168.1.0/25, and Broadcast Id - 192.168.1.127/25
@@ -135,4 +163,39 @@ For the requirement of 100 computers, we can use the subnet with 126 hosts such 
 For the next requirement of 60 computers, we can use a subnet with 62 hosts, that is, with Network Id - 192.168.1.128/26 and Broadcast Id - 192.168.1.191/26
 
 Similarly, for the final 34 computers, we can use the Network Id 192.168.1.192/26 and Broadcast Id 192.168.1.255/26
+```
+
+```markdown
+IP address - 172.16.100.225
+Subnet mask - 255.255.0.0
+
+For dividing this network into 2 subnets, we can use the approach of extending network bits by 1, ending up with 17 network bits.
+
+Network Id 1 - 172.16.0.0/17
+Network Id 2 - 172.16.128.0/17
+
+Broadcast Id 1 - 172.16.127.255/17
+Broadcast Id 2 - 172.16.255.255/17
+```
+
+```markdown
+IP address - 10.20.100.225
+Subnet mask - 255.0.0.0
+
+Dividing this network into 2 subnets, extend network bits by 1, so we have 9 network bits now.
+
+Network Id 1 - 10.0.0.0/9
+Network Id 2 - 10.128.0.0/9
+
+Broadcast Id 1 - 10.127.255.255/9
+Broadcast Id 2 - 10.255.255.255/9
+```
+
+```markdown
+We have to find network and broadcast Id of 172.10.21.21/24
+
+As this is a class B address, subnet mask is 255.255.0.0
+
+So, the network Id would start from 172.10.0.0 for the subnets.
+According to given IP, the corresponding network Id would be 172.10.21.0 and Broadcast Id 172.10.21.255
 ```
