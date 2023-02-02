@@ -4,6 +4,8 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 
 1. [Network Fundamentals](#network-fundamentals)
 2. [IP Address](#ip-address)
+3. [Networking Devices and Protocols](#networking-devices-and-protocols)
+4. [Cisco IOS](#cisco-ios)
 
 ## Network Fundamentals
 
@@ -198,4 +200,154 @@ As this is a class B address, subnet mask is 255.255.0.0
 
 So, the network Id would start from 172.10.0.0 for the subnets.
 According to given IP, the corresponding network Id would be 172.10.21.0 and Broadcast Id 172.10.21.255
+```
+
+## Networking Devices and Protocols
+
+* Hub:
+
+  * Non-intelligent
+  * 1 collision domain
+  * 1 broadcast domain
+  * Layer 1 device
+  * On basis of broadcasting
+
+* Switch:
+
+  * Intelligent device (uses ASIC, can store MAC address info)
+  * Many collision domains (as many as number of ports)
+  * 1 broadcast domain
+  * Layer 2 device
+  * On basis of MAC address
+
+* Router:
+
+  * Intelligent device (can act as gateway)
+  * Many collision domains
+  * Many broadcast domains
+  * Layer 3 device
+  * On basis of IP address
+
+* DHCP (Dynamic Host Configuration Protocol) - to configure IP addresses to hosts dynamically; DHCP has mainly 6 types of messages (4 are mandatory):
+
+  * DHCP Discover
+  * DHCP Offer
+  * DHCP Request
+  * DHCP Ack
+  * DHCP Information (optional)
+  * DHCP Release (optional)
+
+* TCP (Transmission Control Protocol):
+
+  * Features:
+
+    * Reliable
+    * Connection-oriented
+    * Error-checking and recovery mechanism
+    * Flow control and QoS (Quality of Service)
+    * Full-duplex
+    * Point-to-point
+    * Windowing (flow control mechanism to determine buffer for receiver)
+
+  * Working:
+
+    * Connection is established using 3-way handshake
+    * SYN segment (client to server) -> SYN+ACK segment (server to client) -> ACK segment (client to server)
+
+* UDP (User Datagram Protocol):
+
+  * Features:
+
+    * Unreliable
+    * Connection-less
+    * Faster transmission
+    * Independently-handled segments
+    * Stateless (no ACK)
+    * Process-to-process
+
+  * Working:
+
+    * UDP takes a datagram from Network Layer, attaches its header, and sends it to user
+    * Used mainly in streaming services, real-time apps
+
+* ARP (Address Resolution Protocol):
+
+  * Used to find MAC address of device corresponding to its IP address.
+  * To establish connection between two devices, source device needs to generate ARP request.
+  * ARP request is broadcast, but ARP reply is unicast.
+
+## Cisco IOS
+
+* Cisco IOS (Internetwork Operating System) - proprietary OS for Cisco switches & routers.
+
+* Configuration modes:
+
+  * User EXEC mode - denoted by prompt ```>```; type ```enable``` (or ```en``` or ```ena```) to escalate to higher mode.
+
+  * Privileged EXEC mode - denoted by prompt ```#```; type ```configure terminal``` (or ```conf t```) to escalate to highest mode.
+
+  * Global configuration mode - denoted by prompt ```(config)#```; this mode can be used for configuration in interfaces, routers and lines as well.
+
+* In Cisco IOS, ```?``` is used in command line for help.
+
+* Switch config commands:
+
+```shell
+en
+
+conf t
+#enter global config mode
+
+hostname newName
+#change hostname
+
+banner motd
+#modify banner MOTD
+
+line con 0
+password p@55wd
+login
+#enforce console password
+
+no ip domain-lookup
+#disable domain lookup
+
+line vty 0 15
+password t3ln3t
+login
+#enforce telnet password
+
+enable password en4bl3
+#enforce password for 'en' command
+
+exit
+#back to privileged exec mode
+
+sh ip int br
+#show ip interface brief - shows all interfaces
+
+conf t
+#switch to global config mode
+
+int vlan 1
+ip add 10.1.1.1 255.255.255.0
+#add management IP
+
+shutdown
+#configure interface to shutdown
+
+no shutdown
+#change interface to UP status
+
+ip default-gateway 10.1.1.10
+#add default gateway (in case of multiple networks)
+
+exit
+#back to privileged exec mode
+
+write
+#save running config (temporary) to startup config (permanent)
+
+copy running-config startup-config
+#newer way to save config
 ```
