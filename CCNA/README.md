@@ -6,6 +6,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 2. [IP Address](#ip-address)
 3. [Networking Devices and Protocols](#networking-devices-and-protocols)
 4. [Cisco IOS](#cisco-ios)
+5. [Switches](#switches)
 
 ## Network Fundamentals
 
@@ -216,7 +217,7 @@ According to given IP, the corresponding network Id would be 172.10.21.0 and Bro
 
   * Intelligent device (uses ASIC, can store MAC address info)
   * Many collision domains (as many as number of ports)
-  * 1 broadcast domain
+  * 1 broadcast domain and 1 IP network
   * Layer 2 device
   * On basis of MAC address
 
@@ -351,3 +352,54 @@ write
 copy running-config startup-config
 #newer way to save config
 ```
+
+* Enabling SSH:
+
+```shell
+en
+conf t
+#global config mode
+
+ip domain-name sv.org
+#add domain-name
+
+crypto key generate rsa
+#generate secure key
+
+ip ssh version 2
+#use SSH version 2
+
+username testuser password pa55123
+#create user-password
+
+line vty 0 15
+transport input ssh
+#allow SSH only
+```
+
+## Switches
+
+* Switch functions:
+
+  * Address learning - switches learn source MAC addresses and store it in the CAM (Content Addressable Memory) table or MAC address table.
+
+  * Forwarding decision - switches decide whether to forward or filter a frame based on destination MAC address.
+
+  * Loop avoidance - switches use STP (Spanning Tree Protocol) to prevent layer 2 loops like MAC address flapping.
+
+* Switchport modes:
+
+  * Access mode - used when connecting to end device; enabled by command ```switchport mode access```
+
+  * Trunk mode - used when connecting to another switch; enabled by command ```switchport mode trunk```
+
+* Types of trunking protocols:
+
+  * ISL (Inter-Switch Link) - old protocol; Cisco-proprietary
+  * IEEE 802.1Q (dot1q) - industry standard; non-proprietary
+
+* DTP (Dynamic Trunking Protocol) - Cisco-proprietary protocol for switches; its modes are:
+
+  * Desirable - switchport starts sending DTP packets to negotiate; ```switchport mode dynamic desirable```
+  * Auto - flexible state, waits for DTP negotiation; ```switchport mode dynamic auto```
+  * No negotiate - disable DTP and trunking; ```switchport nonegotiate```
