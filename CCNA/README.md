@@ -9,6 +9,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 5. [Switches](#switches)
 6. [VLANs](#vlans)
 7. [VTP](#vtp)
+8. [Switchport Security](#switchport-security)
 
 ## Network Fundamentals
 
@@ -555,4 +556,69 @@ vtp status
 #shows pruning enabled
 
 #'vlan allowed' command can also be used alternatively
+```
+
+## Switchport Security
+
+* Reasons for slow connection include speed, duplex (half/full) mismatch:
+
+```shell
+en
+conf t
+
+int f0/1
+#config interface
+
+speed 100
+#100 Mbps
+
+duplex full
+
+#Ctrl+Z
+
+sh interfaces f0/1
+#shows speed, duplex config
+```
+
+* Port security (can only be enabled on access ports):
+
+```shell
+#in interface config mode
+
+switchport port-security ?
+#shows all options
+#this is also a valid command to enable port-security
+
+switchport port-security mac-address 0001.6307.EEAE
+#only MAC address allowed on switchport
+
+switchport port-security mac-address sticky
+#for configuring addresses dynamically
+
+switchport port-security maximum 2
+#max addresses to be learnt by switchport
+
+switchport port-security violation <protect/restrict/shutdown>
+#marks as security violation
+
+#Ctrl+Z to go to user exec mode
+
+sh interfaces f0/1
+#can check violations from here
+
+sh port-security
+#tabular view
+
+sh port-security address
+#shows secure MAC address table
+
+sh port-security interface f0/1
+#more details
+
+#restart switch to make port-security work
+
+int f0/1
+
+shutdown
+no shutdown
 ```
