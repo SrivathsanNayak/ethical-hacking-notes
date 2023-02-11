@@ -7,6 +7,8 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 3. [Networking Devices and Protocols](#networking-devices-and-protocols)
 4. [Cisco IOS](#cisco-ios)
 5. [Switches](#switches)
+6. [VLANs](#vlans)
+7. [VTP](#vtp)
 
 ## Network Fundamentals
 
@@ -403,3 +405,154 @@ transport input ssh
   * Desirable - switchport starts sending DTP packets to negotiate; ```switchport mode dynamic desirable```
   * Auto - flexible state, waits for DTP negotiation; ```switchport mode dynamic auto```
   * No negotiate - disable DTP and trunking; ```switchport nonegotiate```
+
+## VLANs
+
+* VLANs (virtual LANs) are logically grouped devices, configured on switches in the same broadcast domain.
+
+* Each VLAN is treated as its own subnet or broadcast domain, so the frames broadcasted onto the network will be switched only between ports in same VLAN.
+
+* VLANs help in flexibility and security of network designs.
+
+* When frames traverse a trunk port, a VLAN tag is added to distinguish which frames belong to which VLANs; access ports do not require a VLAN tag as all frames belong to a single VLAN.
+
+* Native VLAN is a special VLAN whose traffic traverses a trunk port without a VLAN tag (untagged).
+
+* VLAN config:
+
+```shell
+en
+#in priv exec mode now
+
+show vlan
+#shows VLANs
+
+conf t
+#in global config mode now
+
+vlan 10
+#create VLAN 10 (can use any number from 1-1005)
+
+name departmentName
+
+#Ctrl+Z
+#in priv exec mode
+
+int f0/1
+#interface config
+
+switchport mode access
+
+switchport access vlan 10
+#access mode
+
+#Ctrl+Z
+
+int vlan1
+#default VLAN
+
+ip add 10.1.1.1 255.255.255.0
+#assign management IPs
+
+no sh
+
+#Ctrl+Z
+
+int f0/4
+
+switchport mode trunk
+#config trunk mode
+#assign port to trunk
+
+#Ctrl+Z
+
+sh interfaces trunk
+#shows trunk interfaces, native vlan
+
+#Ctrl+Z
+
+int range f0/2-3
+#config for multiple ports
+
+switchport mode access
+
+switchport access vlan 20
+#vlan 20 created for fa0/2 and fa0/3
+```
+
+* Native VLAN config:
+
+```shell
+en
+conf t
+
+#global config mode
+
+int fa0/1
+
+switchport trunk native vlan 10
+#any traffic out of switch for vlan 10 goes untagged
+#possible native vlan mismatch due to different configs
+```
+
+## VTP
+
+* VTP (VLAN Trunking Protocol) - Cisco-proprietary protocol, used to sync VLAN info in same VTP domain; it is not a trunking protocol.
+
+* Using VTP, when a new VLAN is created, it is replicated across all switches with the help of a synced VLAN DB (we only need to create access port).
+
+* VTP uses Revision no. to compare & prioritize VLAN DB, so it needs to be used carefully; best practice is to not use VTP unless required.
+
+* Requirements:
+
+  * VTP version must be same on the switches to be configured.
+  * VTP domain name must be same on switches
+  * One of the switches must be a server
+  * Authentication should match (if used)
+
+* VTP modes:
+
+  * Server - for making config changes
+  * Client - receives changes from server
+  * Transparent - not using VTP
+
+* VTP config:
+
+```shell
+en
+
+show vtp status
+#shows vtp version, status, server by default
+
+conf t
+#in global config mode
+
+vtp version <1/2>
+
+vtp mode <server/client/transparent>
+
+vtp domain domainName.org
+
+vtp password pa55wd
+```
+
+* VTP Pruning - improves network performance & bandwidth by decreasing unnecessary flooded traffic; disabled by default in Cisco switches.
+
+* VTP pruning sends broadcasts only to those trunk links that actually need the info.
+
+* VLAN 1 (default VLAN) cannot be pruned as it's an administrative VLAN.
+
+```shell
+en
+conf t
+#enter global config mode
+
+vtp pruning
+#enables vtp pruning
+#does not work in Cisco Packet Tracer
+
+vtp status
+#shows pruning enabled
+
+#'vlan allowed' command can also be used alternatively
+```
