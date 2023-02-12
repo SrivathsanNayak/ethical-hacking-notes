@@ -10,6 +10,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 6. [VLANs](#vlans)
 7. [VTP](#vtp)
 8. [Switchport Security](#switchport-security)
+9. [Routers](#routers-and-routing)
 
 ## Network Fundamentals
 
@@ -621,4 +622,93 @@ int f0/1
 
 shutdown
 no shutdown
+```
+
+## Routers and Routing
+
+* Routers - Layer 3 device, which can act as gateways; responsible for the routing process (path selection).
+
+* Routers receive packets when the destination node is in a different network; this process of sending packets between two networks is aided by the routing table (repo of all routes to all destinations in network).
+
+* Types of routing:
+
+  * Static (or non-adaptive) routing - network admin uses static tables to manually config & select network routes; helpful where constant parameters are required, but this also leads to decreased adaptibility and flexibility of networks.
+
+  * Dynamic (or adaptive) routing - routers create & update routing tables at runtime based on network conditions; they attempt to find fastest path using dynamic routing protocols (which maintain the routing table).
+
+* Types of routing protocols:
+
+  * Interior gateway protocols (IGP) - these protocols assess the Autonomous System and make routing decisions based on metrics like hop counts, delay and bandwidth. Types of IGP include:
+
+    * RIP (Routing Information Protocol)
+    * OSPF (Open Shortest Path First)
+    * EIGRP (Enhanced Interior Gateway Routing Protocol) - Cisco-proprietary, efficient
+
+  * Exterior gateway protocols (EGP) - these protocols manage multiple Autonomous Systems. Types of EGP include:
+
+    * BGP (Border Gateway Protocol)
+    * EGP (Exterior Gateway Protocol)
+
+* Types of routing algorithms:
+
+  * Distance vector routing - checks distance (hops); goes for shortest path (e.g. - RIP)
+  * Link state routing - checks link state/speed; calculates cost of resources associated with each path (e.g. - OSPF)
+
+* Cisco routers are enhanced by CEF (Cisco Express Forwarding); this minimises the load on the router's processor and makes routing more efficient.
+
+* Router config:
+
+```shell
+en
+conf t
+#enter global config mode
+
+hostname R1
+#change hostname
+
+do sh ip int br
+
+int g0/0
+
+no shutdown
+#change interface to UP
+
+line con 0
+
+password c0ns0le
+login
+#console password
+
+#Ctrl+Z to go to global config
+
+service password-encryption
+#encrypts password in running-config
+
+line vty 0 4
+
+password t3ln3t
+#telnet password
+
+#in global config mode
+
+int g0/0
+
+ip address 10.1.1.1 255.255.255.0
+no sh
+#assign ip address
+
+banner motd &
+#enter logon banner message
+
+#in priv exec mode
+
+copy running-config startup-config
+#save config
+
+sh ip interface br
+show interfaces
+#to verify changes in config
+
+show ip route
+#view routing table
 ```
