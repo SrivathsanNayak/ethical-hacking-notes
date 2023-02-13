@@ -11,6 +11,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 7. [VTP](#vtp)
 8. [Switchport Security](#switchport-security)
 9. [Routers](#routers-and-routing)
+10. [RIP Routing](#rip-routing)
 
 ## Network Fundamentals
 
@@ -712,3 +713,135 @@ show interfaces
 show ip route
 #view routing table
 ```
+
+* Static routing config:
+
+```shell
+#after initial router config
+
+sh ip route
+#view routing table
+#static routing to add routes manually
+
+#format - ip route <network id> <mask> <next hop/exit interface>
+
+#in global config mode
+
+ip route 192.168.4.0 255.255.255.0 192.168.2.2
+#this router will send any traffic for 192.168.4.0 to 192.168.2.2
+
+do sh ip route
+#view updated routing table
+
+#update other routers as well for both directions via static routing
+```
+
+## RIP Routing
+
+* RIP (Routing Information Protocol) versions:
+
+  * RIPv1:
+
+    * Classful (does not support VLSM)
+    * No authentication
+    * Uses broadcast
+
+  * RIPv2:
+
+    * Classless (supports VLSM)
+    * Adds authentication
+    * Uses multicast
+
+* RIP uses hop counts as a metric (measure used to decide which route is better; lower number is better); only 15 hops in a path are supported.
+
+* RIP config:
+
+```shell
+#after initial router config
+#in global config mode
+
+router ?
+#shows supported protocols
+
+router rip
+#use rip
+
+version 2
+
+network 10.0.0.0
+#enter classful version
+
+network 192.168.1.0
+#enter other adjacent network id (classful)
+
+no auto-summary
+#turn off auto-summarization
+
+#router starts advertising routes to other networks
+
+#Ctrl+Z
+
+sh ip route
+#view routing table
+
+#follow rip config for other routers as well
+
+#troubleshooting commands
+
+debug ip rip
+#to debug all rip updates
+
+undebug all
+#turn off debug mode
+
+sh ip protocols
+#view routing protocols used
+```
+
+* RIP timers:
+
+  * Update timer - 30 seconds - to send routing updates
+  * Invalid timer - 180 seconds - since last valid update was received
+  * Holddown timer - 180 seconds - waiting time before any new updates are accepted
+  * Flush timer - 240 seconds - since last valid update was received, until route is flushed
+
+* If the updates are not received, the invalid and flush timers begin simultaneously; after 180 seconds, the invalid timer ends and the holddown timer begins.
+
+* RIP limitations:
+
+  * Auto summarization, leads to inaccurate info
+  * Slow convergence (shared info between routers)
+  * Loops
+  * Problem with distance vector, should consider link state metric as well
+
+* Administrative distance (AD) - number assigned to routes (static, dynamic, directly-connected) which denotes trustworthiness of routing info received from neighbor router; the lower the AD value, the more preferred the route.
+
+* Default AD values:
+
+  * Directly connected - 0
+  * Static route - 1
+  * Internal EIGRP - 90
+  * OSPF - 110
+  * RIP - 120
+  * External EIGRP - 170
+  * Unknown - 255
+
+* ```Counting to Infinity``` problem:
+
+```markdown
+This problem occurs due to routing loops in the network, which happens in two cases:
+
+  * When 2 neighboring routers in network send an update simultaneously at the same time to the router
+
+  * When an interface between two routers goes down in the network
+
+This leads to a case of incorrect updates being sent by one router to its neighboring router, and it is about the number of hops required to reach the unreachable router (as the interface is down).
+
+This incorrect update is continued by the other router, and it keeps on increasing the number of hops until infinity (15 is the highest number of hops in RIP, so 16 is infinity).
+```
+
+* RIP mechanisms to solve ```Counting to Infinity```:
+
+  * Split Horizon - according to this, the router cannot send routing information back in the direction from which it was received; this can help in avoiding routing loops.
+
+  * Route Poisoning - when an interface/link is down, this info is spread to all other routers in the network by indicating the cost of the distance between the routers with the broken interface is infinity; therefore, these routers are considered poisoned. However, this method can increase the size of routing announcements.
