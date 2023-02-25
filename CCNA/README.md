@@ -12,6 +12,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 8. [Switchport Security](#switchport-security)
 9. [Routers](#routers-and-routing)
 10. [RIP Routing](#rip-routing)
+11. [Routing Advanced](#routing-advanced)
 
 ## Network Fundamentals
 
@@ -845,3 +846,76 @@ This incorrect update is continued by the other router, and it keeps on increasi
   * Split Horizon - according to this, the router cannot send routing information back in the direction from which it was received; this can help in avoiding routing loops.
 
   * Route Poisoning - when an interface/link is down, this info is spread to all other routers in the network by indicating the cost of the distance between the routers with the broken interface is infinity; therefore, these routers are considered poisoned. However, this method can increase the size of routing announcements.
+
+## Routing Advanced
+
+* Example entry in routing table:
+
+  ```R  192.168.30.0/24 [120/1] via 192.168.20.1, 00:00:01, FastEthernet0/1```
+
+  ```markdown
+  'R' denotes a RIP route for 192.168.30.0/24, connected to the IP via 192.168.20.1.
+
+  [120/1] denotes 120 AD and 1 hop (metric) between IP and route.
+  ```
+
+* In routing table, '*' denotes candidate default entry or a default static route; this defines where packets will be sent if no specific route for the destination network is listed in the routing table.
+
+* If no default route is set, the router discards all packets with destination addresses not found in its routing table.
+
+* Types of static routes:
+
+  * Default route
+  * Network route
+  * Host route
+  * Summary route
+  * Floating route
+
+* Inter-VLAN routing - way to forward traffic between different VLANs by implementing a router in the network; can be achieved using:
+
+  * Traditional inter-VLAN routing:
+
+    * A router is usually connected to the switch using multiple interfaces (one for each VLAN).
+
+    * Router interfaces are configured as default gateways for the VLANs; and switch ports connected to router are in access mode.
+
+    * When user node sends message to user in different VLAN, the message moves to the access port that connects to the router on their VLAN. The router examines the packet's destination IP and forwards it to the correct network using access port; now the switch can forward the frame to destination node since router changed VLAN info from source to destination VLAN.
+
+    * In this form, router needs to have as many LAN interfaces as the number of VLANs.
+
+  * Router-on-a-stick:
+
+    * In this, router is connected to the switch using a single interface; switchport connecting to router is configured as trunk link.
+
+    * The single interface is configured with many IPs corresponding to VLANs on switch; this interface accepts traffic from all VLANs and determines destination network based on packet headers, and then forwards data to switch with correct VLAN info.
+
+    * On router, the physical interface is divided into smaller interfaces called subinterfaces; when it receives the tagged traffic, it forwards the traffic out to the subinterface with the destination IP.
+
+    * Configuration:
+
+    ```shell
+    #on switch, define interface connected to router as trunk link
+    #in global config mode
+    int f0/1
+
+    switchport mode trunk
+
+    #create subinterface in router
+    #global config mode
+    int f0/0.10
+    #subinterface for VLAN10
+
+    #in subinterface config mode
+    #link VLAN id with subinterface
+    encapsulation dot1q 10
+
+    #assign ip (default gateway) and subnet mask for VLAN 10
+    ip address 192.168.10.1 255.255.255.0
+
+    #config remaining subinterfaces for respective VLANs
+
+    int f0/0
+
+    no sh
+    #activates VLAN interfaces
+    ```
