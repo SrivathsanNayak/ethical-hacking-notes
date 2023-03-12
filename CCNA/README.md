@@ -14,6 +14,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 10. [RIP Routing](#rip-routing)
 11. [Routing Advanced](#routing-advanced)
 12. [IPv6](#ipv6)
+13. [ACL](#acl)
 
 ## Network Fundamentals
 
@@ -989,3 +990,99 @@ ipv6 address 2010::/64 eui-64
 
 no sh
 ```
+
+## ACL
+
+* ACL (Access Control List) - list of ```Permit```/```Deny``` statements for movement of data from network layer (layer 3) and above; applied in routers.
+
+* Types of ACLs:
+
+  * Standard ACL:
+
+    * Identification no. from 1-99 or 1300-1999
+    * Named version
+    * Classify traffic based on source IP
+  
+  * Extended ACL:
+
+    * Identication no. from 100-199 or 2000-2699
+    * Named version
+    * Classify traffic based on source IP, destination IP, protocol and port no.
+
+* ACL config guidelines:
+
+  * List of conditions
+  * Possible actions - Permit, Deny
+  * Packet compared to list from top to bottom
+  * Once match is found, there are no more comparisons
+  * Every ACL has implicit deny (Deny Any) at end, if ACL is non-empty
+  * Standard ACL applied close to destination
+  * Extended ACL applied close to source
+
+* Standard ACL syntax:
+
+  * Classic syntax:
+
+  ```shell
+  #in global config mode
+  access-list <acl-no> <deny/permit> <matching params>
+
+  int f0/0
+
+  #apply ACL
+  ip access-group <acl-no/name> <in/out>
+  ```
+
+  * Modern syntax:
+
+  ```shell
+  #in global config mode
+  ip access-list standard <acl-no/name>
+
+  <deny/permit> <matching params>
+
+  #apply ACL in same way as before
+  ```
+
+* Wildcard masks:
+
+  ```markdown
+  Given IP - 192.168.100.225/24
+  Subnet mask - 255.255.255.255.0
+  So, wildcard mask - 0.0.0.255 (subtract subnet mask from 255.255.255.255)
+  ```
+
+  ```markdown
+  Given IP - 192.168.100.225/26
+  Subnet mask - 255.255.255.192
+  Wildcard mask - 0.0.0.63
+  ```
+
+  ```markdown
+  Identify hosts with even number in 4th octet
+  Given IP - 192.168.100.0
+  Subnet mask - 255.255.255.0
+  Wildcard mask - 0.0.0.254 (last binary bit is 0 to allow only even numbers)
+  ```
+
+* Extended ACL syntax:
+
+  * Classic syntax:
+
+  ```shell
+  #in global config mode
+  access-list <acl-no> <deny/permit> <protocol> <source ip> <wildcard mask> <protocol info> <destination ip> <wildcard mask> <protocol info>
+
+  #apply acl
+  int f0/0
+
+  ip access-group <acl-no/name> <in/out>
+  ```
+
+  * Modern syntax:
+
+  ```shell
+  ip access-list extended <acl-no/name>
+
+  <deny/permit> <protocol> <source ip> <wildcard mask> <protocol info> <destination ip> <wildcard mask> <protocol info>
+  ```
