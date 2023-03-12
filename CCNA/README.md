@@ -13,6 +13,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 9. [Routers](#routers-and-routing)
 10. [RIP Routing](#rip-routing)
 11. [Routing Advanced](#routing-advanced)
+12. [IPv6](#ipv6)
 
 ## Network Fundamentals
 
@@ -919,3 +920,72 @@ This incorrect update is continued by the other router, and it keeps on increasi
     no sh
     #activates VLAN interfaces
     ```
+
+## IPv6
+
+* While IPv4 is a 32-bit address, IPv6 is a 128-bit address; NAT used to conserve the number of IPv4 addresses required.
+
+* IPv6 also allows a single interface to have multiple addresses, unlike IPv4.
+
+* IPv6 format:
+
+  * Zeros groups can be abbreviated with double colon, only once per IP
+  * Leading zeros can be omitted
+  * For example, ```FE80:0000:0000:0000:5400:04FF:FEDD:53F8``` can be also written as ```FE80::5400:4FF:FEDD:53F8```
+
+* APIPA (Automatic Private IP Addressing) - enables computers (DHCP clients) to auto-configure an IP address and subnet mask when DHCP server is unreachable; IP format is 169.254.x.x and subnet mask is 255.255.0.0
+
+* IPv4 header vs IPv6 header:
+
+  ![Comparison of IPv4 and IPv6 headers](Images/ipv4-ipv6-headers.png)
+
+* Types of IPv6 addresses:
+
+  * Unicast - one-to-one
+  * Multicast - one-to-many (range is FF00::/8)
+  * Anycast - one-to-closest
+
+* Types of unicast addresses:
+
+  * Global address - similar to public IPv4 address; assigned range of 2001::/16, and initial 3 bits cannot be changed.
+
+  * Link-local address - private IP (not routable), used for addressing a single link; range is FE80::/10, and it is auto-generated when IPv6 is enabled.
+
+  * Unique local address - routable except on (public) Internet, similar to private IPv4 address; range is FC00::/7
+
+* IPv6 configuration types:
+
+  * Auto link local (EUI-64, identified using FFFE bit in address)
+  * Manual link local
+  * Auto IPv6 address
+  * Manual IPv6 address
+
+* IPv6 config:
+
+```shell
+#in router, global config mode
+
+int g0/0
+
+ipv6 address 2001::1/64
+#slash notation accepted for ipv6
+
+no sh
+
+exit
+
+sh ipv6 int br
+#view ipv6 info
+#we can add multiple ipv6 addresses for same interface
+
+int g0/0
+
+ipv6 address FE80::1 link-local
+#add link-local address manually, this does not accept slash notation
+#this replaces auto link-local address
+
+#for auto ipv6 address in eui-64 form
+ipv6 address 2010::/64 eui-64
+
+no sh
+```
