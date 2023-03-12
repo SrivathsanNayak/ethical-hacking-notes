@@ -15,6 +15,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 11. [Routing Advanced](#routing-advanced)
 12. [IPv6](#ipv6)
 13. [ACL](#acl)
+14. [NAT & PAT](#nat--pat)
 
 ## Network Fundamentals
 
@@ -1086,3 +1087,33 @@ no sh
 
   <deny/permit> <protocol> <source ip> <wildcard mask> <protocol info> <destination ip> <wildcard mask> <protocol info>
   ```
+
+## NAT & PAT
+
+* Private and public IPs:
+
+|           | **Private IP**                | **Public IP**                                                |
+|-----------|-------------------------------|--------------------------------------------------------------|
+| _Class A_ | 10.0.0.0 - 10.255.255.255     | 1.0.0.0 - 9.255.255.255<br>11.0.0.0 - 126.255.255.255        |
+| _Class B_ | 172.16.0.0 - 172.31.255.255   | 128.0.0.0 - 172.15.255.255<br>172.32.0.0 - 191.255.255.255   |
+| _Class C_ | 192.168.0.0 - 192.168.255.255 | 192.0.0.0 - 192.167.255.255<br>192.169.0.0 - 223.255.255.255 |
+
+* NAT (Network Address Translation) - translates private IPs to public IPs.
+
+* Key terms:
+
+  * Inside local - private IP address in internal network
+
+  * Inside global - public IP address that can be used by host in internal network to access Internet
+
+  * Outside global - public IP address for a device on Internet
+
+  * Outside local - local IP address for any external network
+
+* Types of NAT:
+
+  * Static NAT - one-to-one mapping of inside local (private) address to inside global (public) address
+
+  * Dynamic NAT - pool of IP addresses used but no static mapping; translation timeout
+
+  * PAT (Port Address Translation) - NAT overload; maps inside local address' random source ports to random destination ports of same inside global address.
