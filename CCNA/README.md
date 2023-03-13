@@ -22,6 +22,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [Task 4 - Router on a Stick](#task-4---router-on-a-stick)
 1. [Task 5 - Static Routing](#task-5---static-routing)
 1. [Task 6 - NAT and PAT](#task-6---nat-and-pat)
+1. [Task 7 - IPv6 Routing](#task-7---ipv6-routing)
 
 ## Network Fundamentals
 
@@ -1413,3 +1414,75 @@ no sh
 * Now, we can ping from all PCs to the external router (Router1) 100.100.100.2
 
 * This will use different ports with the IP associated with interface G0/0/1; we can check it using ```sh ip nat translations``` in Router0.
+
+## Task 7 - IPv6 Routing
+
+![Task 7](Images/Task7.png)
+
+* First config IPv6 & gateway in PC by leaving IPv4 fields empty and static config IPv6 (no slash notation in gateway)
+
+* Router0:
+
+  ```shell
+  en; conf t
+  int g0/0/0
+  ipv6 add 2001:11::10/64; no sh
+  int g0/0/1
+  ipv6 add 2001:120:1:1::1/64; no sh
+  ```
+
+* Router1:
+
+  ```shell
+  en; conf t
+  int g0/0/0
+  ipv6 add 2001:120:1:1::2/64; no sh
+  int g0/0/1
+  ipv6 add 2001:22::10/64; no sh
+  ```
+
+* We can now ping from Router0 to Router1
+
+* Troubleshooting commands in router:
+
+  ```shell
+  sh ipv6 int br
+  sh ipv6 route
+  sh ipv6 int g0/0/0
+  ```
+
+* We need to setup routing now, to ping between PC0 and PC1.
+
+* Static routing:
+
+  ```shell
+  #Router0, in global config mode
+  ipv6 route 2001:22::0/64 2001:120:1:1::2
+  #inform about 2001:22::0 network and next hop Router1
+  
+  ipv6 unicast-routing
+  #required for static routing
+
+  #Router1, in global config mode
+  ipv6 route 2001:11::0/64 2001:120:1:1::1
+  ipv6 unicast-routing
+  ```
+
+* Dynamic routing (rip-ng):
+
+  ```shell
+  #Router0, in global config mode
+  ipv6 unicast-routing
+  #enable routing first
+
+  int g0/0/0
+  ipv6 rip CCNA enable
+  #same name to be used on the router, can use diff name for diff router
+  
+  int g0/0/1
+  ipv6 rip CCNA enable
+
+  #similarly for Router1
+
+  #now we can ping from PC0 to PC1
+  ```
