@@ -17,6 +17,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [ACL](#acl)
 1. [NAT & PAT](#nat--pat)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
+1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 
 ## Network Fundamentals
 
@@ -1184,4 +1185,30 @@ no sh
   line console 0
   password cisco
   login
+  ```
+
+## Task 2 - Router Switch Configuration
+
+![Task 2](Images/Task2.png)
+
+* First, build given topology using PCs, switches and router. Then connect according to the given config
+
+* Now, we can config each PC by going to Config > Interface > FastEthernet0 > modify IPv4 address, subnet mask, and last octet of MAC address.
+
+* Now, HostA and HostB can ping each other; and HostC and HostD can ping each other, but we need to configure the routers as well for HostA and HostD to communicate.
+
+* Now, we can config Default Gateway - 192.168.10.1 for A, B; 192.168.20.1 for C, D - in the same way as we configured IPv4 address for PC
+
+* Router config:
+
+  ```shell
+  en; conf t
+  int G0/0/0
+  ip address 192.168.10.1 255.255.255.0
+  no sh
+  int G0/0/1
+  ip address 192.168.20.1 255.255.255.0
+  no sh
+
+  #now we can ping from HostA to HostD
   ```
