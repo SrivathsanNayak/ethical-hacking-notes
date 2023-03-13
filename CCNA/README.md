@@ -23,6 +23,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [Task 5 - Static Routing](#task-5---static-routing)
 1. [Task 6 - NAT and PAT](#task-6---nat-and-pat)
 1. [Task 7 - IPv6 Routing](#task-7---ipv6-routing)
+1. [Task 8 - DNS & DHCP](#task-8---dns--dhcp)
 
 ## Network Fundamentals
 
@@ -1486,3 +1487,72 @@ no sh
 
   #now we can ping from PC0 to PC1
   ```
+
+## Task 8 - DNS & DHCP
+
+![Task 8](Images/Task8.png)
+
+* Create given layout, and configure IP, DG for servers and routers only; config DNS Server addr as well for both servers.
+
+* Config such that router 'DHCP Server' is able to assign PCs IP addresses automatically if required; PCs should also be able to visit website at Web server using DNS server.
+
+* Furthermore, Router1 should relay DHCP request from PC2 for getting IP from DHCP server.
+
+* DHCP Server:
+
+  ```shell
+  #in global config
+  #to create IP pool for 1st network
+  ip dhcp pool NET1
+  
+  #exclude some address range
+  ip dhcp excluded-address 192.168.1.1 192.168.1.10
+  
+  default-router 192.168.1.1
+  
+  #define network for which it is created
+  network 192.168.1.0 255.255.255.0
+  
+  dns-server 192.168.1.2
+  ```
+
+* Now we can enable DNS service in DNS server, and add 'A Record' entry for name 'www.cisco.com' which will redirect to 192.168.1.3 (web server).
+
+* Now, we can automatically config IP addresses via DHCP for PC0 and PC1; we can also navigate to 'www.cisco.com' from PC0 and PC1; we need PC2 to have similar functionality.
+
+* DHCP Server:
+
+  ```shell
+  ip dhcp pool NET2
+  network 192.168.3.0 255.255.255.0
+  default-router 192.168.3.2
+  dns-server 192.168.1.2
+  ```
+
+* We also need to enable RIP routing for comms
+
+  ```shell
+  #DHCP Server
+  router rip
+  ver 2
+  network 192.168.1.0
+  network 192.168.2.0
+
+  #Router1
+  router rip
+  ver 2
+  network 192.168.2.0
+  network 192.168.3.0
+  ```
+
+* Config relay in Router1:
+
+  ```shell
+  int g0/0/1
+  #ingress interface for Router1
+  
+  ip helper-address 192.168.2.1
+  #Router1 will relay any request to this address now
+  ```
+
+* Now, PC2 can get DHCP address from DHCP server; we can also access the website.
