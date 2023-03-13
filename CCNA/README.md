@@ -20,6 +20,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
 1. [Task 4 - Router on a Stick](#task-4---router-on-a-stick)
+1. [Task 5 - Static Routing](#task-5---static-routing)
 
 ## Network Fundamentals
 
@@ -1312,3 +1313,29 @@ no sh
   ```
 
 * Now PCs are in different VLANs but can still ping each other.
+
+## Task 5 - Static Routing
+
+![Task 5](Images/Task5.png)
+
+* View routing table in router using ```sh ip route```
+
+* Currently, we cannot ping from PC0 to PC1 as route is not set properly, we need to setup static routing.
+
+* In Router1:
+
+  ```shell
+  ip route 192.168.30.0 255.255.255.0 10.10.10.2
+  #to route to 192.168.30.0 network, send packets to next hop at 10.10.10.2 
+  
+  ping 192.168.30.1
+  #this works
+  ```
+
+* Similarly, in Router0:
+
+  ```shell
+  ip route 192.168.2.0 255.255.255.0 10.10.10.1
+  ```
+
+* Static route to be done from both ends, otherwise the ICMP packet won't be able to traverse back to source. After that, ping from PC0 to PC1 works.
