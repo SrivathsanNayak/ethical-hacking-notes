@@ -18,6 +18,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [NAT & PAT](#nat--pat)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
+1. [Task 3 - VLANs](#task-3---vlans)
 
 ## Network Fundamentals
 
@@ -1212,3 +1213,44 @@ no sh
 
   #now we can ping from HostA to HostD
   ```
+
+## Task 3 - VLANs
+
+![Task 3](Images/Task3.png)
+
+* First, build the required topology and connect the components.
+
+* In Switch, using the command ```en; sh vlan br```, we can see that all interfaces are part of VLAN1 (default VLAN).
+
+* First config IP address for all 4 laptops. Then, create VLAN10 and VLAN20 on the switches and assign it to the required interfaces; and we have to assign trunk mode between two switches:
+
+  ```shell
+  #in Switch1
+
+  en; conf t
+  vlan 10
+  vlan 20
+  exit; exit
+  sh vlan br
+
+  #vlans have been created, assign it to required port now  
+  
+  int f0/1
+  switchport mode access
+  switchport access vlan 20
+  int f0/2
+  switchport mode access
+  switchport access vlan 10
+  int f0/3
+  switchport mode trunk
+  int f0/4
+  switchport mode trunk
+  exit; exit
+  
+  sh int trunk
+  #shows trunk mode between two switches on f0/3 and f0/4
+
+  #similarly, config other two switches
+  ```
+
+* Now, check if VLAN 10 devices can ping each other; and if VLAN 20 devices can ping each other; if everything is configured correctly, VLAN 10 device cannot ping VLAN 20 device.
