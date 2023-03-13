@@ -21,6 +21,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [Task 3 - VLANs](#task-3---vlans)
 1. [Task 4 - Router on a Stick](#task-4---router-on-a-stick)
 1. [Task 5 - Static Routing](#task-5---static-routing)
+1. [Task 6 - NAT and PAT](#task-6---nat-and-pat)
 
 ## Network Fundamentals
 
@@ -1339,3 +1340,76 @@ no sh
   ```
 
 * Static route to be done from both ends, otherwise the ICMP packet won't be able to traverse back to source. After that, ping from PC0 to PC1 works.
+
+## Task 6 - NAT and PAT
+
+![Task 6](Images/Task6.png)
+
+* For static NAT, first connect the required components; configure the IP and DG for the PCs given.
+
+* Next, config both the routers for gateway:
+
+  ```shell
+  #in Router0
+  en; conf t
+  int G0/0/0
+  ip add 192.168.10.1 255.255.255.0
+  no sh
+  int G0/0/1
+  ip add 100.100.100.1 255.255.255.252
+  no sh 
+  
+  #in Router1 (Internet)
+  en; conf t
+  int G0/0/0
+  ip add 100.100.100.2 255.255.255.252
+  no sh
+  ```
+
+* Now, we need to define inside/outside conditions on Router0 for static NAT:
+
+  ```shell
+  en; conf t
+  int G0/0/1
+  ip nat outside
+  #as it is outside-facing
+  
+  int G0/0/0
+  ip nat inside
+  #as it is inside-facing
+  
+  #we also need to config static NAT in Router0
+  #map private IP to public IP for one PC
+  ip nat inside source static 192.168.10.10 100.100.100.1
+  ```
+
+* Now, we can ping from PC0 to Router1 (public); we can check in Router0 that NAT translations has taken place:
+
+  ```shell
+  en
+  sh ip nat translations
+  sh ip nat statistics
+  ```
+
+* However, static NAT uses one-to-one mapping, and we cannot map all PCs due to limited IP addresses; we can use NAT overload or PAT.
+
+* Config for NAT overload (with same topology); config the routers accordingly, then config egress/ingress in Router0:
+
+  ```shell
+  en; conf t
+  int G0/0/1
+  ip nat outside
+  int G0/0/0
+  ip nat inside
+  exit
+
+  #define access-list
+  access-list 1 permit 192.168.10.0 0.0.0.255
+  
+  #for NAT overload or PAT
+  ip nat inside source list 1 interface G0/0/1 overload
+  ```
+
+* Now, we can ping from all PCs to the external router (Router1) 100.100.100.2
+
+* This will use different ports with the IP associated with interface G0/0/1; we can check it using ```sh ip nat translations``` in Router0.
