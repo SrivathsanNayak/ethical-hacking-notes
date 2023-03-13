@@ -19,6 +19,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
+1. [Task 4 - Router on a Stick](#task-4---router-on-a-stick)
 
 ## Network Fundamentals
 
@@ -1254,3 +1255,60 @@ no sh
   ```
 
 * Now, check if VLAN 10 devices can ping each other; and if VLAN 20 devices can ping each other; if everything is configured correctly, VLAN 10 device cannot ping VLAN 20 device.
+
+## Task 4 - Router on a Stick
+
+![Task 4](Images/Task4.png)
+
+* First, assign IPs and DGs to the PCs by navigating to Desktop > IP Configuration
+
+* Create VLANs in switch:
+
+  ```shell
+  en; conf t
+  vlan 10; name VLAN10
+  vlan 20; name VLAN20
+  vlan 30; name VLAN30
+  exit; exit
+  sh vlan
+  #shows VLANs created
+  ```
+
+* Config IPs for each VLAN in switch:
+
+  ```shell
+  en; conf t
+  int vlan 10; ip add 192.168.10.2 255.255.255.0
+  int vlan 20; ip add 192.168.20.2 255.255.255.0
+  int vlan 30; ip add 192.168.30.2 255.255.255.0
+  ```
+
+* Assign interfaces to VLANs:
+
+  ```shell
+  en; conf t
+  int f0/2; switchport mode access; switchport access vlan 10
+  int f0/3; switchport mode access; switchport access vlan 20
+  int f0/4; switchport mode access; switchport access vlan 30
+  ```
+
+* Config trunk port between switch and router:
+
+  ```shell
+  int f0/1; switchport mode trunk
+  ```
+
+* Config sub-interfaces in router:
+
+  ```shell
+  en; conf t
+  int G0/0; no sh; exit
+  #brings interface up
+  #now add sub-int  
+  int G0/0.10
+  encap dot1Q 10
+  ip address 192.168.10.1 255.255.255.0
+  #similar for other sub-interfaces
+  ```
+
+* Now PCs are in different VLANs but can still ping each other.
