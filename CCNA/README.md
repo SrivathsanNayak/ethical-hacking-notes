@@ -3,19 +3,20 @@
 Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playlist?list=PLh94XVT4dq02frQRRZBHzvj2hwuhzSByN):
 
 1. [Network Fundamentals](#network-fundamentals)
-2. [IP Address](#ip-address)
-3. [Networking Devices and Protocols](#networking-devices-and-protocols)
-4. [Cisco IOS](#cisco-ios)
-5. [Switches](#switches)
-6. [VLANs](#vlans)
-7. [VTP](#vtp)
-8. [Switchport Security](#switchport-security)
-9. [Routers](#routers-and-routing)
-10. [RIP Routing](#rip-routing)
-11. [Routing Advanced](#routing-advanced)
-12. [IPv6](#ipv6)
-13. [ACL](#acl)
-14. [NAT & PAT](#nat--pat)
+1. [IP Address](#ip-address)
+1. [Networking Devices and Protocols](#networking-devices-and-protocols)
+1. [Cisco IOS](#cisco-ios)
+1. [Switches](#switches)
+1. [VLANs](#vlans)
+1. [VTP](#vtp)
+1. [Switchport Security](#switchport-security)
+1. [Routers](#routers-and-routing)
+1. [RIP Routing](#rip-routing)
+1. [Routing Advanced](#routing-advanced)
+1. [IPv6](#ipv6)
+1. [ACL](#acl)
+1. [NAT & PAT](#nat--pat)
+1. [Task 1 - Router Configuration](#task-1---router-configuration)
 
 ## Network Fundamentals
 
@@ -1117,3 +1118,70 @@ no sh
   * Dynamic NAT - pool of IP addresses used but no static mapping; translation timeout
 
   * PAT (Port Address Translation) - NAT overload; maps inside local address' random source ports to random destination ports of same inside global address.
+
+## Task 1 - Router Configuration
+
+![Task 1](Images/Task1.png)
+
+* Power on router devices by turning on the switch in physical view
+
+* Config IP address in routers:
+
+  ```shell
+  #router 1
+  en; conf t
+  int GigabitEthernet 0/0/0
+  ip address 10.1.1.1 255.0.0.0
+  no sh
+  exit
+
+  #router 2
+  en; conf t
+  int GigabitEthernet 0/0/0
+  ip address 10.1.1.2 255.0.0.0
+  no sh
+  exit
+  ```
+
+* Router 1 can ping Router 2 using ```ping 10.1.1.2``` command.
+
+* Configure enable password of 'cisco' in both routers:
+
+  ```shell
+  en; conf t
+  enable password cisco
+  ```
+
+* Encrypt the enable password:
+
+  ```shell
+  en; conf t
+  service password-encryption
+  ```
+
+* Configure secret password of 'cisco123':
+
+  ```shell
+  en; conf t
+  enable secret cisco123
+  ```
+
+* Configure the first 5 telnet lines and use a line password of 'cisco' on them:
+
+  ```shell
+  en; conf t
+  line vty 0 4
+  password cisco
+  login
+  ```
+
+* We can telnet from Router 1 to Router 2 using ```telnet 10.1.1.2```
+
+* Configure console password of 'cisco':
+
+  ```shell
+  en; conf t
+  line console 0
+  password cisco
+  login
+  ```
