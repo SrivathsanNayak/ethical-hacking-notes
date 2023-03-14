@@ -16,6 +16,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [IPv6](#ipv6)
 1. [ACL](#acl)
 1. [NAT & PAT](#nat--pat)
+1. [Troubleshooting Techniques](#troubleshooting-techniques)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1125,6 +1126,35 @@ no sh
   * Dynamic NAT - pool of IP addresses used but no static mapping; translation timeout
 
   * PAT (Port Address Translation) - NAT overload; maps inside local address' random source ports to random destination ports of same inside global address.
+
+## Troubleshooting Techniques
+
+* Three-layer hierarchical model - developed by Cisco for a reliable network infra with reduced complexity; the three layers are:
+
+  * Access:
+  
+    * Controls user, workgroup access to network resources
+    * Includes Layer 2 switches and APs (Access Points) for connectivity
+    * At this layer, we can manage access control & policy, and implement port security
+
+  * Distribution:
+
+    * Communication point between access & core layer
+    * Consists of routers & multilayer switches
+    * Provides routing, filtering and WAN access
+
+  * Core:
+
+    * Network backbone, responsible for processing high traffic
+    * Provides interconnectivity between distribution layer devices
+    * Includes high speed devices like high-end routers & switches with redundant links
+
+* Collapsed Core Architecture - combines the core & distribution layers; core & distribution functions implemented by distribution layer devices.
+
+  * Pros - lower costs, simplified network
+  * Cons - less scalable, less resiliency, low redundancy
+
+* Firewalls - used for packet filtering; creates inside zone (most secure - 100) and outside zone (least secure - 0); traffic from high to low security always allowed, while traffic from low to high security always dropped.
 
 ## Task 1 - Router Configuration
 
