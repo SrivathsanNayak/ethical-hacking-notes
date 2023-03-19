@@ -17,6 +17,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [ACL](#acl)
 1. [NAT & PAT](#nat--pat)
 1. [Troubleshooting Techniques](#troubleshooting-techniques)
+1. [CDP, Syslog & NTP](#cdp-syslog--ntp)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1155,6 +1156,89 @@ no sh
   * Cons - less scalable, less resiliency, low redundancy
 
 * Firewalls - used for packet filtering; creates inside zone (most secure - 100) and outside zone (least secure - 0); traffic from high to low security always allowed, while traffic from low to high security always dropped.
+
+* Troubleshooting commands:
+
+  * ```ipconfig```
+  * ```nslookup```
+  * ```ping```
+  * ```tracert```
+
+## CDP, Syslog & NTP
+
+* By default, logging messages cannot be viewed on SSH & telnet as it is enabled only for console line.
+
+* To view logging messages, we need to use the command ```terminal monitor```; to disable it - ```terminal no monitor```.
+
+* Also, to prevent syslog messages from interrupting commands while being typed, we can use the command ```logging synchronous```.
+
+* Severity levels (for syslog messages):
+
+  * 0 - emergency
+  * 1 - alert
+  * 2 - critical
+  * 3 - error
+  * 4 - warning
+  * 5 - notification
+  * 6 - informal
+  * 7 - debug
+
+* To instruct a device to send logs to a syslog server, we can use ```logging 10.0.0.10```, where 10.0.0.10 is the IP of the server (with syslog service enabled).
+
+* While logging, we can also use the commands ```service sequence numbers``` and ```service timestamps log``` to log messages with sequence numbers and timestamps, respectively.
+
+* NTP (Network Time Protocol) - application layer protocol used for clock syncing between hosts; it uses a client-server architecture:
+
+```shell
+#config router as NTP client
+ntp server 192.168.0.100
+#where 192.168.0.100 is IP address of NTP server
+
+show ntp status
+#verify NTP
+
+#config router as NTP server
+ntp master
+```
+
+* CDP (Cisco Discovery Protocol) - proprietary protocol used to discover info about neighboring Cisco devices; enabled by default.
+
+```shell
+#display info about directly connected devices
+show cdp neighbors
+
+#more info
+show cdp neighbors detail
+
+#enable CDP globally
+cdp run
+
+#enable CDP on specific interface
+cdp enable
+```
+
+* LLDP (Link Layer Discovery Protocol) - vendor-neutral (IEEE-defined) data link layer protocol; alternative to CDP and can be used for non-Cisco devices.
+
+```shell
+#enable LLDP globally
+#disabled by default on Cisco devices
+lldp run
+
+#display info about neighbors
+show lldp neighbors
+
+#more info
+show lldp neighbors detail
+
+#display global info
+show lldp
+
+#enable receiving/transmitting on interface
+lldp transmit
+
+lldp receive
+#disable using 'no' commands
+```
 
 ## Task 1 - Router Configuration
 
