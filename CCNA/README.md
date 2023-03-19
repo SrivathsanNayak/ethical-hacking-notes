@@ -513,6 +513,30 @@ switchport trunk native vlan 10
 #possible native vlan mismatch due to different configs
 ```
 
+* Default VLAN vs Native VLAN:
+
+| **Parameter**            | **Default VLAN**                                                                   | **Native VLAN**                                  |
+|--------------------------|------------------------------------------------------------------------------------|--------------------------------------------------|
+| _Modifying VLAN_         | Default VLAN is 1, cannot be changed                                               | Native VLAN can be changed                       |
+| _Disabling VLAN_         | Cannot be disabled                                                                 | Can be 'disabled'                                |
+| _Untagged VLAN_          | Untagged traffic sent to default VLAN only when native VLAN & default VLAN is same | Untagged traffic sent to native VLAN in any case |
+| _Default VLAN values_    | 1, 1002-1005 (old)                                                                 | Any one VLAN per dot1q trunk port                |
+| _Encapsulation_          | Supports both ISL and dot1q                                                        | Supports only dot1q                              |
+| _Recommendation_         | Default VLAN is always 1                                                           | Native VLAN should be an unused VLAN id          |
+| _Shutdown_               | Cannot be shut                                                                     | Can be shut                                      |
+| _CDP, PAgp, VTP traffic_ | Sent on default VLAN                                                               | Not sent                                         |
+| _DTP traffic_            | Not sent                                                                           | Sent on native VLAN                              |
+| _Max VLANs_              | 1 per switch                                                                       | No. of dot1q trunk ports on switch               |
+
+* Normal VLAN vs Extended VLAN:
+
+| **Parameter**           | **Normal VLAN** | **Extended VLAN** |
+|-------------------------|-----------------|-------------------|
+| _VLAN IDs_              | 1-1005          | 1006-4095         |
+| _Default or Restricted_ | 1, 1002-1005    | 4095              |
+| _Stored in VLAN DB_     | Yes             | Only in VTP v3    |
+| _Supported VTP_         | v1, v2, v3      | v3                |
+
 ## VTP
 
 * VTP (VLAN Trunking Protocol) - Cisco-proprietary protocol, used to sync VLAN info in same VTP domain; it is not a trunking protocol.
