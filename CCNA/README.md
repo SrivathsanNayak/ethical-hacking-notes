@@ -9,6 +9,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [Switches](#switches)
 1. [VLANs](#vlans)
 1. [VTP](#vtp)
+1. [DTP](#dtp)
 1. [Switchport Security](#switchport-security)
 1. [Routers](#routers-and-routing)
 1. [RIP Routing](#rip-routing)
@@ -555,8 +556,8 @@ switchport trunk native vlan 10
 * VTP modes:
 
   * Server - for making config changes
-  * Client - receives changes from server
-  * Transparent - not using VTP
+  * Client - receives changes from server; cannot make any changes
+  * Transparent - not using VTP; but relays info
 
 * VTP config:
 
@@ -566,6 +567,9 @@ en
 show vtp status
 #shows vtp version, status, server by default
 
+sh vlan brief
+#view vlan info
+
 conf t
 #in global config mode
 
@@ -574,6 +578,7 @@ vtp version <1/2>
 vtp mode <server/client/transparent>
 
 vtp domain domainName.org
+#keep same domains for all switches for vtp to work
 
 vtp password pa55wd
 ```
@@ -596,7 +601,48 @@ vtp pruning
 vtp status
 #shows pruning enabled
 
-#'vlan allowed' command can also be used alternatively
+
+#'allowed vlan' command can also be used alternatively
+int f0/1
+
+switchport mode trunk
+
+switchport trunk allowed vlan <all/none/add/remove/VLAN id>
+```
+
+## DTP
+
+* In Cisco switches, by default ports are in Dynamic Auto mode (Cisco-proprietary mode).
+
+* Switchport mode combinations:
+
+| _Modes_               | **Access** | **Dynamic Auto** | **Trunk** | **Dynamic Desirable** |
+|-----------------------|------------|------------------|-----------|-----------------------|
+| **Access**            | Access     | Access           | Don't use | Access                |
+| **Dynamic Auto**      | Access     | Access           | Trunk     | Trunk                 |
+| **Trunk**             | Don't use  | Trunk            | Trunk     | Trunk                 |
+| **Dynamic Desirable** | Access     | Trunk            | Trunk     | Trunk                 |
+
+* DTP:
+
+```shell
+#in switch
+sh int trunk
+#shows trunk interfaces
+
+sh int f0/1 switchport
+#shows mode of switchport for interface
+
+#to change mode
+#in global config
+int f0/1
+
+switchport mode dynamic desirable
+
+exit
+
+sh int trunk
+#now we have trunk interfaces
 ```
 
 ## Switchport Security
