@@ -18,6 +18,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [NAT & PAT](#nat--pat)
 1. [Troubleshooting Techniques](#troubleshooting-techniques)
 1. [CDP, Syslog & NTP](#cdp-syslog--ntp)
+1. [Password Reset & Licensing](#password-reset--licensing)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1239,6 +1240,32 @@ lldp transmit
 lldp receive
 #disable using 'no' commands
 ```
+
+## Password Reset & Licensing
+
+* Router password recovery:
+
+  1. Bouncing the router (switching off and bringing it back on)
+  1. Prevent IOS load at beginning using Ctrl+C (break sequence) to enter 'rommon' mode
+  1. Change configuration-register using '0x2142' (ignore NVRAM content)
+  1. Reload router using ```reset```
+  1. Load startup-config into running-config, then change password
+  1. Change configuration-register back to '0x2102'
+  1. Save config using ```write```
+
+* Switch password recovery:
+
+  1. Press and hold 'MODE' button for 3 seconds
+  2. Rename 'flash:config.txt'
+  3. Reboot switch
+
+* IOS backup/recovery:
+
+  * Backup of current IOS image file - ```copy flash tftp```
+  * Load a new IOS image file from TFTP - ```copy tftp://<path of .bin> flash:```
+  * Restore IOS image file in 'rommon' mode - ```tftpdnld ?```
+
+* In Cisco, before IOS version 15.0, software image was selected based on customer requirements; with IOS 15.0, there is one universal image.
 
 ## Task 1 - Router Configuration
 
