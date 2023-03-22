@@ -20,6 +20,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [Troubleshooting Techniques](#troubleshooting-techniques)
 1. [CDP, Syslog & NTP](#cdp-syslog--ntp)
 1. [Password Reset & Licensing](#password-reset--licensing)
+1. [STP](#stp)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1336,6 +1337,150 @@ lldp receive
   * Restore IOS image file in 'rommon' mode - ```tftpdnld ?```
 
 * In Cisco, before IOS version 15.0, software image was selected based on customer requirements; with IOS 15.0, there is one universal image.
+
+## STP
+
+* Problems caused by L2 (layer 2) loop:
+
+  * Broadcast storm
+  * MAC table instability
+  * Multiple copies of frame
+
+* STP (Spanning Tree Protocol):
+
+  * Network protocol designed to prevent L2 loops
+
+  * Standardized as IEEE 802.D protocol
+
+  * In loop, STP places some ports in a blocking state; these ports will no longer process/receive any frames except STP messages
+
+  * Enables L2 redundancy
+
+  * Uses spanning tree algorithm (STA) to prevent loops
+
+  * ON by default in Cisco switches
+
+* STP criteria:
+
+  * BPDU (Bridge Protocol Data Units) are sent by switches among themselves
+
+  * A root switch is elected - all its working ports are placed in forwarding state
+
+  * All other switches (non-root switches) determine best path to get to root switch
+
+  * Port used to reach root switch (root port) is placed in forwarding state
+
+  * On shared Ethernet segments, the switch with best path to reach root switch is in forwarding - this switch is the designated switch and its port is the designated port
+
+  * All other ports are in blocking state & won't forward frames
+
+* STP ports:
+
+  * Root ports - primarily used for forwarding frames in STP; all ports connecting to root switch on neighboring switches are root ports and will be in forwarding state
+
+  * Designated ports - ports on root switch and one port on other links that are not directly connected to root switch; these are also in forwarding state
+
+  * Non-designated ports - redundant, blocked ports; active only in case of failure
+
+* BPDUs:
+
+  * Messages to share STP info between switches
+  * Used in root switch election & loop detection
+  * A common BPDU is ```Hello BPDU```, sent every 2 seconds (includes root ID, switch ID, root cost, Hello, Max Age and forward delay timers)
+
+* STP convergence steps:
+
+  * Election of root bridge
+  * Election of root ports
+  * Elect designated & non-designated ports
+
+* Root switch election:
+
+  * Election based on BIDs (bridge IDs) sent in BPDUs
+
+  * Each participating switch has a 8-byte switch ID - this includes a 2-byte priority field (default value 32768) and a 6-byte system ID (based on MAC address)
+
+  * By default, a switch always believes it is root, until it receives a superior BPDU
+
+  * Switch with lowest BID becomes root switch
+
+  * STA adds VLAN ID to priority value (4-bit priority plus 12-bit VLAN ID), and by default all switchports are in VLAN 1 - so BID is 32769
+
+  * Config custom BID priority using ```spanning-tree vlan <ID> priority <VALUE>```, where value must be in multiples of 4096
+
+* Root switch election example:
+
+![Before root switch election](Images/pre-root-election.jpg)
+
+```markdown
+BPDUs are broadcasted by switches in election process.
+
+The switches compare their own info with the BPDU info to find root switch.
+
+DS1 is identified as root switch as it has a lower MAC address and lower priority.
+
+By STA, all ports leading to DS1 on neighbors are root ports and all ports on DS1 are designated ports.
+
+Now, between DS2 and DS3, the port on DS2 offers a lower BPDU, and therefore it will be the designated port; the DS3 port will be blocked.
+```
+
+![After root switch election](Images/post-root-election.jpg)
+
+* Root switch optimization:
+
+  * Older switches usually have lower MAC addresses, thus higher chances of getting elected as root switch
+
+  * Old switch as root switch will cause poor network operation
+
+  * To solve this, manual configuration of root switch is required
+
+  * Using ```root primary``` command, we can set root switch with priority 24576
+
+  * Using ```root secondary```, we can set backup root switch with priority 28672
+
+* On shared Ethernet segments, if there is a tie in best root cost, these criteria are used (the switch/port with best path is called designated switch/port):
+
+  * Lowest neighbor bridge ID
+  * Lowest neighbor port priority (128 by default)
+  * Lowest neighbor internal port number
+
+* Default port cost (can be overridden) depends on port speed:
+
+| Speed    | Cost |
+|----------|------|
+| 10 Mbps  | 100  |
+| 100 Mbps | 19   |
+| 1 Gbps   | 4    |
+| 10 Gbps  | 2    |
+
+* STP port states and time spent in each state:
+
+  * Blocking - 20 seconds (10 * Hello timer duration)
+  * Listening (sends & receives BPDUs until elected) - 15 seconds
+  * Learning (preparing MAC address table) - 15 seconds
+  * Forwarding (forwards frames as usual)
+  * Disabled (administratively shutdown)
+
+* STP timers and default transmission time:
+
+  * Hello timer - 2 seconds (checks if link is up)
+  * Forward delay - 15 seconds (listening, learning)
+  * Max Age - 20 seconds (max time that port can save BPDU info)
+
+* BPDUs exchanged when building topology database:
+
+  * Configuration BPDUs - to elect root switches, root & designated ports
+
+  * TCN (Topology Change Notification) BPDUs - when port transitions into forwarding, or when forwarding/learning transitions into blocking/down.
+
+  * TCA (Topology Change Ack) BPDUs - confirm receiving TCN
+
+* All modes of STP:
+
+| **Encapsulation** | **802.1q** | **ISL** | **Both** |
+|-------------------|------------|---------|----------|
+| _Normal_          | STP        | PVSTP   | PVSTP+   |
+| _Rapid_           | RSTP       | RPVSTP  | RPVSTP+  |
 
 ## Task 1 - Router Configuration
 
