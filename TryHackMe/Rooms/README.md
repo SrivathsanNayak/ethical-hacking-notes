@@ -150,3 +150,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   146. [New Hire Old Artifacts - Medium](NewHireOldArtifacts.md)
   147. [Holo - Hard](Holo.md)
   148. [Introduction To Cryptography - Medium](IntroductionToCryptography.md)
+  149. [Disgruntled - Easy](Disgruntled.md)
