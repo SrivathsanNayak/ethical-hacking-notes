@@ -21,6 +21,8 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [CDP, Syslog & NTP](#cdp-syslog--ntp)
 1. [Password Reset & Licensing](#password-reset--licensing)
 1. [STP](#stp)
+1. [RSTP](#rstp)
+1. [PortFast and BPDU Guard](#portfast-and-bpdu-guard)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1404,7 +1406,7 @@ lldp receive
 
   * Switch with lowest BID becomes root switch
 
-  * STA adds VLAN ID to priority value (4-bit priority plus 12-bit VLAN ID), and by default all switchports are in VLAN 1 - so BID is 32769
+  * STA adds VLAN ID to priority value (4-bit priority plus 12-bit VLAN ID or extended system ID), and by default all switchports are in VLAN 1 - so BID is 32769
 
   * Config custom BID priority using ```spanning-tree vlan <ID> priority <VALUE>```, where value must be in multiples of 4096
 
@@ -1481,6 +1483,53 @@ Now, between DS2 and DS3, the port on DS2 offers a lower BPDU, and therefore it 
 |-------------------|------------|---------|----------|
 | _Normal_          | STP        | PVSTP   | PVSTP+   |
 | _Rapid_           | RSTP       | RPVSTP  | RPVSTP+  |
+
+## RSTP
+
+* RSTP (Rapid STP):
+
+  * Faster version of STP
+  * IEEE 802.1w
+  * Backwards-compatible with STP
+
+* Similarities between STP & RSTP:
+
+  * Root switch elected using same set of rules
+  * Root ports and designated ports selected with same rules
+  * Both place each port in either forwarding or blocking state; in RSTP, blocking state is called discarding state
+
+* Differences between STP & RSTP:
+
+  * RSTP has faster convergence
+  * STP port states - listening, blocking and disabled - merged into a single state in RSTP, called discarding state
+  * RSTP has 4 port types - root, designated, alternate and backup port (applied when single switch has two links to same segment, or attached to hub)
+  * In STP, root switch generates & sends Hellos to other switches, and relayed by non-root switches; in RSTP, each switch can generate its own Hellos
+
+* For example, in STP, to avoid loops it places one port in blocking state. In RSTP, that port is placed in alternate state, which won't process/forward any frames except RSTP messages; and if one root port fails, alternate port becomes root port.
+
+* Newer switches use RSTP by default; if not used, it can be enabled with ```spanning-tree mode rapid-pvst```
+
+* In RSTP, alternate & backup ports are in discarding state.
+
+* RSTP port states:
+
+  * Discarding (blocking, listening and disabled combined)
+  * Learning
+  * Forwarding
+
+## PortFast and BPDU Guard
+
+* PortFast - feature that enables switch to instantaneously transition from blocking/discarding to forwarding state, skipping listening & learning state.
+
+* PortFast is recommended only on non-trunking access ports like edge ports as these ports do not send/receive BPDUs.
+
+* As PortFast can be enabled on non-trunking ports connecting switches, L2 loops can still occur due to transmission of BPDUs.
+
+* This can be prevented by enabling BPDU Guard; this moves non-trunking switch ports into an ```errdisable``` state when BPDU is accepted on that port.
+
+* By enabling BPDU Guard, STP shuts down interfaces with PortFast which received BPDUs, instead of putting them in blocking state.
+
+* Root guard - feature that helps in enforcing position of root switch in network.
 
 ## Task 1 - Router Configuration
 
