@@ -23,6 +23,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [STP](#stp)
 1. [RSTP](#rstp)
 1. [PortFast and BPDU Guard](#portfast-and-bpdu-guard)
+1. [Other STP Modes](#other-stp-modes)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1530,6 +1531,44 @@ Now, between DS2 and DS3, the port on DS2 offers a lower BPDU, and therefore it 
 * By enabling BPDU Guard, STP shuts down interfaces with PortFast which received BPDUs, instead of putting them in blocking state.
 
 * Root guard - feature that helps in enforcing position of root switch in network.
+
+## Other STP Modes
+
+* PVST (Per VLAN Spanning Tree):
+
+  * Cisco-proprietary, uses only ISL
+  * Used for topologies involving VLANs
+  * Can create different root switches for different VLANs
+  * Should not keep same root switch for multiple VLANs as the same interface will be blocked in both VLANs
+  * Adds VLAN number to BID of switch
+
+* RPVST (Rapid PVST):
+
+  * Cisco-proprietary, uses only ISL
+  * Creates one STP instance per VLAN
+
+* MSTP (Multiple STP):
+
+  * Open standard (IEEE 802.1q)
+  * Allows to create multiple separate spanning-tree instances
+  * Maps multiple VLANs to an instance
+  * Resource-saving due to grouping, compared to PVST+
+  * When MSTP region is connected to PVST+ topology, MST simulates PVST+ with a feature 'PVST simulation mechanism'
+
+* PVST+:
+
+  * Cisco-proprietary
+  * Improved version of PVST
+  * Supports both ISL and 802.1q
+  * Maps a VLAN for each spanning-tree instance
+
+* RPVST+:
+
+  * Cisco-proprietary
+  * Improved version of RPVST
+  * Supports both ISL and 802.1q
+  * Faster network convergence
+  * Like PVST+, every VLAN has single instance of spanning tree
 
 ## Task 1 - Router Configuration
 
