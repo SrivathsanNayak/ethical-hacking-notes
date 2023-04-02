@@ -152,3 +152,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   148. [Introduction To Cryptography - Medium](IntroductionToCryptography.md)
   149. [Disgruntled - Easy](Disgruntled.md)
   150. [Unattended - Medium](Unattended.md)
+  151. [KAPE - Medium](KAPE.md)
