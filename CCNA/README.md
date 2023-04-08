@@ -24,6 +24,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [RSTP](#rstp)
 1. [PortFast and BPDU Guard](#portfast-and-bpdu-guard)
 1. [Other STP Modes](#other-stp-modes)
+1. [EtherChannel](#etherchannel)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1569,6 +1570,83 @@ Now, between DS2 and DS3, the port on DS2 offers a lower BPDU, and therefore it 
   * Supports both ISL and 802.1q
   * Faster network convergence
   * Like PVST+, every VLAN has single instance of spanning tree
+
+## EtherChannel
+
+* EtherChannel:
+
+  * link aggregation
+  * combines multiple links between switches into one logical link (e.g. - three 100Mbps links into one 300 Mbps link)
+  * can assign upto 16 physical interfaces to an EtherChannel, but only 8 can be active at a time
+  * all interfaces should have same duplex, same speed, same VLAN config and same switchport modes
+  * benefits - increased bandwidth, redundancy and load balancing
+
+* Types of EtherChannels:
+
+  * Static - does not check any parameters; EtherChannel ON mode
+  * Port Aggregation Protocol (PAgP) - Cisco-proprietary - can combine max 8 physical links into single virtual link
+  * Link Aggregation Control Protocol (LACP) - IEEE standard - can combine upto 8 ports that can be active and another 8 that can be in standby
+
+* PAgP and LACP are not interoperable.
+
+```shell
+#in switch, int config mode
+
+channel-group 1 mode on
+#static EtherChannel
+#channel-group no. between 1-6
+
+#for all switchports, same channel-group no.
+#for another linked switch, different no. can be used, but EtherChannel should be enabled
+
+channel-group 1 mode <desirable/auto>
+#PAgP
+#if both ports between switches in auto mode, no EtherChannel formed
+#in switch, all ports should be in same mdoe
+
+channel-group 1 mode <active/passive>
+#LACP
+#if both ports in passive mode, no EtherChannel formed
+
+#verification
+show etherchannel 1 port-channel
+#where 1 is the channel-group no.
+
+show etherchannel summary
+```
+
+* To switch from LACP to PAgP, disable LACP first and then enable PAgP; or create another ```channel-group```.
+
+* On high availability networks, use static mode over PAgP or LACP as it is more reliable and faster.
+
+* EtherChannel & load balancing:
+
+  ```shell
+  #load balancing happens on source MAC by default.
+  channel-group 1 mode <option>
+
+  #in global config mode
+  port-channel load-balance <option>
+
+  #in priv exec mode
+  show etherchannel load-balance
+  ```
+
+* In the case of multiple Access layer (L2) switches connected to a few Distribution layer (L3) switches, bandwidth is wasted due to STP blocking ports on L2 switches; to solve this, we can use switch stacking or chassis aggregation.
+
+* Switch stacking:
+
+  * Combines multiple switches into one logical switch
+  * One switch acts as Master, via which we can config other switches (e.g. - Flex stack module)
+  * Only switches with stacking module or modular slot can be used
+  * Creates logical Access layer switch in ring formation
+  * We can create EtherChannel between Access and Distribution layer switches as well, reducing overhead
+
+* Chassis aggregation:
+
+  * Combines switches into a single logical switch
+  * Does not require external modules unlike switch stacking
+  * Usually in Distribution or Core layer
 
 ## Task 1 - Router Configuration
 
