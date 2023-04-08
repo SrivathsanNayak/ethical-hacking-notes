@@ -1,6 +1,6 @@
 # 200-301 CCNA
 
-Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playlist?list=PLh94XVT4dq02frQRRZBHzvj2hwuhzSByN):
+Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playlist?list=PLh94XVT4dq02frQRRZBHzvj2hwuhzSByN) and [Cisco CCNA 200-301](https://www.udemy.com/course/ccna-complete/) courses:
 
 1. [Network Fundamentals](#network-fundamentals)
 1. [IP Address](#ip-address)
