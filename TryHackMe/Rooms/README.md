@@ -153,3 +153,5 @@ Writeups for rooms on TryHackMe, in the order of completion:
   149. [Disgruntled - Easy](Disgruntled.md)
   150. [Unattended - Medium](Unattended.md)
   151. [KAPE - Medium](KAPE.md)
+  152. [Opacity - Easy](Opacity.md)
+  153. [DAST - Medium](DAST.md)
