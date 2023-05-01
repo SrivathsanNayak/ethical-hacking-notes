@@ -33,6 +33,12 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [Task 6 - NAT and PAT](#task-6---nat-and-pat)
 1. [Task 7 - IPv6 Routing](#task-7---ipv6-routing)
 1. [Task 8 - DNS & DHCP](#task-8---dns--dhcp)
+1. [Task 9 - SNMP & Syslog](#task-9---snmp--syslog)
+1. [Task 10 - NTP](#task-10---ntp)
+1. [Task 11 - EtherChannel](#task-11---etherchannel)
+1. [Task 12 - RIP & EIGRP](#task-12---rip--eigrp)
+1. [Task 13 - OSPF](#task-13---ospf)
+1. [Task 14 - HSRP](#task-14---hsrp)
 
 ## Network Fundamentals
 
@@ -2078,3 +2084,204 @@ show etherchannel summary
   ```
 
 * Now, PC2 can get DHCP address from DHCP server; we can also access the website.
+
+## Task 9 - SNMP & Syslog
+
+![Task 9](Images/Task9.jpeg)
+
+* In R1:
+
+  ```shell
+  en; conf t
+  #config SNMP communities
+  snmp-server community Password1 ro
+  snmp-server community Password2 rw
+
+  #enable logging
+  logging 10.0.0.100
+  logging trap debugging
+
+  exit
+
+  sh logging
+  ```
+
+* Verify Syslog is working by shutting down an interface on R1 and bringing it back up
+
+* The logs can be viewed on 10.0.0.100 in Syslog, under the Services tab
+
+## Task 10 - NTP
+
+![Task 10](Images/Task10.jpeg)
+
+* NTP is enabled on the server by default
+
+* Before configuring, 'sh clock' on router shows inaccurate time
+
+* If we were using a router instead of a server for NTP server, we can use ```ntp master``` to set that device as NTP server
+
+* Configure both routers as NTP clients:
+
+  ```shell
+  clock timezone PST -8
+  ntp server 10.0.0.50
+  ```
+
+* Verify NTP on both client routers:
+
+  ```shell
+  sh clock
+  sh ntp status
+  ```
+
+## Task 11 - EtherChannel
+
+![Task 11](Images/Task11.jpeg)
+
+* We have to convert uplinks from Acc3 to CD1 and CD2 to LACP EtherChannel.
+
+* Acc3:
+
+  ```shell
+  en; conf t
+  int range f0/23-24
+  channel-group 1 mode active
+  
+  exit
+  
+  int port-channel 1
+  description Link to CD1
+  switchport mode trunk
+  switchport trunk native vlan 199
+  #to config native VLAN on switchport
+  ```
+
+* Matching settings on CD1:
+
+  ```shell
+  en; conf t
+  int range f0/23-24
+  channel-group 1 mode active
+  
+  exit
+  
+  int port-channel 1
+  desc Link to Acc3
+  switchport mode trunk
+  switchport trunk native vlan 199
+  ```
+
+* Similarly, create the EtherChannel config between Acc3 and CD2, setting both sides to ```active``` and using a different port channel number
+
+* We can verify the EtherChannels come up using ```show etherchannel summary```
+
+* For configuring PAgP instead, we need to use ```channel-group 1 mode desirable```
+
+* And for configuring static EtherChannel, we can use ```channel-group 1 mode on```
+
+## Task 12 - RIP & EIGRP
+
+![Task 12](Images/Task12.jpeg)
+
+* RIP config - enabling RIPv2 on every router, we have to advertise all networks except 203.0.113.0/24. run following command on all routers:
+
+  ```shell
+  router rip
+  version 2
+  no auto-summary
+  network 10.0.0.0
+  ```
+
+* Verify using ```sh ip route```
+
+* Now, for all routers to have route to 203.0.113.0/24, it must be added to RIP process on R4, and interface f1/1 facing Internet has to be configured as passive interface to avoid sending out internal info.
+
+* On R4:
+
+  ```shell
+  router rip
+  passive-interface f1/1
+  network 203.0.113.0
+  ```
+
+* To configure a default static route on R4 to Internet via 203.0.113.2, use the command ```ip route 0.0.0.0 0.0.0.0 203.0.113.2```
+
+* EIGRP config - enabling EIGRP on every router for AS 100:
+
+  ```shell
+  router eigrp 100
+  network 10.0.0.0
+  ```
+
+* ```sh ip eigrp neighbors``` shows adjacencies formed with other routers.
+
+* ```sh ip route``` shows EIGRP routes in routing table, and two RIP routes for Internet and default route - as EIGRP has lower AD than RIP
+
+## Task 13 - OSPF
+
+![Task 13](Images/Task13.jpeg)
+
+* Enable loopback interface on R1 - R5 in the format 192.168.0.x/32 where x is the router no.:
+
+  ```shell
+  #on R1, for example
+  int loopback0
+  ip address 192.168.0.1 255.255.255.255
+  ```
+
+* Enable single area OSPF on R1 - R5 to advertise all networks except 203.0.113.0/24. On all routers:
+
+  ```shell
+  router ospf 1
+  network 10.0.0.0 0.255.255.255 area 0
+  network 192.168.0.0 0.0.0.255 area 0
+  ```
+
+* Use commands ```sh ip protocols```, ```sh ip ospf neighbor```, ```sh ip route``` for troubleshooting
+
+* For advertising route to 203.0.113.0/24 from R4, without advertising internal routes to Internet, we have to configure it as passive interface. On R4:
+
+  ```shell
+  router ospf 1
+  passive-interface f1/1
+  network 203.0.113.0 0.0.0.255 area 0
+  ```
+
+* For default static route injection, on R4:
+
+  ```shell
+  ip route 0.0.0.0 0.0.0.0 203.0.113.2
+  router ospf 1
+  default-information originate
+  ```
+
+## Task 14 - HSRP
+
+![Task 14](Images/Task14.jpeg)
+
+* Configure basic HSRP for 10.10.10.0/24 network; on interface towards end-hosts.
+
+* To configure Virtual IP on R1:
+
+  ```shell
+  int g0/1
+  standby 1 ip 10.10.10.1
+  ```
+
+* Configure Virtual IP on R2:
+
+  ```shell
+  int g0/1
+  standby 1 ip 10.10.10.1
+  ```
+
+* Check for HSRP, on R1 using the command ```show standby``` - this shows us the active & standby router.
+
+* Configure HSRP so R1 will be preferred and active router always:
+
+  ```shell
+  int g0/1
+  standby 1 priority 110
+  #default priority is 100
+  standby 1 preempt
+  ```
