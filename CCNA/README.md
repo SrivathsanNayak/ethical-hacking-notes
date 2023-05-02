@@ -28,6 +28,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [EIGRP](#eigrp)
 1. [OSPF](#ospf)
 1. [HSRP](#hsrp)
+1. [QoS](#qos)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1860,6 +1861,51 @@ end
 #for verification
 show standby
 ```
+
+## QoS
+
+* Quality requirements for voice & SD viceo packets (one-way):
+
+  * latency (delay) <= 150ms
+  * jitter (variation in delay) <= 30ms
+  * loss <= 1%
+
+* Congestion:
+
+  * occurs when traffic comes in quicker compared to traffic leaving device
+  * in this case, packets sent in FIFO order
+  * causes delay as packets wait in queue
+  * as queue size changes, it causes jitter
+  * if queue size limit exceeded, further packets are dropped
+  * to mitigate congestion, either add bandwidth or use QoS (Quality of Service)
+
+* Effects of QoS queuing:
+
+  * reduces latency, jitter, loss for particular traffic
+  * gives each type of traffic the service it requires
+  * for mitigating temporary periods of congestion
+
+* Classification & marking - for router/switch to give particular level of service to traffic type, it has to recognise traffic first; common ways to do so:
+
+  * CoS (Class of Service):
+
+    * L2 marking
+    * 3-bit field in L2 802.1q frame header which carries CoS QoS marking
+    * value of 0-7 can be set; default value 0 (best effort traffic)
+    * CoS 6,7 reserved for network use
+    * IP phones mark call signalling traffic as CoS 3 and voice payload as CoS 5
+  
+  * DSCP (Differentiated Service Code Point):
+
+    * L3 marking
+    * ToS (Type of Service) byte in L3 IP header used to carry DSCP QoS marking
+    * 6 bits (64 values) are used; default value 0 (best effort traffic)
+    * IP phones mark call signalling traffic as 24 (CS3, its DSCP code) and voice payload as 46 (EF)
+    * standard markings for other traffic types such as 26 (AF31) for mission critical data and 34 (AF41) for SD video
+
+  * ACL (Access Control List) - L3, L4 info used to recognise traffic
+
+  * NBAR (Network Based Application Recognition) - L3 to L7 info used to recognise traffic
 
 ## Task 1 - Router Configuration
 
