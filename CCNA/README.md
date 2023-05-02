@@ -29,6 +29,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [OSPF](#ospf)
 1. [HSRP](#hsrp)
 1. [QoS](#qos)
+1. [Network Automation & Programmability](#network-automation--programmability)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1906,6 +1907,104 @@ show standby
   * ACL (Access Control List) - L3, L4 info used to recognise traffic
 
   * NBAR (Network Based Application Recognition) - L3 to L7 info used to recognise traffic
+
+## Network Automation & Programmability
+
+* Data serialization:
+
+  * process of converting structured data to standardized format that allows sharing/storage of data in a form that allows recovering original structure
+  * for transferring data between different systems, apps, languages
+  * XML, JSON, YAML - human & machine readable, plaintext data encoding formats
+
+* API (Application Programming Interfaces):
+
+  * for one program to communicate directly with another program
+  * to perform CRUD operations (Create Read Update Delete)
+  * two main types of APIs for web services are SOAP and REST
+  * NETCONF & RESTCONF are APIs for network devices
+
+* SOAP (Simple Object Access Protocol):
+
+  * standard communication protocol system that permits processes using different OS to communicate
+  * transport is HTTP(S), and data format is XML
+  * stricter requirements
+
+* REST (Representational State Transfer):
+
+  * architecture, not protocol
+  * gives guidelines for structure & organization of an API
+  * supports any transport & data format, typically HTTP(S) & JSON used
+  * faster performance and easier than SOAP
+
+* REST constraints:
+
+  * client-server architecture
+  * uniform interface
+  * statelessness
+  * cacheability
+  * layered system (intermediary devices like load balancers must be transparent to client & server)
+  * code on demand (optional)
+
+* YANG (Yet Another Next Generation):
+
+  * open standard defined by IETF (2010)
+  * data modelling language which provides a standardized way to represent operational & config data of a network device
+  * can used both internally & when packaged for transmission
+
+* NETCONF communications:
+
+  * NETCONF & YANG provide standard way to programmatically inspect & modify config of a network device
+  * NETCONF (IETF 2006) is protocol that remotely reads/applies changes to device data
+  * XML encoding used, and transport over SSH or TLS
+
+* RESTCONF:
+
+  * RESTCONF (IETF 2017) describes how to map YANG specification to a RESTful interface
+  * uses HTTP verbs over REST API
+  * simpler than NETCONF
+  * XML/JSON encoding over HTTP(S) transport
+
+* Config Management Tools:
+
+  * designed to make administrating devices easy and automated
+  * can automate provisioning & deployment of servers & network devices
+  * includes version control, testing, etc.
+  * common options (open source & free) - Ansible, Puppet, Chef
+
+* Ansible:
+
+  * Python required
+  * agentless (no installation on devices to be managed)
+  * push model (push config to devices to be managed)
+  * communicates over SSH by default
+  * simpler
+  * released in 2012
+  * Ansible modules are pre-built Python scripts
+  * Ansible inventory files define all hosts that will be managed by control workstation
+  * Ansible playbooks are YAML files that outline instructions required to run
+
+* Puppet:
+
+  * uses agent on target devices
+  * 'Puppet Master' runs on Linux server
+  * clients use TCP 8140 to comm with Puppet Master
+  * pull model, agent checks in every 30 mins by default
+  * written in Ruby
+  * uses proprietary DSL, not YAML
+  * comm over HTTPS via REST API
+  * Manifest defines device properties
+  * can check config consistency
+  * created in 2005
+
+* Chef:
+
+  * agent to be installed on target devices
+  * pull model
+  * comm over HTTPS via REST API
+  * written in Ruby
+  * 'Cook books' and 'Recipes' used
+  * released in 2009
+  * Chef server uses TCP 10002 to send config to clients
 
 ## Task 1 - Router Configuration
 
