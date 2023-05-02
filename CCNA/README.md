@@ -27,6 +27,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [EtherChannel](#etherchannel)
 1. [EIGRP](#eigrp)
 1. [OSPF](#ospf)
+1. [HSRP](#hsrp)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1816,6 +1817,49 @@ sh ip route
 
     * routers which redistribute into OSPF
     * might also run other routing protocols
+
+## HSRP
+
+* FHRP (First Hop Redundancy Protocols):
+
+  * uses virtual IP (VIP) and MAC address to allow for automated gateway failover
+  * hosts uses VIP as default gateway
+  * if physical gateway fails, another gateway takes over
+  * protocols:
+
+    * HSRP (Hot Standby Router Protocol) - Cisco proprietary; deployed in active/standby pair
+    * VRRP (Virtual Router Redundancy Protocol) - open standard; deployed in active/standby pair, similar to HSRP
+    * GLBP (Gateway Load Balancing Protocol) - Cisco proprietary; supports active/active load balancing across multiple routers
+
+* HSRP operations:
+
+  * both routers have normal physical IP and MAC on HSRP interface; unique address used on both routers
+  * both have HSRP VIP and MAC configured on interface; same VIP shared
+  * when they come online, one is elected HSRP active router, and the other one is standby
+  * active router owns VIP and MAC, and responds to ARP requests
+  * all traffic for VIP goes through active router
+  * routers send Hello messages to each over their HSRP interface
+  * if standby router stops receiving Hellos, it will transition to be active router
+
+* HSRP config:
+
+```shell
+#R1
+int g0/1
+ip address 10.10.10.2 255.255.255.0
+no sh
+standby 1 ip 10.10.10.1 (matching config on other router)
+
+#R2
+int g0/1
+ip address 10.10.10.3 255.255.255.0
+no sh
+standby 1 ip 10.10.10.1
+
+end
+#for verification
+show standby
+```
 
 ## Task 1 - Router Configuration
 
