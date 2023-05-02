@@ -25,6 +25,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [PortFast and BPDU Guard](#portfast-and-bpdu-guard)
 1. [Other STP Modes](#other-stp-modes)
 1. [EtherChannel](#etherchannel)
+1. [EIGRP](#eigrp)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1653,6 +1654,55 @@ show etherchannel summary
   * Combines switches into a single logical switch
   * Does not require external modules unlike switch stacking
   * Usually in Distribution or Core layer
+
+## EIGRP
+
+* EIGRP (Enhanced Interior Gateway Routing Protocol):
+
+  * advanced distance vector routing protocol
+  * supports large networks
+  * quick convergence times
+  * supports bounded updates (network topology change updates only sent to routers affected by change)
+  * messages sent using multicast
+  * performs equal cost load balancing on upto 4 paths by default and can be increased upto 16 paths
+  * only protocol that can be configured to perform unequal cost load balancing
+
+* EIGRP config:
+
+```shell
+router eigrp 100
+#here, 100 is AS - Autonomous System
+#routers with same AS number can peer
+
+network 10.0.0.0 0.0.255.255
+#uses wildcard mask
+#if no wildcard mask used, defaults to classful boundary wildcard mask
+```
+
+* The ```network``` command indicates to look for interfaces with IP in that range & enable EIGRP on those interfaces - so it will send/listen for EIGRP Hello messages and form adjacencies; it will also advertise network config on those interfaces.
+
+* For example, ```network 10.0.0.0 0.0.255.255``` will be advertising networks like 10.0.1.1/24 and 10.0.2.1/24, but it would not be advertising 10.1.0.1/24 or 10.0.0.0/16
+
+* EIGRP verification:
+
+```shell
+sh run | section eigrp
+
+sh ip protocols
+
+sh ip eigrp interfaces
+
+sh ip eigrp neighbors
+
+sh ip route
+```
+
+* EIGRP Router ID:
+
+  * routers identify themselves using router ID, in form of an IP address
+  * by default, highest IP of any loopback interfaces configured on router, or highest IP if loopback does not exist
+  * router ID will never change as loopback does not go down
+  * best practice to use loopback or set router ID manually
 
 ## Task 1 - Router Configuration
 
