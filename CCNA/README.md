@@ -26,6 +26,7 @@ Notes for the [200-301 CCNA Training from YouTube](https://www.youtube.com/playl
 1. [Other STP Modes](#other-stp-modes)
 1. [EtherChannel](#etherchannel)
 1. [EIGRP](#eigrp)
+1. [OSPF](#ospf)
 1. [Task 1 - Router Configuration](#task-1---router-configuration)
 1. [Task 2 - Router Switch Configuration](#task-2---router-switch-configuration)
 1. [Task 3 - VLANs](#task-3---vlans)
@@ -1703,6 +1704,118 @@ sh ip route
   * by default, highest IP of any loopback interfaces configured on router, or highest IP if loopback does not exist
   * router ID will never change as loopback does not go down
   * best practice to use loopback or set router ID manually
+
+## OSPF
+
+* OSPF (Open Shortest Path First):
+
+  * link state routing protocol
+  * each router describes itself & its interfaces to its directly connected neighbors; info passed unchanged between routers
+  * supports large networks
+  * very fast convergence time
+  * messages sent using multicast
+  * open standard protocol
+  * uses Dijkstra's Shortest Path First algo to find best path to learned networks
+  * uses LSA (link state advertisements) to pass on routing updates
+
+* OSPF operations:
+
+  * discover neighbors
+  * form adjacencies
+  * flood link state database (LSDB)
+  * compute shortest path
+  * install best routes in routing table
+  * respond to network changes
+
+* OSPF packet types:
+
+  * Hello - router sends/listens for Hello packets when OSPF is enabled on interface, and forms adjacencies with other OSPF routers
+  * DBD (Database Description) - adjacent routers will share their known networks with the DBD packet
+  * LSR (Link State Request) - if router is missing info about any of the networks in received DBD, it will send the neighbor an LSR
+  * LSA (Link State Advertisement) - routing update, sent as a reply to LSR
+  * LSU (Link State Update) - contains list of LSAs to be updated, used during flooding
+  * LSAck - receiving routers acknowledging LSAs
+
+* OSPF config:
+
+```shell
+router ospf 1
+#process ID 1
+#process ID is locally significant only
+
+network 10.0.0.0 0.0.0.255 area 0
+#for learning network 10.0.0.0/24
+
+network 10.1.0.0 0.0.0.255 area 0
+#for learning network 10.1.0.0/24
+```
+
+* OSPF verification:
+
+```shell
+sh run | section ospf
+
+sh ip protocols
+
+sh ip ospf int br
+
+sh ip ospf neighbors
+#check adjacencies
+
+sh ip ospf database
+#check LSDB
+
+sh ip route
+#check OSPF routes
+```
+
+* In OSPF, similar to EIGRP, router ID is used to identify routers; best practice is to use loopback or set router ID manually.
+
+* OSPF areas:
+
+  * need for areas - too many routes can lead to memory consumption; network changes and reconverging can lead to high usage of processing resources
+
+  * OSPF follows a hierarchical design by segmenting large networks into smaller areas
+
+  * each router maintains full info about its own area, but only summary info about other areas
+
+  * 2-level hierarchy used:
+
+    * transit area - backbone, area 0 - does not contain end-users
+    * regular areas - non-backbone areas - to connect end-users to transit area
+  
+  * for router to form adjacency, its neighbor must be in same area
+
+  * types of OSPF routes:
+
+    * intra area (routes received from other routers in same area)
+    * inter area
+    * external (redistributed into OSPF)
+
+* OSPF router types:
+
+  * Backbone routers:
+
+    * routers with all their OSPF interfaces in area 0
+    * routers maintain full LSDB of other routers & links in own area
+  
+  * ABR (Area Border Routers):
+
+    * routers with interfaces in multiple areas
+    * separates LSA flooding zones
+    * primary point for area address summarization
+    * functions as source for default routes
+    * ABRs do not automatically summarize
+  
+  * Normal area routers:
+
+    * routers with all their OSPF interfaces in a non-backbone area
+    * learn inter-area routers to other areas from ABRs
+  
+  * ASBRs (Autonomous System Boundary Routers):
+
+    * routers which redistribute into OSPF
+    * might also run other routing protocols
 
 ## Task 1 - Router Configuration
 
