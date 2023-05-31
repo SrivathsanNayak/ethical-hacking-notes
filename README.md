@@ -42,7 +42,7 @@
 
   * [Linux 101 - TCM Security](Linux101_TCMSec/README.md)
 
-  * [Movement, Pivoting and Persistence](MPP_TCMSec/README.md)
+  * [Movement, Pivoting and Persistence - TCM Security](MPP_TCMSec/README.md)
 
 * Some helpful resources:
 
