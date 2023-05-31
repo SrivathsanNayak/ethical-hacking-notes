@@ -44,6 +44,8 @@
 
   * [Movement, Pivoting and Persistence - TCM Security](MPP_TCMSec/README.md)
 
+  * [Python 201 For Hackers - TCM Security](Python201_TCMSec/README.md)
+
 * Some helpful resources:
 
   * [CyberChef](https://gchq.github.io/CyberChef/)
