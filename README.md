@@ -46,6 +46,8 @@
 
   * [Python 201 For Hackers - TCM Security](Python201_TCMSec/README.md)
 
+  * [Mobile Application Penetration Testing - TCM Security](MobilePentest_TCMSec/README.md)
+
 * Some helpful resources:
 
   * [CyberChef](https://gchq.github.io/CyberChef/)
