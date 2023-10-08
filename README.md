@@ -48,6 +48,8 @@
 
   * [Mobile Application Penetration Testing - TCM Security](MobilePentest_TCMSec/README.md)
 
+  * [Practical Malware Analysis & Triage - TCM Security](MalwareAnalysis_TCMSec/README.md)
+
 * Some helpful resources:
 
   * [CyberChef](https://gchq.github.io/CyberChef/)
