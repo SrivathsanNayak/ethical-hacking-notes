@@ -6,3 +6,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [File Transfers](FileTransfers/README.md)
   1. [Using the Metasploit Framework](MetasploitFramework/README.md)
   1. [Vulnerability Assessment](VulnerabilityAssessment/README.md)
+  1. [Windows Fundamentals](WindowsFundamentals/README.md)
