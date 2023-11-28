@@ -50,6 +50,8 @@
 
   * [Practical Malware Analysis & Triage - TCM Security](MalwareAnalysis_TCMSec/README.md)
 
+  * [Practical Bug Bounty - TCM Security](BugBounty_TCMSec/README.md)
+
 * Some helpful resources:
 
   * [CyberChef](https://gchq.github.io/CyberChef/)
