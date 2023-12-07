@@ -152,3 +152,7 @@
   * ECDH (Elliptic Curve Diffie-Hellman) - uses elliptic curve cryptography to generate shared secret key; provides forward secrecy
   * ECDSA (Elliptic Curve Digital Signature Algorithm) - uses elliptic curve cryptography to generate digital signs to authenticate parties involved in key exchange
   * IKE (Internet Key Exchange) - to establish & maintain secure communication sessions (used in VPNs); operates either in main mode or aggressive mode
+
+* TCP (Transmission Control Protocol) - connection-oriented, reliable but slower
+
+* UDP (User Datagram Protocol) - connectionless, fast but unreliable
