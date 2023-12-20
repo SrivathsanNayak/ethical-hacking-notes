@@ -9,3 +9,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [Windows Fundamentals](WindowsFundamentals/README.md)
   1. [Brief Intro to Hardware Attacks](HardwareAttacks/README.md)
   1. [Introduction to Networking](IntroNetworking/README.md)
+  1. [Javascript Deobfuscation](JSDeobfuscation/README.md)
