@@ -10,3 +10,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [Brief Intro to Hardware Attacks](HardwareAttacks/README.md)
   1. [Introduction to Networking](IntroNetworking/README.md)
   1. [Javascript Deobfuscation](JSDeobfuscation/README.md)
+  1. [Network Enumeration with nmap](nmap/README.md)
