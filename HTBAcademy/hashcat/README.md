@@ -238,6 +238,9 @@
     hashcat -a 0 -m 1000 ntds_hashes.txt /usr/share/wordlists/kaonashi.txt
 
     # in case of too many hashes, we can extract it all to a file
+
+    # if username is also required
+    hashcat -a 0 -m 1000 DC01.inlanefreight.local.ntds --username /usr/share/wordlists/kaonashi.txt
     ```
 
 * Miscellaneous cracking:
