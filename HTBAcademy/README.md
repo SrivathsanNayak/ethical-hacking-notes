@@ -14,3 +14,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [Cracking Passwords with Hashcat](hashcat/README.md)
   1. [Login Brute Forcing](LoginBruteForce/README.md)
   1. [Attacking Web Apps with ffuf](ffuf/README.md)
+  1. [SQLMap Essentials](SQLMap/README.md)
