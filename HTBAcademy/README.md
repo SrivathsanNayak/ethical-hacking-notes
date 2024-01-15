@@ -16,3 +16,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [Attacking Web Apps with ffuf](ffuf/README.md)
   1. [SQLMap Essentials](SQLMap/README.md)
   1. [Intro to Network Traffic Analysis](NetworkTrafficIntro/README.md)
+  1. [Information Gathering - Web](InfoWeb/README.md)
