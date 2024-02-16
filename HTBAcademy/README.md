@@ -20,3 +20,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [Cross-Site Scripting (XSS)](XSS/README.md)
   1. [Hacking WordPress](WordPress/README.md)
   1. [SQLi Fundamentals](SQLi/README.md)
+  1. [Command Injections](CommandInjections/README.md)
