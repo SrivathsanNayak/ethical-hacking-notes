@@ -24,3 +24,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [File Upload Attacks](FileUpload/README.md)
   1. [Server-Side Attacks](ServerSide/README.md)
   1. [Broken Authentication](BrokenAuthentication/README.md)
+  1. [Web Attacks](WebAttacks/README.md)
