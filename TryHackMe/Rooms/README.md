@@ -156,5 +156,6 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [DAST - Medium](DAST.md)
   1. [Thompson - Easy](Thompson.md)
   1. [Expose - Easy](Expose.md)
-  1. [Bricks Heist - Easy](BricksHeist.md)
+  1. [TryHack3M: Bricks Heist - Easy](BricksHeist.md)
   1. [Creative - Easy](Creative.md)
+  1. [TryHack3M: Subscribe - Medium](Subscribe.md)

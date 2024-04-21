@@ -1,4 +1,4 @@
-# Bricks Heist - Easy
+# TryHack3M: Bricks Heist - Easy
 
 * nmap scan - ```nmap -T4 -p- -A -Pn -v 10.10.10.139``` -
 
