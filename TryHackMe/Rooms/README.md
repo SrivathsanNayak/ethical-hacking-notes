@@ -160,3 +160,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [Creative - Easy](Creative.md)
   1. [TryHack3M: Subscribe - Medium](Subscribe.md)
   1. [VulnNet - Medium](VulnNet.md)
+  1. [Valley - Easy](Valley.md)
