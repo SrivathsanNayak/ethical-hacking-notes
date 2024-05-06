@@ -161,3 +161,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [TryHack3M: Subscribe - Medium](Subscribe.md)
   1. [VulnNet - Medium](VulnNet.md)
   1. [Valley - Easy](Valley.md)
+  1. [Jurassic Park - Hard](JurassicPark.md)
