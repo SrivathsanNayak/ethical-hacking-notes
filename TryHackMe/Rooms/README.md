@@ -163,3 +163,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [Valley - Easy](Valley.md)
   1. [Jurassic Park - Hard](JurassicPark.md)
   1. [Mnemonic - Medium](Mnemonic.md)
+  1. [Chronicle - Medium](Chronicle.md)
