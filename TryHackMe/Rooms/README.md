@@ -165,3 +165,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [Mnemonic - Medium](Mnemonic.md)
   1. [Chronicle - Medium](Chronicle.md)
   1. [Battery - Medium](Battery.md)
+  1. [Debug - Medium](Debug.md)
