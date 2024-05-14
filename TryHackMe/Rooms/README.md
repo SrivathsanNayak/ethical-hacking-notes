@@ -168,3 +168,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [Debug - Medium](Debug.md)
   1. [The Blog Blog - Medium](TheBlobBlog.md)
   1. [Annie - Medium](Annie.md)
+  1. [Badbyte - Easy](Badbyte.md)
