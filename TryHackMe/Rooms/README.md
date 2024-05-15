@@ -169,3 +169,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [The Blog Blog - Medium](TheBlobBlog.md)
   1. [Annie - Medium](Annie.md)
   1. [Badbyte - Easy](Badbyte.md)
+  1. [Jacob the Boss - Medium](JacobTheBoss.md)
