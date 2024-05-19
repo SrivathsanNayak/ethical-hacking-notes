@@ -28,3 +28,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [Bash Scripting](Bash/README.md)
   1. [Session Security](SessionSecurity/README.md)
   1. [Web Service & API Attacks](WebAPIAttacks/README.md)
+  1. [Footprinting](Footprinting/README.md)
