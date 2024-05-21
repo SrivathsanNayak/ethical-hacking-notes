@@ -76,4 +76,6 @@
 
   * Everything here is a ```Work In Progress```; therefore some of the topics are empty or incomplete.
 
-  * For CTF notes, I have included the flags as well, so if you do not want spoilers, tread carefully ;)
+  * For CTF notes, I have included the flags as well, so if you do not want spoilers, tread carefully.
+
+  * I have made a [custom CTF cheatsheet](CTFCheatsheet.md) based on the above resources - will try to update it every now and then; if you feel stuck on any CTF challenge, check this list for any pointers.
