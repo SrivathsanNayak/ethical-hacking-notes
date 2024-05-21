@@ -204,7 +204,7 @@
 
 ## Windows Privilege Escalation
 
-  ```ps
+  ```cmd
   whoami
   # user
 
