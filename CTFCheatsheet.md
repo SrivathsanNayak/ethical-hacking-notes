@@ -147,6 +147,12 @@
   # see how it responds to input, certain binaries can be exploited through buffer overflow, ret2libc, etc.
   # if required, transfer to attacker machine and reverse engineer with Ghidra
 
+  ls -la /mnt
+  # check if anything is mounted
+
+  lsblk
+  # list blocks
+
   # for any interesting binaries or anything with a name or version attached, research for known exploits
   # linpeas would not help here, so we need to manually check
 
