@@ -171,3 +171,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [Badbyte - Easy](Badbyte.md)
   1. [Jacob the Boss - Medium](JacobTheBoss.md)
   1. [Adventure Time - Hard](AdventureTime.md)
+  1. [CyberLens - Easy](CyberLens.md)
