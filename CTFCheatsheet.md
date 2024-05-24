@@ -15,7 +15,7 @@
   nmap -T4 -p- -A -Pn -v target.com
   # TCP scan
 
-  sudo nmap -Pn -v target.com
+  sudo nmap -sU -Pn -v target.com
   # scan only top UDP ports, unless you have a lot of time to kill
 
   # we can also check with alt scanning tools like nikto
@@ -56,6 +56,8 @@
   + Parameter fuzzing - various wordlists can be used for fuzzing parameters using tools like ```ffuf```
 
   + Weak/default credentials - for any login page, make sure you try default or weak creds first before proceeding with any bruteforce attempt
+
+  + Bruteforce - if you really need to use ```hydra``` to bruteforce basic authentication or login form, for example, then make sure you know the username(s) and for passwords you can use rockyou.txt; in case usernames are not given, choose a few common usernames or based on the challenge, and in addition to that generate a wordlist from the website using ```cewl```
 
     ```sh
     gobuster dir -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,html,bak,jpg,zip,bac,sh,png,md,jpeg -t 25
@@ -102,6 +104,7 @@
 
   ls -la
   # search all files in home directory and go through them
+  # tip - use the 'file' command to quickly check what type of file it is - if it is of use, we can transfer it to our machine
 
   ls -la /home
   # check all users
@@ -127,7 +130,7 @@
   # search files owned by 'userGroup'
 
   find / -type f -perm -04000 -ls 2>/dev/null
-  # find files that have SUID or SGID set
+  # find files that have SUID
 
   grep --color=auto -rnw -iIe "PASSW\|PASSWD\|PASSWORD\|PWD" --color=always 2>/dev/null
   # check password strings
@@ -428,6 +431,10 @@
 
   crunch 4 4 -t "s@@@" -o pwd.lst
   # if we have a known pattern of password
+
+  cewl -d 5 -m 8 -e http://target.com -w wordlist.txt
+  # generate wordlist from website
+  # -d for spidering depth, and -m for minimum wordlength
   ```
 
 + Cracking tools:

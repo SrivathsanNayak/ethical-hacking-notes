@@ -173,3 +173,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [Adventure Time - Hard](AdventureTime.md)
   1. [CyberLens - Easy](CyberLens.md)
   1. [Willow - Medium](Willow.md)
+  1. [Inferno - Medium](Inferno.md)
