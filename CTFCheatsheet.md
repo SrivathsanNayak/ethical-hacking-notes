@@ -135,6 +135,9 @@
   grep --color=auto -rnw -iIe "PASSW\|PASSWD\|PASSWORD\|PWD" --color=always 2>/dev/null
   # check password strings
 
+  # for extended password hunting, check the PasswordAttacks module from HTB
+  # it includes a section on finding creds
+
   find / -perm -u=s -type f 2>/dev/null
   # check SUID binaries - for exploits, check GTFOBins
 
@@ -202,8 +205,15 @@
   cat /proc/1/cgroup
   # includes 'docker' in paths
 
+  ifconfig
+  # check machine IP; we can also run 'hostname -i'
+
   # if we are in a Docker env, we can check internal ports
   # using a primitive bash port-scanner to check internal services
+  # we can also consider a ping-sweep to check for other machines in same network - for example
+  for i in {1..255}; do (ping -c 1 172.18.0.${i} | grep "bytes from" &); done
+  # this step should be considered only when no other privesc vectors have been identified on machine
+
   # example - if we have access to MySQL DB, we can inject PHP code into table
   # and save table to file on remote system - then we can get RCE using curl
 
@@ -250,6 +260,9 @@
 
   findstr /si password *.txt
   # recursively search all directories for 'password' string in text files
+
+  # for extended password hunting, check the PasswordAttacks module from HTB
+  # it includes a section on finding creds
 
   cmdkey /list
   # lists saved credentials

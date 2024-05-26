@@ -174,3 +174,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [CyberLens - Easy](CyberLens.md)
   1. [Willow - Medium](Willow.md)
   1. [Inferno - Medium](Inferno.md)
+  1. [Cat Pictures - Easy](CatPictures.md)
