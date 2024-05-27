@@ -113,9 +113,13 @@
 
   sudo -l
   # if we have password, check the commands we can run as root or other user/group
+  # this command will also show if we have LD_PRELOAD set for example
 
   history
   # check previous commands
+
+  # if we have a web directory, enumerate it completely for any creds
+  ls -la /var/www/
 
   find / -perm -222 -type d 2>/dev/null
   # search world-writable folders
