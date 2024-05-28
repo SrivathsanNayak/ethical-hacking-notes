@@ -155,7 +155,8 @@
   # in some cases, there are unknown or offbeat SUID binaries, they should be checked first
   # run those binaries and try to understand how it works
   # see how it responds to input, certain binaries can be exploited through buffer overflow, ret2libc, etc.
-  # if required, transfer to attacker machine and reverse engineer with Ghidra
+  # if required, transfer to attacker machine and reverse engineer with Ghidra - we can check function code, strings
+  # we can also upload the binary to an online tool like Decompiler Explorer, and copy-paste the output code in ChatGPT for an overview
 
   ls -la /mnt
   # check if anything is mounted
