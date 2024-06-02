@@ -177,3 +177,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [Cat Pictures - Easy](CatPictures.md)
   1. [Road - Medium](Road.md)
   1. [Athena - Medium](Athena.md)
+  1. [Sweettooth Inc. - Medium](Sweettooth.md)
