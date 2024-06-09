@@ -45,6 +45,8 @@
 
   + Login forms - same as above; check for all payloads imaginable, use multiple wordlists. Common attacks in login forms include SQLi, NoSQLi, null byte injection, etc; if needed, we can use tools such as ```sqlmap```
 
+  + Command injection - for any input forms, check if command injection payloads work; in case of blind scenarios or when we are not able to see output, we can try by creating a file or fetching a page from attacker machine
+
   + Burp Suite - if going nowhere, take a tour of the webpages but with Intercept enabled; helpful for any redirects or hints
 
   + SSL certificate - in a few cases, viewing the certificate gives us extra information like usernames, email addresses, subdomains, etc.
@@ -60,14 +62,14 @@
   + Bruteforce - if you really need to use ```hydra``` to bruteforce basic authentication or login form, for example, then make sure you know the username(s) and for passwords you can use rockyou.txt; in case usernames are not given, choose a few common usernames or based on the challenge, and in addition to that generate a wordlist from the website using ```cewl```
 
     ```sh
-    gobuster dir -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,html,bak,jpg,zip,bac,sh,png,md,jpeg -t 25
+    gobuster dir -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,html,bak,jpg,zip,bac,sh,png,md,jpeg,pl,ps1 -t 25
     # directory scan - this is not recursive to save time
     # if any directories found, recursively scan those directories in another command
 
     # if recursive scanning is really required
     feroxbuster -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,html,bak,js,txt,json,docx,pdf,zip,cgi,sh,pl,aspx,sql,xml --extract-links --scan-limit 2 --filter-status 400,401,404,405,500 --silent
     
-    # use multiple wordlists - when checking again, start with smaller wordlists like 'common.txt' and then go for bigger ones
+    # use multiple wordlists - when checking again, start with smaller wordlists like 'common.txt' and then go for bigger ones like 'raft-large-*.txt'
     # and if that does not give anything, use another tool like ffuf for directory scanning
     # additionally, scan directories which provide directory listing as well - things can be hidden from us
 
