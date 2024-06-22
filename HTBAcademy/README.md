@@ -31,3 +31,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [Footprinting](Footprinting/README.md)
   1. [Password Attacks](PasswordAttacks/README.md)
   1. [Shells & Payloads](ShellsPayloads/README.md)
+  1. [Attacking Common Services](CommonServices/README.md)
