@@ -33,3 +33,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [Shells & Payloads](ShellsPayloads/README.md)
   1. [Attacking Common Services](CommonServices/README.md)
   1. [Attacking Common Applications](CommonApplications/README.md)
+  1. [Linux Privilege Escalation](LinuxPrivesc/README.md)
