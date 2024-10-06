@@ -71,3 +71,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   67. [Sauna - Easy](Sauna.md)
   68. [Resolute - Medium](Resolute.md)
   69. [Sau - Easy](Sau.md)
+  70. [Cicada - Easy](Cicada.md)
