@@ -180,3 +180,4 @@ Writeups for rooms on TryHackMe, in the order of completion:
   1. [Sweettooth Inc. - Medium](Sweettooth.md)
   1. [SafeZone - Medium](SafeZone.md)
   1. [Cheese CTF - Easy](CheeseCTF.md)
+  1. [Publisher - Easy](Publisher.md)
