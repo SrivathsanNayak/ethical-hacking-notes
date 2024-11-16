@@ -77,3 +77,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   73. [Wifinetic - Easy](Wifinetic.md)
   74. [Analytics - Easy](Analytics.md)
   75. [Cronos - Medium](Cronos.md)
+  76. [Bizness - Easy](Bizness.md)
