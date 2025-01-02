@@ -27,7 +27,7 @@
 
 + Service [footprinting](https://github.com/SrivathsanNayak/ethical-hacking-notes/blob/main/HTBAcademy/Footprinting/README.md):
 
-  Based on whatever ports & services are there; consider enumerating manually as well as using automated tools. Also, search for found ports and services - it could be associated with a known vulnerable service/version
+  Based on whatever ports & services are there; consider enumerating manually as well as using automated tools. Also, search for found ports and services - it could be associated with a known vulnerable service/version. In very rare cases, if the box is faulty, try resetting it and re-doing the footprinting.
 
 + Clues:
 
@@ -41,11 +41,17 @@
 
   + 'Inspect' and 'View Page Source' - check all tabs in Inspect part, and source code thoroughly for any clues
 
+  + Read the source code again, understand it as much as possible; check for any endpoints
+
   + Input fields - for any field which takes user input, test it with all possible payloads to check for all types of web attacks like SQLi, XSS, XXE, LFI, etc.
 
   + Login forms - same as above; check for all payloads imaginable, use multiple wordlists. Common attacks in login forms include SQLi, NoSQLi, null byte injection, etc; if needed, we can use tools such as ```sqlmap```
 
+  + ```sqlmap``` - can be used on top of fuzzing and checking forms; if WAF is being used, we can use this with options like ```--no-cast```, ```--random-agent``` and ```--tamper``` options - refer [sqlmap cheatsheet](https://highon.coffee/blog/sqlmap-cheat-sheet/)
+
   + Command injection - for any input forms, check if command injection payloads work; in case of blind scenarios or when we are not able to see output, we can try by creating a file or fetching a page from attacker machine
+
+  + Injection attacks - other types of injection attacks should also be checked in input forms, parameters, and wherever possible
 
   + Burp Suite - if going nowhere, take a tour of the webpages but with Intercept enabled; helpful for any redirects or hints
 
@@ -55,7 +61,7 @@
 
   + Technologies used and their versions - this can lead us to known exploits; research extensively on platforms such as Google, ExploitDB and Metasploit.
 
-  + Parameter fuzzing - various wordlists can be used for fuzzing parameters using tools like ```ffuf```
+  + Parameter fuzzing - various wordlists can be used for fuzzing parameters using tools like ```ffuf```; if we do not know a parameter is being used or not, we can still try fuzzing for it
 
   + Weak/default credentials - for any login page, make sure you try default or weak creds first before proceeding with any bruteforce attempt
 
@@ -101,6 +107,8 @@
   ```linpeas.sh``` is a good starting point - go through everything listed in its output. But in case you are not getting anything, manual checks will help:
 
   ```sh
+  # refer Linux Privilege Escalation section in HTB academy
+
   id
   # check which groups you are part of - some groups have more permissions
 
@@ -119,6 +127,12 @@
 
   history
   # check previous commands
+
+  uname -r
+
+  cat /etc/lsb-release
+  # based on kernel info and distro info, google for exploits associated
+  # search for both attributes - exploits such as gameoverlayfs and dirty pipe are very common
 
   # if we have a web directory, enumerate it completely for any creds
   ls -la /var/www/
@@ -143,6 +157,9 @@
 
   # for extended password hunting, check the PasswordAttacks module from HTB
   # it includes a section on finding creds
+
+  # if the box is based on a web server or web app, look for stored passwords or hashes in the database
+  # for example, a machine hosting Apache OfBiz will have Derby DB, and we should check for config, creds, etc.
 
   find / -perm -u=s -type f 2>/dev/null
   # check SUID binaries - for exploits, check GTFOBins
@@ -231,6 +248,8 @@
 ## Windows Privilege Escalation
 
   ```cmd
+  # refer Windows Privilege Escalation section in HTB academy
+
   whoami
   # user
 
@@ -310,6 +329,12 @@
 
   netstat -ano
   # lists listening ports on target system
+
+  dir /a-r-d /s /b
+  # find writable files, recursively
+
+  dir /a-r-d /s /b | findstr /v "htb-student"
+  # exclude certain keyword from directory search
 
   schtasks /query /fo LIST /v
   # lists scheduled tasks
