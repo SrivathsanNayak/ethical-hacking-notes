@@ -36,3 +36,4 @@ Notes for modules on [Hack The Box Academy](https://academy.hackthebox.com/), in
   1. [Linux Privilege Escalation](LinuxPrivesc/README.md)
   1. [Windows Privilege Escalation](WindowsPrivesc/README.md)
   1. [Wi-Fi Penetration Testing Basics](WifiPentesting/README.md)
+  1. [Pivoting, Tunneling and Port Forwarding](PivotingTunnelingPortForwarding/README.md)
