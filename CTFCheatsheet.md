@@ -7,6 +7,8 @@
 
 ## Enumeration and Exploitation
 
++ Note: Enumeration is a CYCLIC process; all enumeration steps have to be tried whenever something is found, even if it seems similar or equivalent to a previous finding
+
 + Scanning:
 
   Start with a TCP scan; if you do not get anything from footprinting the services found, then only go for a UDP scan since it is time-consuming.
@@ -27,7 +29,7 @@
 
 + Service [footprinting](https://github.com/SrivathsanNayak/ethical-hacking-notes/blob/main/HTBAcademy/Footprinting/README.md):
 
-  Based on whatever ports & services are there; consider enumerating manually as well as using automated tools. Also, search for found ports and services - it could be associated with a known vulnerable service/version. In very rare cases, if the box is faulty, try resetting it and re-doing the footprinting.
+  Based on whatever ports & services are there; consider enumerating manually as well as using automated tools. Also, search for ALL found ports and services - it could be associated with a known vulnerable service/version. In very rare cases, if the box is faulty, try resetting it and re-doing the footprinting.
 
 + Clues:
 
@@ -75,7 +77,7 @@
     # if recursive scanning is really required
     feroxbuster -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,html,bak,js,txt,json,docx,pdf,zip,cgi,sh,pl,aspx,sql,xml --extract-links --scan-limit 2 --filter-status 400,401,404,405,500 --silent
     
-    # use multiple wordlists - when checking again, start with smaller wordlists like 'common.txt' and then go for bigger ones like 'raft-large-*.txt'
+    # use multiple wordlists - when checking again, start with smaller wordlists like 'common.txt' and then go for bigger ones like 'raft-large-*.txt' and 'megabeast.txt'
     # and if that does not give anything, use another tool like ffuf for directory scanning
     # additionally, scan directories which provide directory listing as well - things can be hidden from us
 
@@ -467,7 +469,7 @@
 
 + Bruteforce:
 
-  ```hydra``` can be used for bruteforcing for multiple services:
+  ```hydra``` can be used for bruteforcing for multiple services (```nxc```/```NetExec``` as alternative bruteforce tools):
 
   ```sh
   hydra -l joe -P pwd.lst ssh://target.com
@@ -534,3 +536,11 @@
   # after this we will be able to access service, which is running on target server port 80, on our attacker machine port 4444
   ssh joe@target.com -i id_rsa -L 4444:127.0.0.1:80
   ```
+
++ mimikatz:
+
+  + ensure you have local admin privilege for post-exploitation
+
+  + test with latest version of the tool in case the standard binary does not work
+
+  + in case of a non-interactive shell, we can run the binary in a single command without entering the mimikatz prompt - ```.\mimikatz.exe "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" exit```

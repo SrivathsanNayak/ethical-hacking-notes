@@ -52,6 +52,8 @@
 
   * [Practical Bug Bounty - TCM Security](BugBounty_TCMSec/README.md)
 
+  * [Nmap 6 Cookbook - The Fat-free Guide to Network Scanning](NmapCookbook/README.md)
+
 * Some helpful resources:
 
   * [CyberChef](https://gchq.github.io/CyberChef/)

@@ -13,6 +13,7 @@
 9. [SQL injection attack, listing the database contents on non-Oracle databases](#sql-injection-attack-listing-the-database-contents-on-non-oracle-databases)
 10. [SQL injection attack, listing the database contents on Oracle](#sql-injection-attack-listing-the-database-contents-on-oracle)
 11. [Blind SQL injection with conditional responses](#blind-sql-injection-with-conditional-responses)
+12. [Blind SQL injection with conditional errors](#blind-sql-injection-with-conditional-errors)
 
 ### SQL injection vulnerability in WHERE clause allowing retrieval of hidden data
 
@@ -283,4 +284,21 @@ Once the attack ends, we can use 'Length' column to filter by the size of respon
 The 1st Payload column will indicate the character position in password.
 
 We can concatenate the characters accordingly to get the password for administrator user, followed by login.
+```
+
+### Blind SQL injection with conditional errors
+
+```text
+Given, results of SQL query are not returned; we have to make use of the error message.
+
+Using Burp Suite, intercept request and send it to Repeater; we can modify the TrackingId cookie value.
+
+Payload - xyz' AND (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM dual)='a
+
+This Oracle payload gives an internal server error.
+However, if we modify it to replace 'AND' with concatenation symbol '||', it works.
+
+Payload - xyz' || (SELECT CASE WHEN (1=2) THEN TO_CHAR(1/0) ELSE 'a' END FROM dual) || '
+
+We can confirm by modifying case condition with (1=1) - this gives us the custom error.
 ```
