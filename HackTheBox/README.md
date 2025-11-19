@@ -82,3 +82,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   78. [Validation - Easy](Validation.md)
   79. [Brutus - Very Easy](Brutus.md)
   80. [Flag Command - Very Easy](FlagCommand.md)
+  81. [Unit42 - Very Easy](Unit42.md)
