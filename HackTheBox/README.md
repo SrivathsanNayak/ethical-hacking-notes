@@ -80,3 +80,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   76. [Bizness - Easy](Bizness.md)
   77. [Chemistry - Easy](Chemistry.md)
   78. [Validation - Easy](Validation.md)
+  79. [Brutus - Very Easy](Brutus.md)
