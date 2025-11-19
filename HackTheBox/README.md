@@ -1,6 +1,6 @@
 # HackTheBox
 
-Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/home), in the order of completion:
+Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthebox.com/home), in the order of completion:
 
   1. [Dancing - Very Easy](Dancing.md)
   2. [Redeemer - Very Easy](Redeemer.md)
@@ -81,3 +81,4 @@ Writeups for rooms and challenges on [HackTheBox](https://app.hackthebox.com/hom
   77. [Chemistry - Easy](Chemistry.md)
   78. [Validation - Easy](Validation.md)
   79. [Brutus - Very Easy](Brutus.md)
+  80. [Flag Command - Very Easy](FlagCommand.md)
