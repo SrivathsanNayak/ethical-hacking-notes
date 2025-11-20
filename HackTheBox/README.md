@@ -84,3 +84,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   80. [Flag Command - Very Easy](FlagCommand.md)
   81. [Unit42 - Very Easy](Unit42.md)
   82. [BoardLight - Easy](BoardLight.md)
+  83. [Titanic - Easy](Titanic.md)
