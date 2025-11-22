@@ -86,3 +86,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   82. [BoardLight - Easy](BoardLight.md)
   83. [Titanic - Easy](Titanic.md)
   84. [Eighteen - Easy](Eighteen.md)
+  85. [Expressway - Easy](Expressway.md)
