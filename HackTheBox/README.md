@@ -91,3 +91,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   87. [Editor - Easy](Editor.md)
   88. [Traverxec - Easy](Traverxec.md)
   89. [CodePartTwo - Easy](CodePartTwo.md)
+  90. [UnderPass - Easy](UnderPass.md)
