@@ -89,3 +89,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   85. [Expressway - Easy](Expressway.md)
   86. [PermX - Easy](PermX.md)
   87. [Editor - Easy](Editor.md)
+  88. [Traverxec - Easy](Traverxec.md)
