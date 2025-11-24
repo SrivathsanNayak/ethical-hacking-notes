@@ -93,3 +93,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   89. [CodePartTwo - Easy](CodePartTwo.md)
   90. [UnderPass - Easy](UnderPass.md)
   91. [Granny - Easy](Granny.md)
+  92. [Timelapse - Easy](Timelapse.md)
