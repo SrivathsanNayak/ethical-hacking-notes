@@ -97,3 +97,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   93. [Devvortex - Easy](Devvortex.md)
   94. [Easy Phish - Easy](EasyPhish.md)
   95. [Money Flowz - Easy](MoneyFlowz.md)
+  96. [Artificial - Easy](Artificial.md)
