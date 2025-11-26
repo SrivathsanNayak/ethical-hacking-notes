@@ -99,3 +99,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   95. [Money Flowz - Easy](MoneyFlowz.md)
   96. [Artificial - Easy](Artificial.md)
   97. [Conversor - Easy](Conversor.md)
+  98. [Cozy Hosting - Easy](CozyHosting.md)
