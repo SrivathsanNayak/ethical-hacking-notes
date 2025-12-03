@@ -70,6 +70,8 @@
   * can be used to crack files as well with tools like ```pdf2john```, ```ssh2john```, ```rar2john```, ```keepass2john```, ```zip2john```, etc.
   * another way to list these tools is using the command ```locate *2john*```
 
+* For extracting passwords from network traffic, we can use tools like ```wireshark``` and ```pcredz```
+
 ## Remote Password Attacks
 
 * Network Services:
