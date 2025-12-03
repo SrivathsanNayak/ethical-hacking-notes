@@ -102,3 +102,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   98. [Cozy Hosting - Easy](CozyHosting.md)
   99. [MetaTwo - Easy](MetaTwo.md)
   100. [TwoMillion - Easy](TwoMillion.md)
+  101. [BountyHunter - Easy](BountyHunter.md)
