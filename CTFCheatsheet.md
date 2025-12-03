@@ -11,6 +11,8 @@
 
 + Whenever enumerating at any stage (initial recon or privesc), check EVERY SINGLE THING till you find a clue/foothold; do NOT assume anything because assumptions would lead to missing the next vector (also check notes)
 
++ Sometimes a certain action/script/exploit may or may not work; try once more but faster or without delay (if it is a sequence of multiple steps) to confirm we are not hitting a time-bound restriction (e.g. - files getting cleared or config getting reset)
+
 + Scanning:
 
   Start with a TCP scan; if you do not get anything from footprinting the services found, then only go for a UDP scan since it is time-consuming.
@@ -47,7 +49,7 @@
 
   + Read the source code again, understand it as much as possible; check for any endpoints
 
-  + Input fields - for any field which takes user input, test it with all possible payloads to check for all types of web attacks like SQLi, XSS, XXE, LFI, etc.
+  + Input fields - for any field which takes user input, test it with all possible payloads to check for all types of web attacks like SQLi, XSS, XXE, LFI, SSRF, etc. 
 
   + Login forms - same as above; check for all payloads imaginable, use multiple wordlists. Common attacks in login forms include SQLi, NoSQLi, null byte injection, etc; if needed, we can use tools such as ```sqlmap```
 
@@ -72,12 +74,15 @@
   + Bruteforce - if you really need to use ```hydra``` to bruteforce basic authentication or login form, for example, then make sure you know the username(s) and for passwords you can use rockyou.txt; in case usernames are not given, choose a few common usernames or based on the challenge, and in addition to that generate a wordlist from the website using ```cewl```
 
     ```sh
-    gobuster dir -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,html,bak,jpg,zip,bac,sh,png,md,jpeg,pl,ps1,aspx -t 25
+    gobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt -x txt,php,html,bak,jpg,zip,bac,sh,png,md,jpeg,pl,ps1,aspx,js,json,docx,pdf,cgi,sql,xml,tar,gz,db -t 25
     # directory scan - this is not recursive to save time
     # if any directories found, recursively scan those directories in another command
 
+    # also start with smaller wordlist and more extensions
+    # then if required, we can check with other wordlists like 'directory-list-2.3-medium.txt'
+
     # if recursive scanning is really required
-    feroxbuster -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x php,html,bak,js,txt,json,docx,pdf,zip,cgi,sh,pl,aspx,sql,xml --extract-links --scan-limit 2 --filter-status 400,401,404,405,500 --silent
+    feroxbuster -u http://target.com -w /usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt -x txt,php,html,bak,jpg,zip,bac,sh,png,md,jpeg,pl,ps1,aspx,js,json,docx,pdf,cgi,sql,xml,tar,gz,db --extract-links --scan-limit 2 --filter-status 400,401,404,405,500 --silent
     
     # use multiple wordlists - when checking again, start with smaller wordlists like 'common.txt' and then go for bigger ones like 'raft-large-*.txt' and 'megabeast.txt'
     # and if that does not give anything, use another tool like ffuf for directory scanning
