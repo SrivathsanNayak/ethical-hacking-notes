@@ -104,3 +104,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   100. [TwoMillion - Easy](TwoMillion.md)
   101. [BountyHunter - Easy](BountyHunter.md)
   102. [Soulmate - Easy](Soulmate.md)
+  103. [Irked - Easy](Irked.md)
