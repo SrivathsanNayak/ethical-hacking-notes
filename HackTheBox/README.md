@@ -106,3 +106,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   102. [Soulmate - Easy](Soulmate.md)
   103. [Irked - Easy](Irked.md)
   104. [Delivery - Easy](Delivery.md)
+  105. [Pilgrimage - Easy](Pilgrimage.md)
