@@ -110,3 +110,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   106. [Codify - Easy](Codify.md)
   107. [Soccer - Easy](Soccer.md)
   108. [Remote - Easy](Remote.md)
+  109. [MonitorsTwo - Easy](MonitorsTwo.md)
