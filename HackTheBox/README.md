@@ -112,3 +112,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   108. [Remote - Easy](Remote.md)
   109. [MonitorsTwo - Easy](MonitorsTwo.md)
   110. [Postman - Easy](Postman.md)
+  111. [Headless - Easy](Headless.md)
