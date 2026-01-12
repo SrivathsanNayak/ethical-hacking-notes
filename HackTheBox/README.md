@@ -115,3 +115,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   111. [Headless - Easy](Headless.md)
   112. [Explore - Easy](Explore.md)
   113. [MonitorsFour - Easy](MonitorsFour.md)
+  114. [Tabby - Easy](Tabby.md)
