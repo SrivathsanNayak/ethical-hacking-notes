@@ -1,3 +1,3 @@
 # Server-side topics
 
-* [SQL injection](SQLi.md)
+* [SQL Injection](SQLi.md)

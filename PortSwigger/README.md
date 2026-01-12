@@ -9,5 +9,3 @@
   * [Client-side topics](Client-side/README.md)
 
   * [Advanced topics](Advanced/README.md)
-
-  * [Labs](Labs/README.md)
