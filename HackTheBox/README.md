@@ -117,3 +117,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   113. [MonitorsFour - Easy](MonitorsFour.md)
   114. [Tabby - Easy](Tabby.md)
   115. [Writeup - Easy](Writeup.md)
+  116. [Ready - Medium](Ready.md)
