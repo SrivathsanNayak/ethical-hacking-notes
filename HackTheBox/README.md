@@ -120,3 +120,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   116. [Ready - Medium](Ready.md)
   117. [Sense - Easy](Sense.md)
   118. [Editorial - Easy](Editorial.md)
+  119. [Perfection - Easy](Perfection.md)
