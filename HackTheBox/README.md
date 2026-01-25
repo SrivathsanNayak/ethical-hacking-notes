@@ -122,3 +122,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   118. [Editorial - Easy](Editorial.md)
   119. [Perfection - Easy](Perfection.md)
   120. [Love - Easy](Love.md)
+  121. [Driver - Easy](Driver.md)
