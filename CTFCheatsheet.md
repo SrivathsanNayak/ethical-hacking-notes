@@ -7,15 +7,21 @@
 
 ## Enumeration and Exploitation
 
-+ Note: Enumeration is a CYCLIC process; all enumeration steps have to be tried whenever something is found, even if it seems similar or equivalent to a previous finding
++ Note: Enumeration is a __CYCLIC__ process; all enumeration steps have to be tried whenever something is found, even if it seems similar or equivalent to a previous finding
 
-+ Whenever enumerating at any stage (initial recon or privesc), check EVERY SINGLE THING till you find a clue/foothold; do NOT assume anything because assumptions would lead to missing the next vector (also check notes)
++ Whenever enumerating at any stage (initial recon or privesc), check __EVERY SINGLE THING__ till you find a clue/foothold; do __NOT__ assume anything because assumptions would lead to missing the next vector (also check notes)
 
 + Sometimes a certain action/script/exploit may or may not work; try once more but faster or without delay (if it is a sequence of multiple steps) to confirm we are not hitting a time-bound restriction (e.g. - files getting cleared or config getting reset)
 
++ With respect to ```linpeas```/```winpeas```, if there is anything in the output that stands out (not necessarily highlighted by the tool, but something unusual or different), Google it - this helps to not miss any privesc vectors; and if the automated tools do not give anything, search manually
+
++ __ATTENTION TO DETAIL__ is crucical - this can be the deal-breaker in finding a foothold or searching for the next privesc vector
+
 + Scanning:
 
-  Start with a TCP scan; if you do not get anything from footprinting the services found, then only go for a UDP scan since it is time-consuming.
+  + Start with a TCP scan; if you do not get anything from footprinting the services found, then only go for a UDP scan since it is time-consuming.
+  
+  + ```nmap``` might identify services incorrectly, so it is better to verify manually by interacting with the service and Googling the service info using the open port found.
 
   ```sh
   nmap -T4 -p- -A -Pn -v target.com
@@ -33,31 +39,35 @@
 
 + Service [footprinting](https://github.com/SrivathsanNayak/ethical-hacking-notes/blob/main/HTBAcademy/Footprinting/README.md):
 
-  Based on whatever ports & services are there; consider enumerating manually as well as using automated tools. Also, search for ALL found ports and services - it could be associated with a known vulnerable service/version. In very rare cases, if the box is faulty, try resetting it and re-doing the footprinting.
+  + Based on whatever ports & services are there; consider enumerating manually as well as using automated tools.
+  
+  + Search for __ALL__ found ports and services - it could be associated with a known vulnerable service/version.
+  
+  + In very rare cases, if the box is faulty, try resetting it and re-doing the footprinting.
 
 + Clues:
 
-  Look for certain clues and hints in the challenge statement itself. For example, if the word 'knock' is mentioned, it would refer to ```knock``` as in [port knocking](https://d00mfist.gitbooks.io/ctf/content/port_knocking.html), after which we will have to re-scan the machine.
+  + Look for certain clues and hints in the challenge statement itself. For example, if the word 'knock' is mentioned, it would refer to ```knock``` as in [port knocking](https://d00mfist.gitbooks.io/ctf/content/port_knocking.html), after which we will have to re-scan the machine.
+
+  + Also, if there are multiple webpages used for example, do not think of them as isolated instances; i.e., they could be chained together for the attack chain, so do not be afraid to test things, break apps or fail at attempts when finding a foothold.
 
 + Web enumeration:
-
-  As with anything else, do not leave any stone unturned. Check everything, and do not assume anything. For any check, use multiple wordlists and multiple tools.
-
-  For manual enumeration, always check the following at least:
 
   + 'Inspect' and 'View Page Source' - check all tabs in Inspect part, and source code thoroughly for any clues
 
   + Read the source code again, understand it as much as possible; check for any endpoints
 
-  + Input fields - for any field which takes user input, test it with all possible payloads to check for all types of web attacks like SQLi, XSS, XXE, LFI, SSRF, etc. 
+  + Input fields - for any field which takes user input, test it with all possible payloads to check for all types of web attacks like SQLi, XSS, XXE, LFI, SSRF, etc.
 
   + Login forms - same as above; check for all payloads imaginable, use multiple wordlists. Common attacks in login forms include SQLi, NoSQLi, null byte injection, etc; if needed, we can use tools such as ```sqlmap```
 
   + ```sqlmap``` - can be used on top of fuzzing and checking forms; if WAF is being used, we can use this with options like ```--no-cast```, ```--random-agent``` and ```--tamper``` options - refer [sqlmap cheatsheet](https://highon.coffee/blog/sqlmap-cheat-sheet/)
 
+  + Manual testing - before attempting fuzzing for injection attacks with tools, make sure to try common payloads manually; most of the times, it boils down to determining which type of injection attack is suitable for the target webapp
+
   + Command injection - for any input forms, check if command injection payloads work; in case of blind scenarios or when we are not able to see output, we can try by creating a file or fetching a page from attacker machine
 
-  + Injection attacks - other types of injection attacks should also be checked in input forms, parameters, and wherever possible
+  + Injection attacks - other types of injection attacks should also be checked in input forms, parameters, and wherever possible; check by fuzzing with multiple wordlists from multiple injection types (command injection, LFI, SQLi, XSS, etc.)
 
   + Burp Suite - if going nowhere, take a tour of the webpages but with Intercept enabled; helpful for any redirects or hints
 
@@ -72,6 +82,8 @@
   + Weak/default credentials - for any login page, make sure you try default or weak creds first before proceeding with any bruteforce attempt
 
   + Bruteforce - if you really need to use ```hydra``` to bruteforce basic authentication or login form, for example, then make sure you know the username(s) and for passwords you can use rockyou.txt; in case usernames are not given, choose a few common usernames or based on the challenge, and in addition to that generate a wordlist from the website using ```cewl```
+
+  + As with anything else, do not leave any stone unturned. Check everything, and do not assume anything. For any check, use multiple wordlists and multiple tools.
 
     ```sh
     gobuster dir -u http://target.com -w /usr/share/wordlists/dirb/common.txt -x txt,php,html,bak,jpg,zip,bac,sh,png,md,jpeg,pl,ps1,aspx,js,json,docx,pdf,cgi,sql,xml,tar,gz,db -t 25
@@ -110,6 +122,12 @@
     wfuzz -v -c -z file,/usr/share/wordlists/rockyou.txt -d "{"username":"admin","password":"FUZZ"}" --hw 42 http://target.com/api/login
     # web bruteforce using wfuzz - hydra can also be used
     ```
+
++ Exceptions:
+
+  - In rare cases, there will be issues with the personal VM and/or network; if available, use the platform's provided VM (e.g. - Pwnbox or AttackBox) to verify if the issue is replicated
+
+  - An exploit may not work right out of the box, and needs corrections; this also happens with Metasploit. For example, if an exploit in a ```meterpreter``` session does not work right away, try migrating to another process, or check for possible reasons/errors
 
 ## Linux Privilege Escalation
 
@@ -161,8 +179,8 @@
   find / -type f -perm -04000 -ls 2>/dev/null
   # find files that have SUID
 
-  grep --color=auto -rnw -iIe "PASSW\|PASSWD\|PASSWORD\|PWD" --color=always 2>/dev/null
-  # check password strings
+  grep --color=auto -rnwiIe "PASSW\|PASSWD\|PASSWORD\|PWD" --exclude-dir={proc,sys,dev,run} / 2>/dev/null
+  # check password strings in root directory, recursively
 
   # for extended password hunting, check the PasswordAttacks module from HTB
   # it includes a section on finding creds
@@ -192,6 +210,14 @@
   lsblk
   # list blocks
 
+  ls -la /var/mail
+  # check for mails
+  # sometimes this can disclose info
+
+  # check conf files in /etc - this can give new info or clues
+  cat /etc/hosts
+  cat /etc/resolv.conf
+
   # for any interesting binaries or anything with a name or version attached, research for known exploits
   # linpeas would not help here, so we need to manually check
 
@@ -215,6 +241,7 @@
   env
   # check for specific env variables set
   # like env_keep+=LD_PRELOAD
+  # check the env vars carefully, sometimes this discloses creds or clues
 
   # if there is a script to be modified
   # and we do not have write access to script but write access to directory
@@ -240,6 +267,12 @@
 
   ifconfig
   # check machine IP; we can also run 'hostname -i'
+
+  ping host.docker.internal
+  # docker hostname that resolves to the host
+
+  curl http://host.docker.internal:2375/version
+  # check if Docker API on host is accessible
 
   # if we are in a Docker env, we can check internal ports
   # using a primitive bash port-scanner to check internal services
@@ -587,6 +620,63 @@
 
 ## Miscellaneous
 
++ Docker container enumeration & breakout techniques (very common in CTFs so adding a separate section for this):
+
+  + enumeration:
+
+    ```sh
+    # check indicators of a Docker container
+
+    hostname
+    # random hostname
+
+    ls -la /
+    # includes '.dockerenv'
+
+    cat /proc/1/cgroup
+    # includes 'docker' in paths
+
+    ifconfig
+    # check IP
+
+    hostname -i
+    # check IP
+
+    cat /etc/hosts
+
+    cat /etc/resolv.conf
+
+    ping host.docker.internal
+    # docker hostname that resolves to the host
+
+    curl http://host.docker.internal:2375/version
+    # check if Docker API running on host is accessible
+
+    for i in {1..255}; do (ping -c 1 172.18.0.${i} | grep "bytes from" &); done
+    # primitive ping sweep for other machines on network
+    
+    # alt - use 'nmap' binary from attacker
+    ./nmap 172.18.0.0/24
+    ```
+
+  + breakout techniques:
+
+    + pivoting using other services - for example, if we are able to use services like MySQL on other hosts, we can write PHP code to a file via ```mysql```, and use ```curl``` to interact with this malicious file; refer THM Holo writeup for this method
+
+    + [shared mount between container and host](https://blog.1nf1n1ty.team/hacktricks/linux-hardening/privilege-escalation/docker-security/docker-breakout-privilege-escalation#privilege-escalation-with-2-shells-and-host-mount) - if we have root on container, and shell as non-privileged user on host, and a shared folder between the container and the host, then we can create a copy of the ```bash``` binary in the host's shared folder, then assign the same ```bash``` the SUID bit in the Docker container as root; the non-privileged user can run it with the privileged flag
+
+    + known vulns and exploits, like [container escape vuln CVE-2025-9074](https://github.com/BridgerAlderson/CVE-2025-9074-PoC/blob/main/cve-2025-9074.sh) and [moby docker privesc CVE-2021-41091](https://exploit-notes.hdks.org/exploit/container/docker/moby-docker-engine-privilege-escalation/)
+
+  + related blog posts:
+
+    + [juggernaut - docker breakout scenarios](https://juggernaut-sec.com/docker-breakout-lpe/)
+
+    + [exploit-notes - docker escape](https://exploit-notes.hdks.org/exploit/container/docker/docker-escape/)
+
+    + [exploit-notes - docker API enum](https://exploit-notes.hdks.org/exploit/container/docker/docker-engine-api/)
+
+    + [hackviser - docker enum and escape](https://hackviser.com/tactics/pentesting/services/docker)
+
 + [Steganography](https://0xrick.github.io/lists/stego/):
 
   Whenever you come across any image files, given the context, you can always give steganography a try; if you happen to have a password/string, you can check with tools like ```steghide```. For other types of files, like audio files, we have stego tools like ```wavsteg``` and ```Sonic Visualizer```, so you should know which tool to try for which type of file:
@@ -663,6 +753,11 @@
 
     ```sh
     hashcat -a 0 -m 1600 apachehash.txt /usr/share/wordlists/rockyou.txt
+
+    # in certain cases, we may also have to build custom wordlists
+    # from webpages using tools like cewl or cewler
+    hashcat -a 0 -m 7900 backdrophashes wordlist.txt -r /usr/share/hashcat/rules/best64.rule --force
+    # use the wordlist with best64 rule if the wordlist is too short
     ```
   
 + Pivoting using ```ligolo-ng```:
