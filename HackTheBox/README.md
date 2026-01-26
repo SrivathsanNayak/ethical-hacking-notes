@@ -125,3 +125,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   121. [Driver - Easy](Driver.md)
   122. [Dog - Easy](Dog.md)
   123. [BabyEncryption - Very Easy](BabyEncryption.md)
+  124. [SwagShop - Easy](SwagShop.md)
