@@ -1,6 +1,18 @@
 # My Ethical Hacking Notes
 
-* This is where I'll be writing my notes on the topic of Ethical Hacking and whatever I learn about it:
+* This is where I'll be writing my notes on the topic of Ethical Hacking and whatever I learn about it.
+
+* Please note that:
+
+  * These notes are made for documenting my progress in the domain of cybersecurity.
+
+  * Everything here is a ```Work In Progress```; therefore some of the topics are empty or incomplete.
+
+  * For CTF notes, I have included the flags as well, so if you do not want spoilers, tread carefully.
+
+  * I have made a [custom CTF cheatsheet](CTFCheatsheet.md) based on the above resources - will try to update it every now and then; if you feel stuck on any CTF challenge, check this list for any pointers.
+
+* Topics:
 
   * [Learn Ethical Hacking From Scratch - Udemy](LearnEthicalHackingFromScratch_Udemy/README.md)
 
@@ -60,9 +72,13 @@
 
   * [GTFOBins](https://gtfobins.github.io/)
 
+  * [Reverse shell generator](https://www.revshells.com/)
+
   * [PentestMonkey CheatSheet](https://pentestmonkey.net/category/cheat-sheet)
 
   * [PayloadsAllTheThings](https://github.com/swisskyrepo/PayloadsAllTheThings)
+
+  * [HackTricks wiki](https://book.hacktricks.wiki/en/index.html)
 
   * [CheatSheet-God](https://github.com/OlivierLaflamme/Cheatsheet-God)
 
@@ -71,13 +87,3 @@
   * [Pentest CheatSheets](https://github.com/coreb1t/awesome-pentest-cheat-sheets)
 
   * [Steganography Resources](https://0xrick.github.io/lists/stego/)
-
-* Note:
-
-  * These notes are made for documenting my progress in the domain of cybersecurity.
-
-  * Everything here is a ```Work In Progress```; therefore some of the topics are empty or incomplete.
-
-  * For CTF notes, I have included the flags as well, so if you do not want spoilers, tread carefully.
-
-  * I have made a [custom CTF cheatsheet](CTFCheatsheet.md) based on the above resources - will try to update it every now and then; if you feel stuck on any CTF challenge, check this list for any pointers.
