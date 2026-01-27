@@ -127,3 +127,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   123. [BabyEncryption - Very Easy](BabyEncryption.md)
   124. [SwagShop - Easy](SwagShop.md)
   125. [Forgotten - Easy](Forgotten.md)
+  126. [GreenHorn - Easy](GreenHorn.md)
