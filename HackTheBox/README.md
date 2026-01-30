@@ -129,3 +129,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   125. [Forgotten - Easy](Forgotten.md)
   126. [GreenHorn - Easy](GreenHorn.md)
   127. [Stocker - Easy](Stocker.md)
+  128. [Support - Easy](Support.md)
