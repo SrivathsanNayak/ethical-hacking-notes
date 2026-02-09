@@ -133,3 +133,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   129. [Facts - Easy](Facts.md)
   130. [Code - Easy](Code.md)
   131. [Manage - Easy](Manage.md)
+  132. [Baby - Easy](Baby.md)
