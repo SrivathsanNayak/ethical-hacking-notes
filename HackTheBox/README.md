@@ -141,3 +141,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   137. [LinkVortex - Easy](LinkVortex.md)
   138. [Poison - Medium](Poison.md)
   139. [Secret - Easy](Secret.md)
+  140. [Networked - Easy](Networked.md)
