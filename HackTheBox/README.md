@@ -142,3 +142,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   138. [Poison - Medium](Poison.md)
   139. [Secret - Easy](Secret.md)
   140. [Networked - Easy](Networked.md)
+  141. [Backdoor - Easy](Backdoor.md)
