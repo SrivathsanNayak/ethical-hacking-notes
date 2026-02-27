@@ -143,3 +143,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   1. [Secret - Easy](Secret.md)
   1. [Networked - Easy](Networked.md)
   1. [Backdoor - Easy](Backdoor.md)
+  1. [Data - Easy](Data.md)
