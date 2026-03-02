@@ -146,3 +146,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   1. [Data - Easy](Data.md)
   1. [Help - Easy](Help.md)
   1. [PC - Easy](PC.md)
+  1. [OnlyHacks - Very Easy](OnlyHacks.md)
