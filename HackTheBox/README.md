@@ -148,3 +148,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   1. [PC - Easy](PC.md)
   1. [OnlyHacks - Very Easy](OnlyHacks.md)
   1. [Sea - Easy](Sea.md)
+  1. [Reset - Easy](Reset.md)
