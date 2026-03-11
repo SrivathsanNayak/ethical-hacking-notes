@@ -150,3 +150,4 @@ Writeups for rooms, challenges and Sherlocks on [HackTheBox](https://app.hackthe
   1. [Sea - Easy](Sea.md)
   1. [Reset - Easy](Reset.md)
   1. [Sunday - Easy](Sunday.md)
+  1. [Broker - Easy](Broker.md)
