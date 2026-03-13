@@ -51,21 +51,27 @@
 
   + Also, if there are multiple webpages used for example, do not think of them as isolated instances; i.e., they could be chained together for the attack chain, so do not be afraid to test things, break apps or fail at attempts when finding a foothold.
 
+  + If a certain software has multiple exploits that may or may not match the impacted version, it is still worth giving it a try; do not assume that the exploit won't work until you have tried it out
+
 + Web enumeration:
 
   + 'Inspect' and 'View Page Source' - check all tabs in Inspect part, and source code thoroughly for any clues
+
+  + Directory scanning - for most of the cases, checking with ```/usr/share/wordlists/dirb/common.txt``` & ```/usr/share/wordlists/dirbuster/directory-list-2.3-medium.txt``` wordlists will be enough - test with both as certain words like '.git' are present only in one of the wordlists, and not both
 
   + Read the source code again, understand it as much as possible; check for any endpoints
 
   + Input fields - for any field which takes user input, test it with all possible payloads to check for all types of web attacks like SQLi, XSS, XXE, LFI, SSRF, etc.
 
-  + Login forms - same as above; check for all payloads imaginable, use multiple wordlists. Common attacks in login forms include SQLi, NoSQLi, null byte injection, etc; if needed, we can use tools such as ```sqlmap```
+  + Login forms - same as above; check for all payloads imaginable, use multiple wordlists. Common attacks in login forms include __SQLi, NoSQLi, null byte injection__, etc; if needed, we can use tools such as ```sqlmap```
 
   + ```sqlmap``` - can be used on top of fuzzing and checking forms; if WAF is being used, we can use this with options like ```--no-cast```, ```--random-agent``` and ```--tamper``` options - refer [sqlmap cheatsheet](https://highon.coffee/blog/sqlmap-cheat-sheet/)
 
   + Manual testing - before attempting fuzzing for injection attacks with tools, make sure to try common payloads manually; most of the times, it boils down to determining which type of injection attack is suitable for the target webapp
 
   + Command injection - for any input forms, check if command injection payloads work; in case of blind scenarios or when we are not able to see output, we can try by creating a file or fetching a page from attacker machine
+
+  + Sniffing packets - in some cases, if a request to our server is made, or testing involves the target to reach our machine, we can sniff packets using ```wireshark``` - this might give us more clues on how the request is made and might also show version info
 
   + Injection attacks - other types of injection attacks should also be checked in input forms, parameters, and wherever possible; check by fuzzing with multiple wordlists from multiple injection types (command injection, LFI, SQLi, XSS, etc.)
 
@@ -75,11 +81,13 @@
 
   + File info - for any files encountered, check if it has any secret data or any other use; some files need to be checked by hexdump tools to view the magic numbers, or they might have embedded files.
 
-  + Technologies used and their versions - this can lead us to known exploits; research extensively on platforms such as Google, ExploitDB and Metasploit.
+  + Specific attacks - certain scenarios require very specific attacks - we need to Google for exploits or methods related to any software/app used; for example - if a PDF is involved, we could try server-side injection attacks (XSS, SSRF) associated with PDF generation
+
+  + Technologies used and their versions - this can lead us to known exploits; research extensively on platforms such as Google, ExploitDB and Metasploit (also if an open-source project is used, check the project code for any ways to enumerate version or hidden files)
 
   + Parameter fuzzing - various wordlists can be used for fuzzing parameters using tools like ```ffuf```; if we do not know a parameter is being used or not, we can still try fuzzing for it
 
-  + Weak/default credentials - for any login page, make sure you try default or weak creds first before proceeding with any bruteforce attempt
+  + Weak/default credentials - for any login page, make sure you try default or weak creds first before proceeding with any bruteforce attempt; in some cases, the name of the challenge/box can also be tried as the username/password for the service
 
   + Bruteforce - if you really need to use ```hydra``` to bruteforce basic authentication or login form, for example, then make sure you know the username(s) and for passwords you can use rockyou.txt; in case usernames are not given, choose a few common usernames or based on the challenge, and in addition to that generate a wordlist from the website using ```cewl```
 
@@ -148,9 +156,14 @@
   # if possible go through their directories
   # we can have interesting folders like '.ssh' or '.mozilla'
 
+  su otheruser
+  # if we cannot login as another user via SSH
+  # try using 'su' to switch user - this can work if we have possible creds but cannot login using SSH
+
   sudo -l
   # if we have password, check the commands we can run as root or other user/group
   # this command will also show if we have LD_PRELOAD set for example
+  # also, check for wildcard chars like '*' used in 'sudo -l' entry - can use methods like directory traversal
 
   history
   # check previous commands
@@ -163,6 +176,9 @@
 
   # if we have a web directory, enumerate it completely for any creds
   ls -la /var/www/
+
+  ls -la /var
+  # check the system folders for any non-default folders
 
   find / -perm -222 -type d 2>/dev/null
   # search world-writable folders
@@ -564,6 +580,8 @@
   # using cmdlets like Get-ADUser, Get-ADGroup, Get-ADObject and Get-ADDomain
   # or using tools such as Sharphound/Bloodhound
 
+  # if we do not have a shell, but we have valid domain user creds - we can use bloodhound-python
+
   # AD enum with PowerView
   Import-Module .\PowerView.ps1
 
@@ -665,15 +683,15 @@
 
     + [shared mount between container and host](https://blog.1nf1n1ty.team/hacktricks/linux-hardening/privilege-escalation/docker-security/docker-breakout-privilege-escalation#privilege-escalation-with-2-shells-and-host-mount) - if we have root on container, and shell as non-privileged user on host, and a shared folder between the container and the host, then we can create a copy of the ```bash``` binary in the host's shared folder, then assign the same ```bash``` the SUID bit in the Docker container as root; the non-privileged user can run it with the privileged flag
 
-    + known vulns and exploits, like [container escape vuln CVE-2025-9074](https://github.com/BridgerAlderson/CVE-2025-9074-PoC/blob/main/cve-2025-9074.sh) and [moby docker privesc CVE-2021-41091](https://exploit-notes.hdks.org/exploit/container/docker/moby-docker-engine-privilege-escalation/)
+    + known vulns and exploits, like [container escape vuln CVE-2025-9074](https://github.com/BridgerAlderson/CVE-2025-9074-PoC/blob/main/cve-2025-9074.sh) and [moby docker privesc CVE-2021-41091](https://exploitnotes.org/exploit/container/docker/moby-docker-engine-privilege-escalation/)
 
   + related blog posts:
 
     + [juggernaut - docker breakout scenarios](https://juggernaut-sec.com/docker-breakout-lpe/)
 
-    + [exploit-notes - docker escape](https://exploit-notes.hdks.org/exploit/container/docker/docker-escape/)
+    + [exploit-notes - docker escape](https://exploitnotes.org/exploit/container/docker/docker-escape/)
 
-    + [exploit-notes - docker API enum](https://exploit-notes.hdks.org/exploit/container/docker/docker-engine-api/)
+    + [exploit-notes - docker API enum](https://exploitnotes.org/exploit/container/docker/docker-engine-api/)
 
     + [hackviser - docker enum and escape](https://hackviser.com/tactics/pentesting/services/docker)
 
@@ -850,3 +868,32 @@
   + MSSQL RID bruteforce - ```nxc mssql 172.16.89.202 -u 'svc_sql' -p 'Password123!' --local-auth --rid-brute```
 
   + WinRM bruteforce - ```nxc winrm 192.168.10.24 -u usernames.txt -p passwords.txt --ignore-pw-decoding --continue-on-success```
+
++ Directory traversal - files to be checked:
+
+  + Linux:
+
+    * ```/etc/hosts```
+    * ```/etc/resolv.conf```
+    * ```/etc/issue```
+    * ```/etc/ssh/sshd_config```
+    * ```/home/user/.ssh/id_rsa```
+    * ```/home/user/.ssh/authorized_keys```
+    * ```/home/user/.bash_history```
+    * ```/var/www/html/wp-config.php```
+    * ```/var/www/html/.env```
+    * ```/var/www/html/.htaccess```
+    * ```/var/www/html/.htpasswd```
+    * ```/etc/apache2/apache2.conf```
+    * ```/etc/apache2/sites-enabled/000-default.conf```
+    * ```/etc/apache2/sites-available/000-default.conf```
+    * ```/proc/self/environ```
+    * ```/proc/self/cmdline```
+    * ```/proc/<PID>/cmdline```
+    * ```/proc/self/cwd```
+    * ```/proc/self/fd/0```
+    * ```/proc/version```
+    * ```/proc/net/tcp```
+    * ```/proc/net/udp```
+    * ```/proc/sched_debug```
+    * ```/proc/mounts```
